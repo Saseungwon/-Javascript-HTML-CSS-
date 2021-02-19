@@ -230,7 +230,351 @@ p태그를 쓰면 글이 단락으로 나눠진다.
 <!-- 특수키 : &lt; &gt; &copy; - 엔터(br)와 스페이스(nbsp) 빼고 다른 특수키들은 외우지 않아도 된다. -->
 안녕하세요 &lt; &gt; &copy; 특수키 입니다.
 
+<!-- pre 태그 : 쓴 대로 출력 -->
+<pre>
+여긴 그냥 쓴 대로 나온다.
+
+쓴대로 보인다는 얘기다.
+</pre>
+
+<!-- ol 태그 : ordered list -->
+<!-- li 태그 : list item : 앞에 숫자로 순차대로 정렬 -->
+<ol>
+<li>ssw</li>
+<li>사승원</li>
+<li>saseungwon</li>
+</ol>
+
+<!-- img 태그 : img ./ 파일에 있는 사진 삽입, alt: 대체문자열(요즘엔 거의 사용X) -->
+<!--
+src, width, height 등 태그 안에 정의하는 것을 속성(attribute)이라고 함
+속성은 단위를 안 써도 되지만, style에는 꼭 단위를 써야됨
+객체 하나는 element라고 부름
+인스턴스와 오브젝트의 차이?
+사람 인간(의미는 같은데 느낌이 다름)
+미국사람 미국인간
+-->
+<img src="./img/images (2).jpeg" alt="">
+<br>
+<img src="./img/다운로드 (1).png" style="width: 300px; height: 400px;">
+<br>
+<img src="./img/다운로드 (1).png" alt="" width = 300 height = 400>
+<br>
+<img src="./img/html.jpg" alt="이미지가 안 나올 때 글자가 나오도록 설정하는 alt">
+
 </body>
 </html>
+
+```
+
+
+#### 사용자 입력태그
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사용자 입력태그</title>
+</head>
+<body>
+<input type="button" value="난 버튼이야"><br>
+<input type="text" value="난 텍스트 박스야">
+<input type="hidden" value="난 눈에 안 보이는 텍스트 박스야">
+<!--
+radio : 동그란 모양의 체크
+name : 하나의 그룹으로 묶어 오직 하나만 체크가 가능하게 된다.
+checked : 만약 여성 회원만 가입할 수 있는 페이지면 check로 미리 체크해놓을 수 있음
+-->
+남<input type="radio" name="sb" value="male" >
+여<input type="radio" name="sb" value="female" checked> <br>
+
+<!-- checkbox 버튼도 name으로 그룹을 묶을 수 있으며 다중 선택이 가능 -->
+보유한 스킬을 체크하세요(여러 개 사용가능) <br>
+자바<input type="checkbox" name="skill" value="java">
+SQL<input type="checkbox" name="skill" value="sql">
+HTML<input type="checkbox" name="skill" value="html">
+CSS<input type="checkbox" name="skill" value="css"> <br>
+
+<select>
+<!-- option : 누르면 선택할 수 있는 줄(?)이 나온다. -->
+<option value="who"> 누구 좋아하세요? </option>
+<option value="jv"> java </option>
+<option value="HT"> HTML </option>
+<option value="SQ"> SQL </option>
+<option value="CS"> CSS </option>
+<!-- selected로 디폴트 값을 설정해놓을 수 있음 -->
+<option value="SQ" selected> SQL </option>
+</select> <br>
+<!-- textarea : 여러 줄의 텍스트를 입력할 때. 사용 사이즈 조절 가능 -->
+<textarea rows=20 cols=30 > 여러 줄 입력할 때 사용한다.</textarea> <br>
+
+<!--
+기능이 괜찮아도 브라우져마다 보이는 모습이 다른 컴포넌트는 잘 사용되지 않음
+특히 상업적인 사이트에는 더욱 더
+-->
+<!-- 색 선택 -->
+<input type="color" value=""> <br>
+<!-- 날짜 선택 -->
+<input type="date" value=""> <br>
+<!-- 범위 선택 -->
+<input type="range" value=""> <br>
+<!-- 숫자 선택 -->
+<input type="number" value="4"><br>
+<!-- file : 파일 업로드 가능한 버튼 -->
+<input type="file" value=""><br>
+
+</body>
+</html>
+
+```
+
+#### 테이블
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>테이블은 개발자가 많이 사용한다</title>
+</head>
+<body>
+<!--
+tr : table row
+td : table data
+값은 꼭 td 태그 안에 넣어야 함(중요)
+-->
+<table>
+<tr><td>이름</td><td>별명</td></tr>
+<tr><td>사승원</td><td>4win1</td></tr>
+<tr><td>승원</td><td>win1</td></tr>
+
+<!-- border : 테이블에 태두리 그려줌 -->
+<table border=2 width = 500 >
+<tr><td>이름</td><td>별명</td></tr>
+<tr><td>사승원</td><td>4win1</td></tr>
+<tr><td>승원</td><td>win1</td></tr>
+<tr><td><img src="./img/images.jpeg" width=300 height= 300></td></tr>
+<!-- colspan : 테이블 셀 합치기 -->
+<tr><td colspan="2"><img src="./img/images.jpeg" width=500 height= 300></td></tr>
+<!-- rowspan : 아래 셀에 있는 값 차지하고 싶을 때 -->
+<tr><td rowspan="2">사승원</td><td>4win1</td></tr>
+<tr><td>win1</td></tr>
+<!-- 모든 셀 차지하고 싶을 때 -->
+<tr><td rowspan="2" colspan="2">사승원</td></tr>
+<tr></tr>
+
+</table>
+
+<!-- 문제 -->
+<table border="3">
+
+<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+<tr><td>2</td><td rowspan="2" colspan="3"><img src="./img/images.jpeg" ></td><td rowspan="2" colspan="3"><img src="./img/images.jpeg" ></td><td>2</td></tr>
+<tr><td>3</td><td>3</td></tr>
+<tr><td>4</td><td colspan="6">HTML</td><td>4</td></tr>
+<tr><td>5</td><td rowspan="2" colspan="6"><img src="./img/images (2).jpeg" ></td><td>E</td></tr>
+<tr><td>6</td><td>F</td></tr>
+<tr><td>7</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+
+</table>
+
+<!-- 브라우저 호완성 체크 해야됨 : https://caniuse.com/background-clip-text
+연습 : https://www.w3schools.com/html/default.asp
+-->
+</body>
+</html>
+
+```
+
+
+#### 화면나눠보기
+
+
+```html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>화면을 수직 3분할</title>
+
+<style>
+div{
+border: 1px solid black;
+/* height: 33vh;(class로 해서 필요없어짐) 수직으로 할 땐 vh, 수평으로 할 땐 vw*/
+}
+/* 태그의 class 속성을 통한 스타일 주기 */
+.cl_d{
+height: 10vh;
+}
+.cl_b{
+height: 80vh;
+}
+.cl_f{
+height: 10vh;
+}
+.cl_ssw{
+display: inline-block;
+width: 32%;
+height: 100%;
+}
+</style>
+</head>
+<body>
+<div class="cl_d">머릿글</div>
+<div class="cl_b">
+<div class="cl_ssw">왼쪽</div>
+<div class="cl_ssw">가운데</div>
+<div class="cl_ssw">오른쪽</div>
+</div>
+<div class="cl_f">바닥글</div>
+
+</body>
+</html>
+
+```
+
+
+#### div
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+/* 내부 스타일 style sheet 주석 */
+/* 특징 태그에 스타일 주기 */
+div {
+/*border-width: 10px; /보더 두께*/
+/*border-style: groove; 보더 스타일*/
+/*border-color: violet; 보더 색깔*/
+display: inline-block; /* 옆에 누가 오는 걸 허용하지 않음 */
+width: 50px; /* vw : % , px : px */
+border : 10px groove violet; /* 축약기법 */
+
+}
+img{
+/* display: block; (이미지는 자동으로 inline-block), 사진 하나씩 엔터하고 싶으면 block으로*/
+width: 100px;
+height: 100px;
+}
+
+</style>
+</head>
+<body>
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+<img src="./img/images.jpeg" >
+
+<!--
+html 문서를 도배할 정도로 많이 쓰이는 div 태그
+레이아웃을 구성할 때 많이 사용하지만 css와 잘 조합하면 기본태그 기능도
+커버하기 때문에 거의 만능태그로 불린다.
+-->
+
+<!-- div(divide) : 화면 나누는 것 -->
+<!-- <div style="border:5px solid blue; margin: 100px; padding: 50px;">사승원 원승사</div> -->
+
+<!-- display 속성으로 옆에 누가 올 수 있는 것을 제어할 수 있다. -->
+<div>4win1</div>
+<div>>SaSW</div>
+<div>saseungwon</div>
+
+</body>
+</html>
+
+```
+
+#### css 기본선택자
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>css기본선택자</title>
+
+<style>
+/* 많이 쓰이는 선택자 일단 몇개만 */
+div,img,input{
+display: inline-block;
+background-color: pink;
+color: black; /* 글자색 */
+width: 100px;
+height: 100px;
+}
+/* 클래스 접근 = . (주로 디자이너가 사용) */
+.cl_aa {
+color: blue;
+font-size: 30px;
+}
+
+/* 아이디 접근 = # (주로 개발자가 사용, 페이지 내에서 아이디는 유일하기를 권장)*/
+#id_bb{
+color: brown;
+background-color: chartreuse;
+}
+</style>
+
+</head>
+<body>
+<div class="cl_aa">난 div1</div>
+<div id="id_bb">난 div2</div>
+<div>난 div3</div>
+<img src="./img/images.jpeg" >
+<input type="button" value="눌러보세요">
+</body>
+</html>
+
+```
+
+
+#### 스크립트 시작
+
+
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!--
+script 태그가 나타나면 브라우져 안의 스크립트 엔진이 동작
+우리가 배우는 버젼은 브라우져 호완성을 위해서 ES5버전 기준
+-->
+<script>
+// 프로그램 배울 때 가장 먼저 배워야 할 것은?. 출력문.
+console.log("콘솔.로그 : 출력문은 어디에 나올까");// 세미콜론 필수
+document.write("<h1>도큐먼트.라이트 : 이건 화면에 나온다.<h1>"); //h1 태그로 크기 조절 가능
+alert("이걸 가장 많이 사용한다.");// 메세지 창, 반복문 같은 경우에 메세지 창이 계속 나오기 때문에 console.log가 권장됨
+
+//자바 스크립트 언어의 특징
+//변수선언에 var를 붙이는 것이 코드 가독성에 유리 (안 붙여도 상관없음)
+//자바스크립트는 자바만큼 엄격하지 않아서 일부는 에러없이 실행이 되지 않음
+//자바스크립트는 동적언어 이퀄(=) 오른쪽의 값에 따라 자동으로 데이터 타입이 결정됨
+"use strict" // 변수 사용에 엄격모드 적용, 아주 권장됨 맨 윗줄에 기술해야됨
+var ssw = "사승원" ; // 변수 ssw에 사승원이라는 문자열을 담아라
+alert(ssw);
+var ssw = 3; //선언부를 먼저 해석해서 미리 준비해두는 것은 hoisting 이라고 부른다.
+alert(ssw);
+</script>
 
 ```
