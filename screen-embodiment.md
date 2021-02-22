@@ -578,3 +578,313 @@ alert(ssw);
 </script>
 
 ```
+#### 데이터타입
+
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//javascript 데이터 타입
+"use strict" //맨 첫 줄에 써주면 좋다
+var v_num //숫자(Number)형
+//alert(typeof(v_num));
+var v_str = '사승원' // 문자열(String)형 // 문자열 안에 따옴표 넣고싶을 때 '사"승"원', "사'승'원"
+//alert(v_str);
+var v_bool = true; //불린(boolean), true, false
+var v_null = null; //null. 아직 초기화하지 않았다는 표시
+var v_array = ["사승원", "오승원", "육승원", true, 222, ["배열안에", "배열삽입", "가능"]];
+//배열(자바스크립트는 자바와 달리 제약사항이 없다. 편하다.)
+alert(v_array[5][0]);
+var v_json = {
+"name":"사승원",
+"age":"26",
+"friend":["원승사", "승사원", {"aa":"원", "bb": "치"}]}
+//자바의 Map과 유사(속성, 값)
+//JSON(JavaScript Object Notation)
+alert("내가 제일 좋아하는 " + v_json.friend[2].bb);
+alert(v_json.name);
+alert(v_json["name"]); //위와 동일
+alert(v_json.age);
+alert(v_json["age"]); //위와 동일
+
+</script>
+```
+
+#### 데이터타입2
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+
+var v_check = "a772"
+v_check = v_check - 0 ;
+alert(v_check) ; //NaN -> Not a Number : 숫자로 바뀌지 않는 문자열은 NaN이 뜸
+
+var v_num1 = 111;
+var v_num2 = 222;
+alert(v_num1, v_num2) //v_num1이 내부적으로 자동으로 타입을 문자열로 바뀜
+// + 는 문자열 더하기와 숫자더하기 2가지 존재, 문자열 더하기 우선
+alert(v_num1/v_num2); // -,*, / 연산은 숫자형에만 존재
+
+//질문 1 숫자형을 문자형으로 바꾸려면
+var v_num3 = 333;
+alert(typeof(v_num3));
+v_num3 = v.num3 + ""; //숫자에 문자열(빈공백)을 더하면 문자형으로 형변환됨
+alert(typeof(v_num3));
+//더하기는 숫자형보다 문자형으로 우선적으로 변환
+
+//질문 2 문자열형을 숫자로 바꾸려면
+var v_str = "666";
+alert(typeof(v_str));
+v_str = v_str - 0; //문자열에서 - 숫자를 하면 숫자형으로 형변환됨
+alert(typeof(v_str))
+
+</script>
+```
+
+#### 데이터타입3
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+//boolean(true/false)
+//var v_bool = true;
+//var v_bool = 0 //숫자는 0만 false 나머지는 모두 true
+//var v_bool = ""; //문자열은 빈공백만 false 나머지는 모두 true
+//var v_bool = []; // true - 빈 객체 선언
+//var v_bool = {}; // true -
+//모든 객체는 true;
+//v_bool = null; // null = false
+//v_bool = undefined; // undefined = false
+if(v_bool){
+alert("이 창은 뜨나요?"); //true
+}else {
+alert("난 엘스"); //false
+}
+</script>
+```
+
+#### 배열
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+//배열 아주 중요, 자바의 Collection(List, Set, Map) - Set : 중복제거
+//var v_arr = ["사승일", "사승이", "사승삼"]; //선언 : 빈배열
+//alert(v_arr.length); // 배열에서 가장 중요한 속성 // 3
+//alert(v_arr[2]); // 사승삼
+//alert(v_arr[v_arr.length-1]); // 인덱스는 0부터 시작이라 (length -1) // 사승삼
+
+/*
+var v_arr = [] ;
+v_arr[0] = "사승일";
+v_arr[1] = "사승이";
+v_arr[2] = "사승삼";
+v_arr[3] = ["사승사", "사승오", "사승육", "사승칠"];
+alert(v_arr[v_arr.length-1]) //마지막 값
+*/
+
+//위보다 더 좋은 방법 - length 속성 중요!
+var v_arr = [] ;
+v_arr[v_arr.length] = "사승일";
+v_arr[v_arr.length] = "사승이";
+v_arr[v_arr.length] = "사승삼";
+v_arr[v_arr.length] = "사승사";
+alert(v_arr[v_arr.length-1])
+
+
+</script>
+```
+
+#### XML이란?
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+문서교환 포맷으로 나와서 내 마음대로 태그를 정할 수 있음.
+당사자끼리만 룰을 알면 되니까.
+설명 파일에 많이 사용됨
+-->
+<친구들>
+<친구>
+<이름>사승원</이름>
+<나이>26</나이>
+<별명>4win1</별명>
+</친구>
+<친구>
+<이름>사승이</이름>
+<나이>22</나이>
+<별명>2win2</별명>
+</친구>
+</친구들>
+```
+
+#### 연산자
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+
+//연산자
+//산술 연산자 : + - * / %
+//조건 연산자 : &&(and), ||(or)
+//AA && BB : && 연산자는 두 개 다 true여야 true라서 false인 것을 앞에 놓으면 성능 좋아짐
+//AA || BB : || 연산자는 둘 중 하나만 true여도 true라서 true를 앞에 놓으면 성능 좋아짐
+//증감 연산자 : ++, --, +=,-=
+var i = 3 ;
+var v_aa = i++; //후치연산
+/*
+var v_aa = i;
+i = i + 1 ;
+*/
+
+i = 3;
+var v_bb = ++i;
+/*
+i = i + 1 ;
+var v_bb = i
+*/
+
+// 연산자 우선순위는 외우지 않고 ()를 활용한다
+
+</script>
+
+```
+#### 반복문1
+
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//반복문
+//for(초기치;조건;증감식) // 초기치와 증감식은 생략가능, 조건은 필수
+var i = 1 ;
+for(;"사승원";){ // 이렇게 사용하면 while문과 정확히 똑같음
+alert("무한루프"); // 무한루핑 구현할 땐 항상 빠져나가는 조건을 설정한다.
+//빠져나갈 조건
+i++;
+if(i>10){
+alert("break가 실행됩니다.")
+break;
+}
+}
+
+</script>
+```
+
+#### 반복문2
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+//일반적 사용법
+//반복문은 주로 배열에서 많이 사용
+//배열 반복문에서는 length 중요
+//배열 반복문에서는 =(이퀄) 사용 X
+
+// 1. for문
+var v_arr = ["사승일", "사승이", "사승삼", "사승사"];
+for(var i = 0 ; i < v_arr.length ; i++){
+alert("안녕하세요1 " + v_arr[i] + "님");
+}
+
+// 2. while문
+var i = 0;
+while(i < v_arr.length){
+alert("안녕하세요2 " + v_arr[i] + "님");
+i++;
+}
+
+var i = 0;
+while(i < v_arr.length){
+if(i==2){
+i++; // i++없으면 무한루핑
+continue; // 아래 block 스킵, for-> 증감식, while -> 조건으로
+}
+alert("안녕하세요3 " + v_arr[i] + "님");
+i++;
+}
+
+</script>
+
+
+```
+
+####  조건문
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//조건문 -> 논리의 시작
+
+// 1. if문
+// switch 보다 if 사용 권장
+// !를 자주 쓰도록 하자
+if(!"사승원사승원"){ // 원래 true인걸 !를 붙여서 false로 만들면 alert 실행 안 됨
+alert("옳지 않아!");
+}
+/*
+if(조건){
+}else if(조건){
+}else {
+}
+*/
+// 2. switch문
+//hardware에서 사용
+switch(조건) {
+case "스위치스위치":
+break;
+default:
+}
+
+// 3. 삼항연산자 ?
+// if else 문을 짧게 사용한 것
+// 필수는 아니지만 적당히 잘 사용하자
+var i = 3 ;
+var v_arr = (i < 4)? "삼":"항";
+alert(v_arr);
+
+</script>
+
+```
+
+
+#### 과제
+```html
+<!DOCTYPE html>
+<script>
+var v_aa = 33;
+var v_bb = 77;
+//두 변수 값 스왑
+
+v_aa = v_aa+v_bb;
+v_bb = v_aa-v_bb;
+v_aa = v_aa-v_bb ;
+
+alert("v_aa : " + v_aa + "v_bb : " + v_bb);
+
+/*
+
+과제 : 추가 변수(v_temp) 선언 없이 산술 연산만을 이용해 두 변수 값을 바꾸시오
+var v_temp;
+v_temp = v_aa;
+v_aa = v_bb;
+v_bb = v_temp;
+
+*/
+
+// for(var i = 0 ; i < v_arr.length ; i++){
+// if(v_arr[i]%11 == 3){
+// v_arr[i] = 77;
+// }else if(v_arr[i]%11 == 7){
+// v_arr[i] = 33;
+// }
+// }
+// alert("v_aa : " + v_arr[0] + "v_bb : " + v_arr[1]);
+
+
+</script>
+```
