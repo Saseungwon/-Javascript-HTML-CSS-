@@ -1,7 +1,7 @@
 # 🤾‍♀️ 화면구현 
 
-
-### 📚 기본 개념 
+## 📚 1일차
+#### 👏 기본 개념 
 - 프로토콜 → 통신규약
 http = 웹서버
 
@@ -33,7 +33,7 @@ c	 	→        backward proxy 서버      →   	 파일 서버
 d						 	 …서버
 e
 ```
-### 📚 설정하기
+#### 👏 설정하기
 터미널에서
 sudo service apache2 start  : 실행
 http://127.0.0.1/ = http://localhost/
@@ -120,7 +120,7 @@ ff02::2 ip6-allrouters
 - sudo service apache2 restart
 
 
-### 📚 기본 개념
+#### 👏 기본 개념
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -267,8 +267,10 @@ src, width, height 등 태그 안에 정의하는 것을 속성(attribute)이라
 
 ```
 
+## 📚2일차
 
-#### 사용자 입력태그
+
+#### 👏 사용자 입력태그
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -330,7 +332,7 @@ CSS<input type="checkbox" name="skill" value="css"> <br>
 
 ```
 
-#### 테이블
+#### 👏 테이블
 
 ```html
 <!DOCTYPE html>
@@ -391,7 +393,7 @@ td : table data
 ```
 
 
-#### 화면나눠보기
+#### 👏 화면나눠보기
 
 
 ```html
@@ -441,7 +443,7 @@ height: 100%;
 ```
 
 
-#### div
+#### 👏 div
 
 
 ```html
@@ -504,7 +506,7 @@ html 문서를 도배할 정도로 많이 쓰이는 div 태그
 
 ```
 
-#### css 기본선택자
+#### 👏 css 기본선택자
 
 ```html
 <!DOCTYPE html>
@@ -550,7 +552,7 @@ background-color: chartreuse;
 ```
 
 
-#### 스크립트 시작
+#### 👏 스크립트 시작
 
 
 ```html
@@ -578,7 +580,9 @@ alert(ssw);
 </script>
 
 ```
-#### 데이터타입
+
+## 📚 3일차
+#### 👏 데이터타입
 
 ```html
 <!DOCTYPE html>
@@ -610,7 +614,7 @@ alert(v_json["age"]); //위와 동일
 </script>
 ```
 
-#### 데이터타입2
+#### 👏 데이터타입2
 ```html
 <!DOCTYPE html>
 <meta charset="UTF-8">
@@ -642,7 +646,7 @@ alert(typeof(v_str))
 </script>
 ```
 
-#### 데이터타입3
+#### 👏 데이터타입3
 ```html
 <!DOCTYPE html>
 <meta charset="utf-8">
@@ -665,7 +669,7 @@ alert("난 엘스"); //false
 </script>
 ```
 
-#### 배열
+#### 👏 배열
 ```html
 <!DOCTYPE html>
 <meta charset="utf-8">
@@ -698,7 +702,7 @@ alert(v_arr[v_arr.length-1])
 </script>
 ```
 
-#### XML이란?
+#### 👏 XML이란?
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 
@@ -720,8 +724,8 @@ alert(v_arr[v_arr.length-1])
 </친구>
 </친구들>
 ```
-
-#### 연산자
+## 📚 3일차
+#### 👏 연산자
 ```html
 <!DOCTYPE html>
 <meta charset="UTF-8">
@@ -752,7 +756,7 @@ var v_bb = i
 </script>
 
 ```
-#### 반복문1
+#### 👏 반복문1
 
 ```html
 <!DOCTYPE html>
@@ -774,7 +778,7 @@ break;
 </script>
 ```
 
-#### 반복문2
+#### 👏 반복문2
 ```html
 <!DOCTYPE html>
 <meta charset="utf-8">
@@ -813,7 +817,7 @@ i++;
 
 ```
 
-####  조건문
+#### 👏 조건문
 ```html
 <!DOCTYPE html>
 <meta charset="utf-8">
@@ -852,7 +856,7 @@ alert(v_arr);
 ```
 
 
-#### 과제
+#### 👏 과제
 ```html
 <!DOCTYPE html>
 <script>
@@ -887,4 +891,345 @@ v_bb = v_temp;
 
 
 </script>
+```
+## 📚 4일차
+
+#### 함수1
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//function(함수) -> 자바스크립트에서 가장 중요하다.
+//함수를 사용하는 이유 -> 기본적으로 같은 코드 반복을 없애고 가독성을 높임
+
+//함수 선언법
+function f_add(p_a,p_b){ //함수 선언할 때 f_ 임의로 쓴다.
+alert(p_a);
+return"안녕"; // 이걸 잘 이해해야 함, 초보자들의 문제. 맨 밑줄에 생략되어 있다고 생각
+}
+
+//함수는 불러줘야 실행됨(call), 내가 호출하지 않으면 사용되지 않는다.
+var v_any=f_add("사승원");
+alert(v_any);
+
+/*
+### 함수(Function)선언법
+
+선언법 1
+function 함수명(매개변수1, 매개변수2....){
+실행코드
+return "되돌려주고싶은 값";
+}
+
+선언법 2
+var 함수명 = function(매개변수1, 매개변수2....){
+실행코드
+return "되돌려주고싶은 값";
+}
+return은 함수를 종료시킨다.
+return을 잘 쓰면 if/else에서 else를 없앨 수 있다.
+
+*/
+
+var f_add = function(p_a,p_b){
+return p_a + p_b;
+}
+alert(f_add(3,-5)); //-2
+
+//세 개 계산
+
+var f_add1 = function(p_a,p_b){
+return p_a + p_b;
+}
+alert(f_add1(f_add1(3,-5),6)); // 4
+
+function f_check(){
+alert("함수가 종료됨");
+return "리턴을 만나면"; //return을 만나면 함수가 종료돼서 아래에 있는 것은 실행되지 않는다.
+alert("함수가 종료됨"); //return은 함수 안에서만 사용 가능
+}
+f_check();//함수 콜을 해야 값이 출력됨
+
+var v_i = 100;
+function f_check1(){
+if(v_i>100){
+alert("최대값");
+return;
+}
+alert("최소값");
+}
+f_check1(); // 함수 콜
+</script>
+
+```
+
+#### 함수2
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//함수안의 코드를보고 매개변수 타입을 짐작해야 함
+//함수의 매개변수 타입으로 숫자, 문자열, 배열, JSON, 함수
+//함수의 return 타입도 숫자, 문자열, 배열, JSON, 함수 뭐든 와도 됨
+//함수 안에 함수가 와도 된다.
+//제약사항이 거의 없다.
+function f_check3(p_arr){
+p_arr();
+}
+
+f_check3(f_slp);
+var f_slp = function(){
+alert("졸리다");
+}
+var f_ngm = function(){
+alert ("졸립니다.");
+return v_j;
+}
+
+function f_check2(p_arr){
+alert("이름 : " + p_arr.name + "별명 : " + p_arr.alias);
+}
+
+var v_json = {
+"name" : "사승원",
+"alias" : "원승사"
+}
+f_check2(v_json);
+
+// function f_check(p_arr){
+// for(var i = 0 ; i < p_arr.length; i++){
+// alert(i + " 번째 같은 " + p_arr[i] + "입니다");
+// }
+// }
+
+// f_check(["사승1", "사승2", "사승3"]);
+// f_check("문자열도 length라는 속성이 있다")
+
+function f_check4(){
+return[1,3,"사승원",{"attr":["1번","2번"]}];
+}
+var v_rslt = f_check4();
+alert(v_rslt[3].attr[1]); // 2번을 띄우고 싶다.
+
+
+
+
+</script>
+
+```
+
+#### 함수3
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+// 1
+function f_check(){
+return[1,3,"사승원",{"attr":["1번","2번"]}];
+}
+var v_rslt = f_check();
+alert(v_rslt[3].attr[1]); // 2번을 띄우고 싶을 때
+
+// 2
+function f_check1(){
+return{
+"name":"사승원",
+"alias":"4win1"
+}
+}
+var v_rslt = f_check1();
+alert(v_rslt.alias);
+
+// 데이터 타입이 뭔지, 돌려받은 게 뭔지 확인
+function f_check2(){
+return function(){
+alert("함수임");
+}
+}
+var v_rslt = f_check2();
+v_rslt(); // 함수 실행 '함수이름(괄호);'
+</script>
+
+```
+
+#### 함수4
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+function f_cal(p_op){ //사칙연산별 초간단 함수 리턴
+function f_add(p_a,p_b){
+return p_a + p_b;
+}
+
+function f_sub(p_a,p_b){
+return p_a - p_b;
+}
+
+function f_mul(p_a,p_b){
+return p_a * p_b;
+}
+
+function f_div(p_a,p_b){
+return p_a / p_b;
+}
+
+//함수 안에 함수가 와도 된다. 하지만 밖에서 직접 부를 수는 없다.
+//위 함수 안에서만 사용 가능
+if(p_op == "+"){
+return f_add;
+}
+
+if(p_op == "-"){
+return f_sub;
+}
+
+if(p_op == "*"){
+return f_mul;
+}
+
+if(p_op == "/"){
+return f_div;
+}
+
+}
+
+alert(f_cal("+")(100,200)); //300
+alert(f_cal("-")(100,200)); //-100
+alert(f_cal("*")(100,200)); //20000
+alert(f_cal("/")(100,200)); //0.5
+
+</script>
+
+```
+
+#### Call By Value VS Call By Reference
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//call by value, call by reference(값의 복사, 값의 참조)
+//복사와 참조를 결정 짓는 건 데이터 타입
+//원시타입(숫자형, 문자열형)은 복사, 객체 타입은 참조(배열, JSON) (중요)
+
+var v_value = "난 값이야";
+function f_chg(p_arg){ //복사 방식으로 동작, 원본에 손상을 못 줌
+p_arg = "하하하";
+alert(p_arg);
+}
+f_chg(v_value);
+alert(v_value);
+
+</script>
+
+```
+
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+
+var v_arr = ["사승원","사승투","사승3"];
+function f_chg(p_arg){ //참조방식으로 동작
+p_arg[1] = "tktmddnjs";
+}
+f_chg(v_arr);
+alert(v_arr);
+
+</script>
+
+```
+
+#### 버튼
+```html
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>버튼</title>
+
+<style>
+/* div에 스타일 주고싶을 때 / id는 #으로 */
+#id_disp{
+width: 300px;
+height: 300px;
+border: 10px solid black;
+}
+</style>
+
+</head>
+<body>
+
+<!-- 꼭 기억 : 태그사이의 값에 접근하는 속성 innerHTML -->
+<div id="id_disp">
+사승원 사승?
+<img id="id_img" src="./img/다운로드 (1).png" width="100" height="100">
+</div>
+
+<input type="button" value="눌러주세요" onclick="f_click()">
+<!-- onclick일 때 f_click이라는 함수 실행하겠다는 것-->
+<script>
+function f_click(){
+//자바스크립트에서 id값을 이용해서 태그 객체 접근
+//document는 html문서 객체를 가리킴(키워드)
+var v_disp = document.getElementById("id_disp");
+var v_img = document.getElementById("id_img");
+
+//접근만 하고 나면 쉽게 다시 접근할 수 있다.
+v_img.width=500;
+v_img.height=500;
+v_img.src = "./img/html.jpg";
+
+console.log(v_img);
+console.log(v_disp.innerHTML); //콘솔로그로 눈으로 확인 / 값 읽기
+
+v_disp.innerHTML = v_disp.innerHTML + "<h1>버튼 누르면 원래 값에 추가</h1>"
+}
+
+</script>
+</body>
+</html>
+
+```
+
+#### 오늘의 과제
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>과제</title>
+<style>
+img{
+border : 5px solid black;
+}
+</style>
+</head>
+<body>
+<img id="img_id" src="./img/1.png" width=300 height=300> <br>
+<input type= button value="다음이미지" onclick="f_next()">
+
+<script>
+
+var v_imgs = ["1", "2", "3", "4", "5"]
+var i = 0;
+
+function f_next(){
+var v_img = document.getElementById("img_id");
+i++;
+if(i > v_imgs.length -1 ){ i = 0 }
+v_img.src = "./img/" + v_imgs[i] + ".png";
+}
+
+//사진 순서대로 넘어가는 거
+
+</script>
+
+</body>
+</html>
 ```
