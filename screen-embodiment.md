@@ -1233,3 +1233,402 @@ v_img.src = "./img/" + v_imgs[i] + ".png";
 </body>
 </html>
 ```
+## 📚 5일차 
+#### 👏 버튼 누르면 사진 넘기기
+```html
+<!DOCTYPE html>
+
+<script>
+// alert("스크립트 태그는 어디에 넣어도 상관없다.")
+
+</script>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>과제</title>
+<style>
+img{
+border : 5px solid black;
+}
+</style>
+
+<script>
+//alert("스크립트 태그는 어디에 넣어도 된다. 위에서부터 실행됨") //하지만 이렇게 쓰지는 않는다. 권장되는 위치는 바디태그 위
+
+</script>
+
+</head>
+
+<body>
+<script>
+// alert(document.getElementById("id_img"))
+// html 태그들이 다 해석되어야 접근할 수 있기 때문에 스크립트 태그를 위에 쓰면 접근하기 전이기 때문에 null이 나온다.
+// 그래서 body 태그 밑에다 쓴다.
+// script 태그는 몇번이 와도 상관없으나, 관례적으로 바디태그 밑에다 쓰자
+</script>
+
+<img id="img_id" src="./img/1.png" width=300 height=300> <br>
+<input type= "button" value="<" onclick="f_pre()">
+<input type= button value=">" onclick="f_next()">
+
+<script> //script 태그는 일반적으로 /body태그 위에 넣음(관례)
+
+var v_imgs = ["1", "2", "3", "4", "5"]
+var v_index = 0 ;
+var v_img = document.getElementById("img_id"); //함수 안에 넣지말고 밖으로 빼기
+var i = 0;
+
+function f_next(){
+// var v_img = document.getElementById("img_id");
+i++;
+if(i > v_imgs.length -1 ){ i = 0 }
+v_img.src = "./img/" + v_imgs[i] + ".png";
+}
+
+function f_pre(){
+i--;
+if(i < 0 ){
+i = v_imgs.length -1 ;
+}
+v_img.src = "./img/" + v_imgs[i] + ".png";
+}
+
+//사진 순서대로 넘어가는 거
+
+</script>
+</body>
+</html>
+
+```
+
+#### 👏 라디오
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#id_disp{/* #으로 id 접근 */
+height: 200px;
+border: 3px groove;
+}
+</style>
+</head>
+<body>
+<!-- radio
+앞에 속성의 이름을 쓴다
+name : name에 값을 주면 그룹으로 묶여 그룹 중 오직 하나만 선택이 가능
+checked : 처음부터 체크되어있음(디폴트값 설정) UX(User eXprience)를 위해 필요
+-->
+<div id = "id_disp"></div>
+남<input type="radio" name="nm_sb" value="male">
+여<input type="radio" name="nm_sb" value="female">
+
+<!-- hr : 가로줄 -->
+<hr>
+
+내국인<input type="radio" name="nm_na" value="korean">
+외국인<input type="radio" name="nm_na" value="foreign"><br>
+<input type="button" value="눌러보세요" onclick="f_click()">
+
+<script>
+var v_disp = document.getElementById("id_disp");
+var v_sb = document.getElementsByName("nm_sb"); // 배열을 리턴해준다고 생각하면 됨
+var v_na = document.getElementsByName("nm_na"); // 배열을 리턴해준다고 생각하면 됨
+//console.log(v_sb[1]) //잘 모르면 찍자
+var f_click = function(){
+var v_msg = "당신은 ";
+for(var i = 0; i < v_sb.length; i++){
+//체크된 것 확인 checked된 속성이 true
+if(v_sb[i].checked){
+//alert("당신의 선택은 " + v_sb[i].value + " 입니다")
+if(v_sb[i].value=="male"){
+v_msg += " 남자입니다.";
+}else{
+v_msg += " 여자입니다.";
+}
+break; // 계속 돌기 때문에 성능에 손해 그래서 break 꼭 필요함
+}
+}
+
+for(var i = 0; i < v_na.length; i++){
+//체크된 것 확인 checked된 속성이 true
+if(v_na[i].checked){
+//alert("당신의 선택은 " + v_sb[i].value + " 입니다")
+if(v_na[i].value=="kor"){
+v_msg += " 내국인입니다.";
+}else{
+v_msg += " 외국인입니다.";
+}
+break; // 계속 돌기 때문에 성능에 손해 그래서 break 꼭 필요함
+}
+
+}
+v_disp.innerHTML = "<h1>" + v_msg + "</h1>";
+}
+</script>
+</body>
+</html>
+
+```
+
+#### 👏 체크박스1
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<!-- 체크박스는 사용자에게 여러 개 선택을 요구할 때 취미, 관심분야 등 -->
+당신의 보유 스킬을 선택해주세요(다중선택가능, 3개만 선택가능) <br>
+자바<input type="checkbox" name = "nm_skill" value="java">
+HTML<input type="checkbox" name = "nm_skill" value="HTML">
+CSS<input type="checkbox" name = "nm_skill" value="CSS">
+js<input type="checkbox" name = "nm_skill" value="javascript">
+SQL<input type="checkbox" name = "nm_skill" value="SQL"> <br>
+<input type="button" value="체크된 값 확인" onclick="f_ckbox()">
+
+<script>
+var v_skills = document.getElementsByName("nm_skill");
+//console.log(v_skills[3]); 확인
+function f_ckbox(){
+var v_cnt = 0 ;
+var v_rslt = []; //결과를 담을 빈 배열
+for(var i=0; i < v_skills.length; i++){
+if(v_skills[i].checked){
+v_cnt++;
+// v_rslt += v_skills[i].value+ " "; // 안 좋은 소스
+v_rslt[v_rslt.length] = v_skills[i].value;
+//체크된 value 값만 v_rslt배열에 담아보세요
+//alert("체크한 값은 " + v_skills[i].value);
+}
+}
+//세 개 넘게 선택되면 알림
+if(v_cnt > 3){
+alert("4개 이상 선택했습니다.")
+}
+alert("당신이 체크하신 값은 " + v_rslt + " 입니다.");
+}
+
+</script>
+
+</body>
+</html>
+
+```
+
+
+#### 👏 체크박스2
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+당신의 보유 스킬을 선택해주세요(다중선택가능, 3개만 선택가능) <br>
+<!-- 4개 이상 선택 시 체크박스 선택 못한다고 알려주고 선택을 자동으로 풀어주는 기능
+f_ckbox(0) 을 매개변수로 function f_ckbox(p_num) p_num을 활용
+-->
+자바<input type="checkbox" name = "nm_skill" value="java" onclick="f_ckbox(0)">
+HTML<input type="checkbox" name = "nm_skill" value="HTML" onclick="f_ckbox(1)">
+CSS<input type="checkbox" name = "nm_skill" value="CSS" onclick="f_ckbox(2)">
+js<input type="checkbox" name = "nm_skill" value="javascript" onclick="f_ckbox(3)">
+SQL<input type="checkbox" name = "nm_skill" value="SQL" onclick="f_ckbox(4)" > <br>
+<input type="button" value="체크된 값 확인" onclick="f_ckbox()">
+
+<script>
+//동작은 잘 되지만 그리 좋은 소스는 아님
+var v_skills = document.getElementsByName("nm_skill");
+//console.log(v_skills[3]); 확인
+function f_ckbox(p_num){
+var v_cnt = 0 ; //4까지 돌고 다시 0으로 초기화됨
+var v_rslt = []; //결과를 담을 빈 배열
+for(var i=0; i < v_skills.length; i++){
+if(v_skills[i].checked){
+v_cnt++;
+// v_rslt += v_skills[i].value+ " "; // 안 좋은 소스
+v_rslt[v_rslt.length] = v_skills[i].value;
+//체크된 value 값만 v_rslt배열에 담아보세요
+//alert("체크한 값은 " + v_skills[i].value);
+}
+}
+//세 개 넘게 선택되면 알림
+if(v_cnt > 3){
+alert("4개 이상 선택했습니다.");
+v_skills[p_num].checked = false; // 체크박스 강제 해제
+}
+}
+
+</script>
+
+</body>
+</html>
+ 
+```
+
+
+#### 👏 innerHTML1
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#id_disp{
+width: 400px;
+height: 400px;
+border: 2px solid black;
+}
+</style>
+
+</head>
+<body>
+<div id="id_disp"></div>
+<h1 id="id_h1"></h1>
+<input type="button" value="누르시오" onclick="f_wrt()">
+<script>
+// innerHTML 태그 중요!!
+var v_disp = document.getElementById("id_disp");
+var v_h1 = document.getElementById("id_h1")
+function f_wrt(){
+v_disp.innerHTML = v_disp.innerHTML + "<h1>안녕!</h1>";
+v_h1.innerHTML = v_h1.innerHTML + "<h1>하이!</h1>";
+}
+
+</script>
+</body>
+</html>
+
+```
+
+
+#### 👏 innerHTML2
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#id_disp{
+width: 400px;
+height: 400px;
+border: 2px solid black;
+}
+</style>
+
+</head>
+<body>
+
+
+<div id="id_disp"></div>
+<!-- value에 쓰면 텍스트박스 초기값 / placeholder에 쓰면 텍스트박스에 글씨 쓰면 초기값이 자동으로 없어짐 -->
+<!--
+## readonly vs disabled
+readonly는 value값을 서버로 보낼 수 있으나, disabled는 서버로 보낼 수 없음
+물론 프로그램적으로 조작하면 보낼 수 있다.
+-->
+<!--
+<input id = "id_txt" type="text" value="readonly로 설정하면 안 지워짐" size=10 placeholder="여기에 원하는 단을 쓰세요" readonly><br>
+<input type="text" value="readonly로 설정하면 비활성됨" size=10 placeholder="여기에 원하는 단을 쓰세요" disabled><br>
+-->
+
+<input id = "id_txt" type="text" value="1" size=10 placeholder="여기에 원하는 단을 쓰세요" readonly><br>
+<input type="button" value="누르시오" onclick="f_wrt()">
+<script>
+// innerHTML 태그 중요!!
+var v_disp = document.getElementById("id_disp");
+var v_txt = document.getElementById("id_txt")
+
+// var v_num = 1; /* 1 ~ 9 */
+function f_wrt(){
+alert(v_txt.value); // 사용자 입력값 읽어오기
+//v_txt.value = "999"; // 텍스트 박스에 값 쓰기
+//id_disp에 구구단 2단 출력
+var v_str = "<table border=2>"; //빈 문자열
+for(var i=1; i <= 9; i++){
+//tr td로 구구단을 테이블로 만들기
+v_str += "<tr><td>" + v_dan + " X " + i + " = " + (v_dan* i) + "</td></tr>";
+//alert(v_str); //어렵다 싶으면 눈으로 확인하자
+}
+v_str += "</table>";
+//alert(v_str); // 항상 눈으로 확인하기
+v_disp.innerHTML = v_str; //입출력 횟수가 많은 프로그램은 성능이 떨어짐!, 되도록 횟수를 줄여서
+}
+
+</script>
+</body>
+</html>
+
+```
+
+
+#### 👏 구구단테이블 만들기 문제
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+#id_disp{
+width: 400px;
+height: 400px;
+border: 2px solid black;
+display: inline-block;
+}
+</style>
+
+</head>
+<body>
+<div id="id_disp"></div>
+<!-- value에 쓰면 텍스트박스 초기값 / placeholder에 쓰면 텍스트박스에 글씨 쓰면 초기값이 자동으로 없어짐 -->
+<!--
+## readonly vs disabled
+readonly는 value값을 서버로 보낼 수 있으나, disabled는 서버로 보낼 수 없음
+물론 프로그램적으로 조작하면 보낼 수 있다.
+-->
+<!--
+<input id = "id_txt" type="text" value="readonly로 설정하면 안 지워짐" size=10 placeholder="여기에 원하는 단을 쓰세요" readonly><br>
+<input type="text" value="readonly로 설정하면 비활성됨" size=10 placeholder="여기에 원하는 단을 쓰세요" disabled><br>
+-->
+
+<script>
+var v_disp = document.getElementById("id_disp");
+for(var i=1; i <= 9; i++){
+var v_str = "<table border=2> <tr>"
+for(var j = 1; j<= 9; j++){
+v_str += "<td>" + i + " X " + j + " = " + (i* j) + "</td>" + "</tr>";
+//alert(v_str)
+}
+v_str += "</table>";
+v_disp.innerHTML += v_str;
+}
+
+
+
+</script>
+</body>
+</html>
+ 
+```
