@@ -2006,9 +2006,329 @@ document.getElementById("id_ta").value=v_finalMsg;
 </html>
 
 ```
-####
+## 📚 7일차
+
+#### setTimeout2
 ```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- setTimeout : 비동기함수-->
+<script>
+//자바스크립트 대표적 비동기 함수 setTimeout
+
+function f_ck(p_client){
+alert(p_client + p_sec + "안녕하세요");
+}
+setTimeout(f_ck, 3000, "사승원", "4win1"); /* 1000ms 뒤에 f_ck 함수를 불러오라는 의미*/
+alert("setTimeout(f_ck,1000); 1000ms 뒤에 f_ck 함수를 불러오라는 의미 "); //이게 f_ck보다 먼저 뜸
+</script>
 
 ```
+
+
+#### 재귀호출
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>재귀호출</title>
+<style>
+#id_disp{
+height: 50px;
+border : 1px solid black;
+}
+</style>
+
+</head>
+<body>
+<div id="id_disp"></div>
+<input type="button" value="누르세요" onclick="f_ck()">
+<script>
+//1~특정숫자까지 합을 구하는 함수
+var v_disp = document.getElementById("id_disp"); // 참조방식(가능)
+//var v_disp = document.getElementById("id_disp").innerHTML; // 복사방식 (불가능)
+
+/*
+function f_sum(p_num){
+var v_sum = 0;
+for(var i=1; i<=p_num; i++){
+v_sum += i;
+}
+return "1부터 " + p_num + "까지 합은 " + v_sum + " 입니다";
+}
+*/
+
+function f_sum(p_num){
+if(p_num ==1){
+return 1;
+}
+return p_num * f_sum(p_num-1); //자신속에서 자신을 호출(재귀호출), 무한루핑 구조라서 종료조건을 먼저 생각하고 써야됨
+}
+/*
+f_sum(4) --> 4 + f_sum(3)
+--> 3 + f_sum(2)
+--> 2 + f_sum(1)
++ 1
+*/
+var v_i = 1;
+function f_ngm(){
+alert(i + "번째" + "사승원");
+v_i++;
+setTimeout(f_ngm, 500);
+}
+
+function f_ck(){
+setTimeout(f_ngm,500); //재귀호출로 많이 사용됨
+//v_disp.innerHTML = "팩토리아 5! = " + f_sum(5);
+}
+</script>
+</body>
+</html>
+
+```
+
+
+#### Position
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+div{
+width: 200px;
+height: 200px;
+border : 1px solid black /* 레이아웃 잡을 땐 항상 이게 있으면 도움됨 */
+}
+#ssw {
+/* position: static; 기본값은 브라우져가 알아서 하라고 해서 밑에 값을 써도 움직이지 않음*/
+/* position: relative; static으로 자리잡은 그 지점에서 설정한 값만큼 움직임*/
+position: absolute;/* 브라우저 화면 왼쪽 상단 모서리 기준으로 움직임(사실 레이어가 붕 뜸) */
+left: 300px;
+top: 100px;
+}
+</style>
+</head>
+<body>
+<div>안녕1</div>
+<div id="ssw">안녕2</div>
+<div>안녕3</div>
+</body>
+</html>
+
+```
+
+
+#### Posision2
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+div{
+position: relative;
+width: 150px;
+height: 150px;
+border: 2px solid black;
+}
+.ssw {
+/*
+부모가 relative이고 자식이 absolute일 때 자식의 좌표기준점이
+부모의 왼쪽 상단 모서리로 바뀜
+레이아웃 잡을 때 기본은 일단 static으로 대략 모양을 만든 다음에 relative나 absolute를 사용하는 것임
+처음부터 relative나 absolute를 사용하면 뒷감당이 안됨
+*/
+position: absolute;
+height: 30px;
+border: 2px solid palevioletred;
+}
+.special{
+top: 30px;
+left: 50px;
+}
+
+</style>
+</head>
+<body>
+<div>포지션1</div>
+<!-- 태그 안에 태그를 표현할 때 바깥태그 부모(parent), 안쪽태그 자식(child)
+자식의 자식 자손
+-->
+<div>
+<div class="ssw">포지션2.1</div>
+<div class="ssw special">포지션2.2</div>
+<div class="ssw">포지션2.3</div>
+<div class="ssw">포지션2.4</div>
+</div>
+<div>포지션3</div>
+</body>
+</html>
+
+```
+
+
+#### 벽에 튕기는 공
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#ssw{
+position: absolute; /* 움직이려면 relative나 absolute가 있어야 됨 */
+width: 100px;
+height: 100px;
+background-color: chartreuse;
+top: 150px;
+left: 100px;/* inline style 값이 내부 style값보다 우선순위가 높음 */
+
+/* 알아두면 쓸만한 css */
+border-radius: 50px; /* width or height 값의 절반값을 주면 원형됨, 모서리를 둥글게 */
+background-image: url("./img/공.jpeg");/*이미지 삽입*/
+background-size: 120px 120px;
+/* background-size: 100px 100px; */
+}
+.cl_bar{
+position:absolute;
+width:100px;
+left: 600px;
+height: 100vh;/* 높이 : 100퍼센트 */
+background-color: crimson;
+}
+
+.cl_bar2{
+position:absolute;
+width:100vw;/* 넓이 : 100퍼센트 */
+height: 100px;
+top: 450px;
+background-color: crimson;
+}
+
+</style>
+</head>
+<body>
+<div class= "cl_bar">기둥</div>
+<div class= "cl_bar2">기둥2</div>
+<div id="ssw"></div>
+<input type="button" value="오른쪽으로 가기" onclick="f_cont()">
+<input type="button" value="그만가" onclick="f_stop()">
+<script>
+var v_bar = document.getElementsByClassName("cl_bar")
+var v_ssw = document.getElementById("ssw");
+var v_mvR = 10; /* 움직이는 폭 */
+var v_mvT = 10; /* 움직이는 상하 */
+var v_timer; /*지역변수를 전역변수로 만들어서 밖에서 부를 수 있게 해줌*/
+//버튼 누르면 속도 빨라지는 거 안 되게 한 번만 실행할 수 있게 해주기
+//직접 가는 걸 중간에 한 번 거쳐서 조건을 줘서 제어가능(proxy 패턴)
+var v_run = false;
+function f_cont(){
+if(!v_run){
+f_move();
+v_run = true;
+
+}
+}
+
+//멈추기
+function f_stop(){
+//clearTimeout(만든 타이머를 없애준다.) <--> setTimeout
+clearTimeout(v_timer);
+v_run =false;
+}
+
+//움직이기
+function f_move(){
+if(!v_ssw.style.left){/* 원래 빈공백인데 !로 '만약 정의되지 않았다면?'*/
+v_ssw.style.left = "100px"; /* 초기값을 100px로 정의할 수 있음 단위값(px)를 꼭 줘야함*/
+v_ssw.style.top = "150px";
+}
+//parseInt(v_ssw.style.left);
+v_ssw.style.left = parseInt(v_ssw.style.left) + v_mvR + "px";
+v_ssw.style.top = parseInt(v_ssw.style.top) + v_mvT + "px";
+
+var v_left = parseInt(v_ssw.style.left);
+var v_right = parseInt(v_ssw.style.left)+ 100;
+var v_top = parseInt(v_ssw.style.top) ;
+var v_bottom = v_top + 100;
+
+if(v_right >= 700 || v_left <=0){// 좌우충돌
+v_mvR = -v_mvR;
+}
+
+if(v_bottom >= 450 || v_top <=0){//방향 바꾸기
+v_mvT = -v_mvT;
+}
+v_timer = setTimeout(f_move,50);//0.05초마다 버튼 누르면 자동으로 오른쪽으로 움직임
+}
+
+</script>
+</body>
+</html>
+
+```
+
+
+#### 오늘의 과제
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+/* *은 모든을 의미함 */
+*{
+margin:0;
+}
+#container{
+margin:0 auto; /* 박스 선 수평 중앙 정렬방법 */
+width: 500px;
+height: 95vh;
+border :1px solid black;
+text-align: center; /* 박스 내부 수평 가운데 정렬 */
+}
+</style>
+</head>
+<body>
+<!--
+일반적으로 레이아웃 잡을 때 화면전체를 잡는 div 태그를 주고
+그것의 id나 class를 container라는 이름으로 많이 줌
+-->
+<div id="container">
+<script>
+for(var i=1; i<=6; i++){
+document.write("<h"+i+">난 사승원입니다!</h"+i+">");
+if(i==6){
+i--;
+}else if(i==1){
+break;
+}
+}
+// for(var i=5; i>=1; i--){
+// document.write("<h"+ i +">난 사승원입니다!</h"+ i+ ">" );
+// }
+
+// 오늘의 과제 위 for문 2개를 for 한 번만 사용해서 같은 결과가 나오도록 합니다.
+// 추가적인 조건문 등의 사용은 상관없다.
+</script>
+</div>
+</body>
+</html>
+
+```
+
+
 
 
