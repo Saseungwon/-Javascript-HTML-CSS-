@@ -1632,3 +1632,383 @@ v_disp.innerHTML += v_str;
 </html>
  
 ```
+## 📚 6일차
+
+#### 구구단 테이블 만들기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<style>
+#id_disp{
+width: 2000px;
+height: 400px;
+border: 1px solid red;
+}
+</style>
+</head>
+<body>
+<div id="id_disp"></div>
+<input type="button" value="누르세요" onclick="f_gugu()">
+
+<script>
+var v_disp = document.getElementById("id_disp");
+
+function f_gugu(){
+var v_tblStr = "<table border>";
+for(var i=2; i<=9; i++){
+v_tblStr += "<td>" + f_dan(i) + "</td>"
+}
+v_tblStr += "</tr></table>";
+v_disp.innerHTML = v_tblStr; // 출력
+}
+
+function f_dan(p_dan){
+var v_tblStr = "<table border=1>";
+for(var i=1; i<=9; i++){
+v_tblStr += "<tr><td>" + p_dan + " X " + i + " = " + (p_dan*i) + "</td></tr>"
+}
+v_tblStr += "</table>";
+return v_tblStr;
+}
+
+
+// function f_gugu(){
+// var v_tblStr = "<table border=1>";
+// v_tblStr += "<tr>";
+
+// for(var i =1; i <=9; i++){
+// v_tblStr += "<tr>";
+// for(var v_dan = 2; v_dan<=9; v_dan++){
+// v_tblStr +="<td>" + v_dan + " X " + 1 + " = " + (v_dna*1) + "</td>";
+// }
+// v_tblStr += "</tr>";
+// }
+// v_tblStr += "</table>";
+// v_disp.innerHTML = v_tblStr;
+// }
+
+</script>
+</body>
+</html>
+
+```
+
+#### 변수Scope
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//자바스크립트에서 변수스코프(범위)
+//전역변수, 지역변수(function 기준)
+//function 안에 선언되었으면 지역변수, ()랑은 관계없음
+//es5 버전 기준
+
+var v_global = "전역변수";
+function f_scope(){
+var v_global = "지역변수"; // function 안에 선언된 건 function 안에서만 사용가능
+}
+f_scope();
+alert(v_global);
+</script>
+
+```
+
+#### SELECT
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>선택박스(콤보박스)</title>
+</head>
+<body>
+<!-- select : 세로로 내려오는 선택창
+selected : 디폴트값
+<select onchange="f_chg()"> : 맨날 쓰는 거, 사용자가 선택을 변경하면 값을 바꿔라
+-->
+
+<!-- 모바일에서 select를 체크박스 대용으로 사용되고 있음
+multiple : 여러 개 선택 가능하게 해줌
+size : 펼쳐진 사이즈 값
+-->
+<select id= "id_sel" multiple size=3 onchange="f_chg()">
+<option value="0">선택하세요</option>
+<option value="win" selected>4win1</option>
+<option value="tk">tktmddnjs</option>
+<option value="sa">saseungwon</option>
+<option value="ssw">사승원</option>
+
+</select>
+
+<script>
+var v_sel = document.getElementById("id_sel")
+function f_chg(){
+// alert("선택하신 값은 " + v_sel.value + " 입니다.");
+// 밑에 있는 쿼리를 v_sel.value 하나로 쓸 수 있다. 데스크탑에서 사용
+
+//alert(v_sel.options[1].selected)//options는 배열이다.
+//var v_opts = v_sel.options; // 줄여 쓸 수 있는 것은 오직 객체만
+
+//multiple은 모바일에서 사용
+var v_selVal = [];
+for(i = 0; i< v_opts.length; i++){
+if(v_opts[i].selected){
+v_selVal[v_selVal.length] = v_opts[i].value;
+}
+}
+alert("선택하신 값은 " + v_selVal + " 입니다." )
+}
+
+</script>
+
+</body>
+</html>
+
+```
+
+#### TEXTAREA
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<!-- textarea : 여러 줄 입력 가능 -->
+<textarea id="id_ta" cols="30" rows="10">
+이건 여러 줄 입력하는 것
+
+</textarea><br>
+<input type="button" value="누르시오" onclick="f_ck()">
+
+<script>
+function f_ck(){
+alert(document.getElementById("id_ta").value);
+
+}
+
+</script>
+</body>
+</html>
+
+```
+
+#### Math.Random
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+//원래 지원되는 (bullt-in) Math 객체
+//random
+/*
+for(var i = 1; i<=10; i++){
+alert(Math.random()); //값 0 <= X < 1 // 0.??????????????????
+}
+*/
+
+alert(Math.ceil(0.1)); // ceil : 올림 = 1
+alert(Math.floor(0.9)); // floor : 내림 = 0
+alert(Math.round(0.5)); // round : 반올림 = 1
+
+//1~100사이의 랜덤한 숫자를 발생시키려면
+alert(Math.ceil(Math.random()*100));
+//55~100사이의 랜덤한 숫자를 발생시키려면
+alert(Math.ceil(Math.random()*45)+55);
+
+//자동 계산
+function f_ran(p_start, p_end){
+return Math.round(Math.random()*(p_end-p_start))+ p_start;
+}
+for(var i=0; i<=10; i++){
+console.log(f_ran(54,111));
+}
+</script>
+
+```
+
+#### setTimeout : 비동기함수
+```html
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- setTimeout : 비동기함수-->
+<script>
+//자바스크립트 대표적 비동기 함수 setTimeout
+
+function f_ck(){
+alert("안녕하세요");
+}
+setTimeout(f_ck,1000); /* 1000ms 뒤에 f_ck 함수를 불러오라는 의미*/
+alert("setTimeout(f_ck,1000); 1000ms 뒤에 f_ck 함수를 불러오라는 의미 "); //이게 f_ck보다 먼저 뜸
+</script>
+
+```
+
+
+#### 오늘의 과제(수정필요)
+```html
+## 수정해야됨
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 과제</title>
+</head>
+<body>
+<table border="1">
+<tr>
+<td>아이디</td>
+<td><input id= "id_id" type="text" value=""></td>
+</tr>
+
+<tr>
+<td>암호</td>
+<td><input id= "id_pass" type="password" value=""></td>
+</tr>
+
+<tr>
+<td>성별</td>
+<td>
+남<input type="radio" name="sb" value="m">
+여<input type="radio" name="sb" value="f">
+</td>
+</tr>
+
+<tr>
+<td>취미</td>
+<td>
+자바<input type="checkbox" name="skill" value="java">
+자바스크립트<input type="checkbox" name="skill" value="js">
+SQL<input type="checkbox" name="skill" value="sql">
+</td>
+</tr>
+
+<tr>
+<td colspan="2"><textarea id="id_txt"cols=45 rows=20></textarea></td>
+</tr>
+
+<tr>
+<td colspan="2"><input type="button" value="확인" onclick="f_wr()"></td>
+</tr>
+</table>
+
+<script>
+var v_id = document.getElementById("id_id").value ;
+var v_pass = document.getElementById("id_pass").value;
+var v_sb="";
+for(var i = 0; i< )
+= document.getElementsByName("sb").value;
+var v_skills = document.getElementsByName("skill").value;
+var txt = document.getElementById("id_txt").value;
+
+function f_wr(){
+document.getElementById(id_txt).value = v_id ;
+
+}
+
+</script>
+</body>
+</html>
+
+
+```
+
+#### 오늘의 과제(답)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<table border=1>
+<tr>
+<td>아이디</td>
+<td><input id="id_id" type=text value=""></td>
+</tr>
+<tr>
+<td>암호</td>
+<!--password는 보안상 입력글자가 *로 보이는 text-->
+<td><input id="id_pw" type=password value=""></td>
+</tr>
+<tr>
+<td>성별</td>
+<td>
+남<input type=radio name="nm_sb" value="m">
+여<input type=radio name="nm_sb" value="f">
+</td>
+</tr>
+<tr>
+<td>취미</td>
+<td>
+자바<input type=checkbox name="nm_hobby" value="java">
+자바스크립트<input type=checkbox name="nm_hobby" value="js">
+오라클<input type=checkbox name="nm_hobby" value="sql">
+</td>
+</tr>
+<tr>
+<td colspan=2><textarea id="id_ta" cols=45 rows=10 readonly></textarea></td>
+</tr>
+<tr>
+<td colspan=2><input type=button value="확인" onclick="f_ok()"></td>
+</tr>
+</table>
+<script>
+var v_rsb = document.getElementsByName("nm_sb");
+var v_ckhobby = document.getElementsByName("nm_hobby");
+function f_ok(){
+//아이디 가져오깅
+var v_id = document.getElementById("id_id").value;
+//암호 가져오깅
+var v_pw = document.getElementById("id_pw").value;
+//성별 가져오깅
+var v_sb="";
+for(var i=0; i < v_rsb.length; i++){
+if(v_rsb[i].checked){
+v_sb = v_rsb[i].value;
+break;
+}
+}
+if(v_sb=="m") v_sb="남자";
+else v_sb = "여자";
+//취미 가져오깅
+var v_hobbis = [];
+for(var i=0; i< v_ckhobby.length; i++){
+if(v_ckhobby[i].checked){
+v_hobbis[v_hobbis.length] = v_ckhobby[i].value;
+}
+}
+//최종 메세지 맹글깅
+// textarea에서 엔터키는 escape sequence 문자 \n
+var v_finalMsg = "당신의 아이디는 " + v_id + " 이고\n\n";
+v_finalMsg += "암호는 " + v_pw + " 이며\n\n";
+v_finalMsg += "성별은 " + v_sb + " 이며\n\n";
+v_finalMsg += "취미는 " + v_hobbis + " 이네용 맞나용?";
+
+//최종 메세지 textarea에 출력
+document.getElementById("id_ta").value=v_finalMsg;
+}
+</script>
+</body>
+</html>
+
+```
+####
+```html
+
+```
+
+
