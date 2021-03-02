@@ -2329,6 +2329,288 @@ break;
 
 ```
 
+## 📚 8일차
+#### 오버플로우(overflow)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#id_parent{
+position: relative;
+left: 300px;
+top: 100px;
+border: 5px solid black;
+width: 150px;
+height: 150px;
+overflow: hidden; /*overflow: hidden; 부모 영역을 벗어난 자식 감추기 */
+/* overflow: scroll; 스크롤바 생김 */
+/* overflow: auto; 부모 영역을 벗어나면 자동으로 스크롤바 생김*/
+}
+.cl_child{
+display: inline-block;
+width: 150px;
+height: 150px;
+}
+#id_row1, #id_row2 {
+position: absolute; /* static은 움직이지 않음 */
+width: 620px;
+height: 150px;
+border :1px solid pink;
+}
+#id_row2{
+left: 620px;
+}
+
+</style>
+</head>
+<body>
+<div id="id_parent">
+<div id="id_row1">
+<div class="cl_child">
+<img src="./img/1.png" width="150" height="150">
+</div>
+
+<div class="cl_child">
+<img src="./img/2.png" width="150" height="150">
+</div>
+
+<div class="cl_child">
+<img src="./img/3.png" width="150" height="150">
+</div>
+
+<div class="cl_child">
+<img src="./img/4.png" width="150" height="150">
+</div>
+</div>
+
+<div id="id_row2">
+<div class="cl_child">
+<img src="./img/5.png" width="150" height="150">
+</div>
+
+<div class="cl_child">
+<img src="./img/6.png" width="150" height="150">
+</div>
+
+<div class="cl_child">
+<img src="./img/7.png" width="150" height="150">
+</div>
+
+<div class="cl_child">
+<img src="./img/8.png" width="150" height="150">
+</div>
+</div>
+</div>
+
+<input type="button" value="움직여" onclick="f_move()">
+<script>
+var v_row1 = document.getElementById("id_row1");
+var v_row2 = document.getElementById("id_row2");
+function f_move(){
+if(!v_row1.style.left){//문자열 공백이 false임을 이용해서 초기화
+v_row1.style.left = "0px"; //움직여야 해서 빼기
+v_row2.style.left = "620px";
+}
+v_row1.style.left = parseInt(v_row1.style.left) - 10 + "px";
+if(parseInt(v_row1.style.left)<= -620){
+v_row1.style.left = "620px";
+}
+v_row2.style.left = parseInt(v_row2.style.left) - 10 + "px";
+if(parseInt(v_row2.style.left)<= -620){
+v_row2.style.left = "620px";
+}
+//px를 제외한 숫자를 -10 해야되니까 parseInt로 연산 후 "px" 붙여야됨
+setTimeout(f_move, 10);
+
+}
+
+
+</script>
+</body>
+</html>
+
+```
+
+#### none과 visible
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#id_disp{
+
+/*display:block 공간도 차지하지 않고 눈에도 보이지 않음(none, block) */
+/*visibility:visible; 내용이 보이진 않으나 공간은 차지(hidden, visible) */
+}
+</style>
+</head>
+<body>
+<div id = "id_disp">
+<h1>사승원123</h1>
+</div>
+<input id="id_btn" type="button" value="안 보이게" onclick="f_showhidden1()">
+<script>
+//Toggle은 기본이니 잘하자
+var v_disp = document.getElementById("id_disp");
+var v_btn = document.getElementById("id_btn")
+var v_visi = true; /* 현재 보이는 상태를 true라고 지정, 초기값 */
+
+// 이런 코드는 좋지 않음. 코드가 버튼의 value값(문자열)에 의존성을 가짐
+function f_showhidden1(){
+if(v_btn.value == "안 보이기"){
+v_disp.style.visibility = "hidden";
+v_btn.value = "보이기";
+}else{
+v_disp.style.visibility = "visible";
+v_btn.value = "안 보이기";
+}
+}
+
+function f_showhidden(){
+if(v_visi){
+//v_disp.style.display = "none"; // 안 보이게 style 설정
+v_disp.style.visibility = "hidden";
+v_btn.value = "보이기";
+v_visi = false;
+return; //function 종료 기능 else 필요 없어짐
+}
+//v_disp.style.display = "block"; // 안 보이게 style 설정
+v_disp.style.visibility = "visible";
+v_btn.value = "안 보이기";
+v_visi = true;
+}
+//setTimeout(f_showhidden,500); 누르면 깜빡이는 기능
+
+</script>
+</body>
+</html>
+
+```
+
+#### z-index
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<style>
+div{
+position: absolute;
+width: 150px;
+height: 150px;
+border:3px solid black;
+}
+#id_ssw1{
+/*background-color:rgb(255, 0, 200);/* #ffffff */
+background-color: #ff0000; /* #f00으로 써도됨. 16진수 표기법 */
+z-index: 272;
+
+}
+#id_ssw2{
+background-color: rgba(255,0,0,0.5) ;/* 1이면 불투명, 0이면 완전 투명, 0.5면 반투명 */
+left: 75px;
+top: 75px;
+z-index: 337;
+}
+#id_ssw3{
+color: royalblue;
+background-color: red;
+left: 100px;
+top: 100px;
+z-index: 1000;
+}
+#id_ssw4{
+left: 150px;
+top: 150px;
+background-color: rebeccapurple;
+z-index: 9999999;
+}
+input{
+position: absolute;
+top: 400px;
+}
+</style>
+<body>
+<div id="id_ssw1">사승원1</div>
+<div id="id_ssw2">사승원2</div>
+<div id="id_ssw3">사승원3</div>
+<div id="id_ssw4">사승원4</div>
+<input type="button" value="레이어 순서" onclick="f_zindex()">
+<script>
+var v_ssw1 = document.getElementById
+function f_zindex(){
+//스크립트에서 -(하이픈)은 산술연산 빼기로 인식하기 때문에
+//-을 빼고 다음 글자를 대문자로 쓴다
+document.getElementById("id_ssw1").style.zIndex="999999";
+v_ssw1.style.zIndex
+
+}
+</script>
+</body>
+</html>
+
+```
+
+#### 오늘의 문제(수정필요)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<input type="button" value="바탕화면색 랜덤하게 0.3초마다 바뀌기" onclick="f_ranColor">
+<script>
+var v_hexa =[];
+for(var i=0; i<=9; i++){
+v_hexa[hexa.length] = ""+i;
+}
+v_hexa[v_hexa.length] = 'a';
+v_hexa[v_hexa.length] = 'b';
+v_hexa[v_hexa.length] = 'c';
+v_hexa[v_hexa.length] = 'd';
+v_hexa[v_hexa.length] = 'e';
+v_hexa[v_hexa.length] = 'f';
+
+function f_16RanColor(){
+//16진수 랜덤한 color값 리턴하도록 작성
+var v_ranSu = "#";
+for(var i=1; i <6;)
+var v_ranSu = v_hexa[Math.floor(Math.random()*v_hexa.length)];
+}
+return v_ranSu;
+//return "#000055";
+}
+
+function f_rgbRanColor(){
+//16진수 랜덤한 color값 리턴하도록 작성
+return "rgb(255,255,0)";
+}
+
+function f_ranColor(){
+//body 태그는 문서에 오직 한 번만 나와야 하기 때문에 굳이 id를 주지 않아도
+//아래처럼 접근할 수 있음
+document.body.style.backgroundColor = f_16RanColor();
+setTimeout(f_ranColor,300); //0.3초마다 재귀호출
+}
+
+</script>
+</body>
+</html>
+
+```
 
 
 
