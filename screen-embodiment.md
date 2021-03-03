@@ -2614,3 +2614,434 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 
 
 
+## 📚 10일차 
+
+#### 레이어 돌리기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            position: relative;
+            top: 50px;
+            margin: 0px auto; /* 수평 가운데 정렬 */
+            width: 600px;
+            height: 100vh;
+            border: 1px solid black;
+        }
+        img{    /* img태그를 활용해서 모든 이미지 크기 조정 */
+            width: 275px;
+            height: 275px;
+        }
+        .cl_layer{
+            position: absolute;
+        }
+        #id_son{
+            z-index: 1000;
+            /* 아이디 값으로 하는 것 말고도 여러 방법으로 특정 사진을 맨위로 올라오게 할 수 있다.  */
+            /* #id_son */
+            /* style="z-index: 1000;" */
+            /* .class="cl_son" */
+        }
+
+    </style>
+</head>
+<body>
+    <input type="button" value="<" onclick="f_pre()">
+    <input id="id_num" type="text" size="6" value="">
+    <input type="button" value=">" onclick="f_next()">
+    <div id="wrapper">
+        <div id="id_son" class="cl_layer" > 
+            <table border="2">
+                <tr>
+                    <!-- 사진에 링크 : <a> 태그로 묶어주기 -->
+                    <td><a href="http://naver.com"><img src="./img/son1.jpeg"></a></td>
+                    <td><img src="./img/son2.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/son3.jpeg"></td>
+                    <td><img src="./img/son4.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/son5.jpeg"></td>
+                    <td><img src="./img/son6.jpeg"></td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="cl_layer">
+            <table border="2">
+                <tr>
+                    <td><img src="./img/dog1.jpeg"></td>
+                    <td><img src="./img/dog2.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/dog3.jpeg"></td>
+                    <td><img src="./img/dog4.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/dog5.jpeg"></td>
+                    <td><img src="./img/dog6.jpeg"></td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="cl_layer">
+            <table border="2">
+                <tr>
+                    <td><img src="./img/river1.jpeg"></td>
+                    <td><img src="./img/river2.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/river3.jpeg"></td>
+                    <td><img src="./img/river4.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/river5.jpeg"></td>
+                    <td><img src="./img/river6.jpeg"></td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="cl_layer">
+            <table border="2">
+                <tr>
+                    <td><img src="./img/pool1.jpeg"></td>
+                    <td><img src="./img/pool2.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/pool3.jpeg"></td>
+                    <td><img src="./img/pool4.jpeg"></td>
+                </tr>
+
+                <tr>
+                    <td><img src="./img/pool5.jpeg"></td>
+                    <td><img src="./img/pool6.jpeg"></td>
+                </tr>
+
+            </table>
+        </div>
+
+    </div>
+    <script>
+        var v_layers = document.getElementsByClassName("cl_layer");
+        var v_num = document.getElementById("id_num");
+        var v_index = 0; // 레이어 초기값,  첫 번째 레이어를 맨 위로 올려놓은 상태 
+        var v_currentTop = 0; // 현재 맨위의 레이어의 index 값을 저장하는 변수 
+
+        v_num.value = (v_index+1)+ "/" + v_layers.length; //나누기 연산이 되면 안 돼서 /를 문자열 "/"로
+        
+        // 레이어 수가 많으면 init 말고 v_currentTop으로 해야 효율적
+        // function f_init(){
+        //     for(var i=0; i < v_layers.length; i++){
+        //         v_layers[i].style.zIndex = 1; //모든 레이어 zIndex값을 1로 초기화 
+        //     }
+        //}
+
+        function f_next(){
+            //f_init();
+            v_index++;
+            if(v_index > (v_layers.length -1)){
+                v_index = 0;
+            }
+            v_num.value = (v_index+1)+ "/" + v_layers.length;
+            v_layers[v_currentTop].style.zIndex = 1;
+            v_layers[v_index].style.zIndex = "1000";
+            v_currentTop = v_index; 
+        }
+
+        function f_pre(){
+            //f_init();
+            v_index--;
+            if(v_index < 0){
+                v_index = v_layers.length -1; //배열의 마지막 index로 
+            }
+            v_num.value = (v_index+1)+ "/" + v_layers.length;
+            v_layers[v_currentTop].style.zIndex = 1;
+            v_layers[v_index].style.zIndex = "1000";
+            v_currentTop = v_index; 
+        }
+
+    </script>
+</body>
+</html>
+```
+#### 공튀기기 skew 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #ssw{
+            position: absolute; /* 움직이려면 relative나 absolute가 있어야 됨 */
+            width: 100px;
+            height: 100px;
+            background-color: chartreuse;
+            top: 150px;
+            left: 100px;/* inline style 값이 내부 style값보다 우선순위가 높음 */
+
+            /* 알아두면 쓸만한 css */
+            border-radius: 50px; /* width or height 값의 절반값을 주면 원형됨, 모서리를 둥글게 */
+            background-image: url("./img/공.jpeg");/*이미지 삽입*/
+            background-size: 120px 120px;
+            /* background-size: 100px 100px; */
+        }
+        .cl_bar{
+            position:absolute;
+            width:100px;
+            left: 600px;
+            height: 100vh;/* 높이 : 100퍼센트 */
+            background-color: crimson;
+        }
+
+        .cl_bar2{
+            position:absolute;
+            width:100vw;/* 넓이 : 100퍼센트 */
+            height: 100px;
+            top: 450px;
+            background-color: crimson;
+        }
+
+    </style>
+</head>
+<body>
+    <div class= "cl_bar">기둥</div>
+    <div class= "cl_bar2">기둥2</div>
+    <div id="ssw"></div>
+    <input type="button" value="오른쪽으로 가기" onclick="f_cont()">
+    <input type="button" value="그만가" onclick="f_stop()">
+    <script>
+        var v_bar = document.getElementsByClassName("cl_bar")
+        var v_ssw = document.getElementById("ssw");
+        var v_mvR = 10; /* 움직이는 폭 */ 
+        var v_mvT = 10; /* 움직이는 상하 */
+        var v_timer; /*지역변수를 전역변수로 만들어서 밖에서 부를 수 있게 해줌*/
+        
+        //버튼 누르면 속도 빨라지는 거 안 되게 한 번만 실행할 수 있게 해주기
+        //직접 가는 걸 중간에 한 번 거쳐서 조건을 줘서 제어가능(proxy 패턴)
+        var v_run = false;
+        function f_cont(){
+            if(!v_run){
+                f_move();
+                v_run = true;
+
+            }
+        }
+
+        //멈추기 
+        function f_stop(){
+            //clearTimeout(만든 타이머를 없애준다.) <--> setTimeout
+            clearTimeout(v_timer);
+            v_run =false;
+        }
+
+        //움직이기
+        function f_move(){
+            if(!v_ssw.style.left){/* 원래 빈공백인데 !로 '만약 정의되지 않았다면?'*/
+                v_ssw.style.left = "100px"; /* 초기값을 100px로 정의할 수 있음 단위값(px)를 꼭 줘야함*/
+                v_ssw.style.top = "150px";
+            }
+            v_ssw.style.transform = "skewX(0deg) skewY(0deg)"
+            //parseInt(v_ssw.style.left);
+            v_ssw.style.left = parseInt(v_ssw.style.left) + v_mvR + "px";
+            v_ssw.style.top = parseInt(v_ssw.style.top) + v_mvT + "px";
+
+            var v_left = parseInt(v_ssw.style.left);
+            var v_right = parseInt(v_ssw.style.left)+ 100;
+            var v_top = parseInt(v_ssw.style.top) ;
+            var v_bottom = v_top + 100; 
+
+            if(v_right >= 700 || v_left <=0){// 좌우충돌
+                v_ssw.style.transform = "skewY(45deg)"
+                v_mvR = -v_mvR;
+                }
+
+            if(v_bottom >= 450 || v_top <=0){//방향 바꾸기 
+                v_ssw.style.transform = "skewX(45deg)"
+                v_mvT = -v_mvT;
+            }
+            
+                v_timer = setTimeout(f_move,50);//0.05초마다 버튼 누르면 자동으로 오른쪽으로 움직임
+        }
+    </script>
+</body>
+</html>
+```
+#### Transform
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_img{
+            width: 200px;
+            height: 200px;
+            background-image: url("./img/son1.jpeg");
+            background-size: 200px 200px;
+            /* border-radius: 100px; */
+            /* transform: rotateX(55deg); */
+            /* transform: rotate X,Y,Z(??deg) 기본값은 Z */
+            transform-origin: center bottom; /* 움직임의 기준점 : transform-origin: 돌리고싶은 기준에 따라 right bottom top 등..*/
+            /* transform:translateX(200px)translateY(200px); 사진 위치 설정*/
+            transform: skewX(45deg); /*X축 기준으로 45도 비틀기*/
+            border: 10px solid black;
+            
+        }
+
+    </style>
+</head>
+<body>
+    <div id="id_img"></div>
+    <input type="button" value="누르세요" onclick="f_rot()">
+    <script>
+        var v_gak = 0;  //초기 각도 값 10
+        var v_gakInc = 10; // 증가값 10
+        var v_img = document.getElementById("id_img");
+
+        function f_rot(){
+            v_gak = (v_gak + v_gakInc) % 360; // 360이 넘어가는 값  
+            v_img.style.transform= "rotate(" + v_gak + "deg)";
+            setTimeout(f_rot,200);
+        }
+    </script>
+</body>
+</html>
+```
+#### 문자열 
+```html
+<!DOCTYPE html>
+    <meta charset="UTF-8">
+<script>
+    /*
+    자바 스크립트에서는 문자열 변수에 .을 찍어서 속성이나 메소드를 사용하는 순간 
+    원시타입 문자열이 문자열 객체로 자동 변환됨 
+    */
+    var v_str = " Hello String";
+    // alert(v_str.length); 
+    // alert(v_str.charAt(1));
+    // alert(v_str[11]); 
+    // v_str[2] = 'K';  //원시 타입 데이터는 일부분을 가져올 수 있는데 일부분만 수정할 수는 없음 
+    // alert(v_str);
+    
+    v_str.indexOf("ing"); //v_str안에 ing 문자열이 있는지 찾아라 
+    alert(v_str.indexOf("ing"));
+    //alert(v_str.indexOf("egg"));
+    //-1은 true라는 것 잊지 말기 
+
+
+    v_str.replace("Hello", "Hi^-^"); //replace는 원본을 바꾸지 않는다. 
+    alert("원본 " + v_str); //Hello String
+
+    v_str = v_str.replace("Hello", "Hi^-^"); //원래 문자열을 새로운 문자열에 넣어서 바꿔야됨 
+    alert("바뀐 문자열 " + v_str); //원본 Hi^-^ String
+
+    var v_arr = v_str.split("ll"); //return 값이 배열 
+    for(var i=0; i < v_arr.length; i++){
+        alert(v_arr[i]); 
+        //He
+        //o String
+    }
+
+    //substr : 부분추출 
+    alert(v_str.substr(1,3)); // 부분추출(ell)
+
+    //trim : 공백제거 
+    alert("체크" + v_str + "체크") // 공백 확인(체크 Hello String체크)
+    alert("체크" + v_str.trim() + "체크") // 공백 확인(체크Hello String체크)
+
+
+</script>
+```
+#### 오늘의 문제 
+```html
+<!DOCTYPE html>
+    <meta charset="UTF-8">
+    <script>
+    // 문제 : 모든 악마가 천사로 바뀌게 해보세요
+    var v_str2 = "박태환 악마 박대환 악마 박태환 앙마 악마 악마";
+
+        for(;v_str2.indexOf("악마") != -1;){
+            v_str2 = v_str2.replace("악마", "천사")
+        }
+        alert(v_str2);
+    /*
+    v_str2 = v_str2.replace("악마", "천사");
+    v_str2.indexOf("악마")
+    alert(v_str2.indexOf("악마"))   //11
+
+    v_str2 = v_str2.replace("악마", "천사");
+    v_str2.indexOf("악마")
+    alert(v_str2.indexOf("악마"))   //21
+
+    v_str2 = v_str2.replace("악마", "천사");
+    v_str2.indexOf("악마")
+    alert(v_str2.indexOf("악마"))   //24
+
+    v_str2 = v_str2.replace("악마", "천사");
+    v_str2.indexOf("악마")
+    alert(v_str2.indexOf("악마"))   //-1
+    //-1은 true라는 것 잊지 말기 
+    */
+
+        // 이렇게 함수로 만들어 놓으면 편함 
+        function replaceAll(p_str,p_won, p_rep){
+        for(;p_str.indexOf("악마") != -1;){
+            p_str = p_str.replace(p_won, p_rep);
+        }
+        return p_str;    
+    }
+    alert(replaceAll("안농 안넝 안농 안넝 히히히", "넝", "농"));
+</script>
+```
+
+#### 오늘의 문제2(수정 필요)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_curtain{
+            width: 300px;
+            border: 20px groove gold;
+        }
+    </style>
+</head>
+<body>
+    <div id="id_curtain"></div>
+    <script>
+        var v_curtain = document.getElementById("id_curtain");
+        function f_large(){
+            if(!v_curtain.style.height){
+                v_curtain.style.height = "0px";
+            }
+            v_curtain.style.height = parseInt(v_curtain.style.height) + 10 + "px";
+            setTimeout(f_large,100);
+        }
+        f_large(); //함수 실행 
+    </script>
+</body>
+</html>
+```
