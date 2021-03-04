@@ -3045,3 +3045,315 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 </body>
 </html>
 ```
+
+## 📚 11일차 
+
+#### 어제의 문제 정답 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_curtain{
+            width: 300px;
+            border: 20px groove gold;
+        }
+        #id_ssw{
+            display: none;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="id_curtain">
+        <div id="id_ssw">
+            <h1>오늘의 문제</h1>
+        </div>
+    </div>
+    <script>
+        var v_curtain = document.getElementById("id_curtain");
+        var v_heighLimit = 400;
+        function f_large(){
+            if(!v_curtain.style.height){
+                v_curtain.style.height = "0px";
+            }
+            v_curtain.style.height = parseInt(v_curtain.style.height) + 10 + "px";
+            if(parseInt(v_curtain.style.height) >= v_heighLimit) {
+                document.getElementById("id_ssw").style.display ="block";
+                return; // 함수 종료(리턴 잘쓰자)
+            }
+            setTimeout(f_large,100);
+        }
+        f_large(); //함수 실행 
+    </script>
+</body>
+</html>
+```
+#### 시험 문제 내기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cl_dap{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>시험</h1>
+    <input type="hidden" id="id_randap" value="">
+<script>
+    var v_munjesu = 5; // 전체 문제수 
+    var v_cnt=4; //몇지선다형인지 쉽게 바꿀 수 있다.
+    var v_jungdap = []; // 정답 배열 
+
+
+    //화면 모양 만들기 
+    for(var i=0; i< v_munjesu; i++){
+        v_jungdap[v_jungdap.length] = Math.ceil(Math.random()*4);
+    }
+    document.getElementById("id_randap").value = v_jungdap; // 잠시 세이브 
+
+    for(var j=1; j <= v_munjesu; j++){
+        document.write("문제"+ j +"<hr>");
+        for(var i=1; i<=v_cnt; i++){
+            document.write(i+"<input type=radio name=munje"+j+ " value="+ i + ">");
+        }
+        document.write("<input type=text class=cl_dap name=nm_dap value='정답: ' size=5>")
+        document.write("<br><br>");
+    }
+
+
+    //텍스트 박스에 정답 담아두기 
+    var v_txtDaps =document.getElementsByName("nm_dap");
+    for(var i=0; i< v_txtDaps.length; i++){
+        v_txtDaps[i].value = v_txtDaps[i].value + v_jungdap[i];
+        
+    }
+</script>
+점수<input type="text" id="id_disp" value="" size="5">
+<input type="button" value="채점" onclick="f_test()">
+<script>
+    var v_disp = document.getElementById("id_disp");
+    function f_test(){
+        var v_userDap= []; // 사용자 답을 담을 빈 배열 
+        var v_mun1 = document.getElementsByName("munje1"); //라디오버튼 4개
+        for(var i=0; i<v_munjesu; i++){
+            var v_rdoGrp = document.getElementsByName("munje"+(i+1));
+            for(var j=0; j<v_rdoGrp.length; j++){
+                if (v_rdoGrp[j].checked){
+                    v_userDap[v_userDap.length] = v_rdoGrp[j].value;
+                    break;
+                }
+            }
+        }
+        if(v_userDap.length != v_munjesu){
+            alert("모든 문제를 풀어주세요");
+            return; // 강제 종료
+        }
+
+        //사용자 답이 정답인지 체크해서, 정답이면 카운트 
+        var v_jungCnt = 0; 
+        for(var i=0; i< v_munjesu; i++){
+            v_txtDaps[i].style.display = "inline-block"; 
+            if(v_userDap[i] == v_jungdap[i]){
+                v_txtDaps[i].style.backgroundColor = "rgb(95, 173, 121)";
+                v_txtDaps[i].style.color = "white";
+                v_jungCnt++; // 맞혔으면 카운트 증가 
+            }else{
+                v_txtDaps[i].style.backgroundColor = "red";
+                v_txtDaps[i].style.color = "white";
+            }
+        }
+        //점수 출력
+        v_disp.value = (v_jungCnt / v_munjesu) * 100;
+
+        //텍스트박스에 점수가 나오도록 하기
+    }
+</script>
+    <!-- <hr>
+    1<input type="radio" name="exam1" value="1">
+    2<input type="radio" name="exam1" value="1">
+    3<input type="radio" name="exam1" value="1">
+    4<input type="radio" name="exam1" value="1"> -->
+</body>
+</html>
+```
+
+#### document.write
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>난 최고의 프로그래머</h1>
+    <input type="button" value="누르세요" onclick="f_check()">
+    <script>
+        document.write("<h2>이건 잘 나와</h2>")
+    </script>
+    <script>
+        function f_check(){
+            document.write("무슨 일이 일어날까요?");// 문서를 새로 씀 -> 원래 있던 거 없어짐
+            // document.write 사용에 주의, 문서가 닫히고 나서, 문서를 쓰면 새로 써짐 
+            // 그래서 잘 쓰는 사람 아니면 권장하지 않음
+        }
+
+    </script>
+</body>
+</html>
+```
+
+#### window
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //자주 쓰는 onload, onsize 기억 
+        //브라우저가 밑에 까지 해석이 끝나면 onload가 뜬다. 
+        window.onload = function(){
+            alert(document.getElementById("id_btn"));
+        }
+        //윈도우 사이즈가 변경되었을 때 발생하는 이벤트 
+        window.onresize = function(){
+            console.log("window넓이 : " + window.innerWidth);
+            console.log("window높이 : " + window.innerHeight);
+        }
+    </script>
+</head>
+<body>
+
+    <input id="id_btn" type="button" value="윈도우 사이즈 확인" onclick="f_check()">
+
+    <script>
+        var v_btn = document.getElementById("id_btn");
+        v_btn.onclick = function(){
+            alert("window.onload를 보니 영감이 떠올랐다.")
+        }
+
+        v_btn.onclick = f_check; 
+
+        alert("보이는 화면 넓이 " + window.innerWidth);
+        v_btn.onclick = f_check; // ()를 붙이면 함수가 그냥 실행되어 버려서 주의 
+        alert("보이는 화면 넓이 " + window.innerHeight);
+        return;
+
+
+        function f_check(){
+        //window에서 자주 쓰는 속성
+        alert("보이는 화면 넓이" + window.innerWidth);
+        alert("보이는 화면 높이" + window.innerHeight); 
+        }
+
+        // 엄청 많이 쓰는 이벤트
+            //브라우저가 밑에 까지 해석이 끝나면 onload가 뜬다. 
+            //위에서 정의한 onload가 밑에서 다시 정의되면 덮어써진다.
+        window.onload = function(){
+            alert("문서 로딩이 끝났습니다. 더 할 게 있으신가요?");
+        }
+    </script>
+    
+</body>
+</html>
+```
+
+#### 세 가지 창
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //document --> html문서 객체 
+        //window 키워드 --> 브라우저 객체를 가리킴 
+        window.alert("원래는 window. 하고 써야되는데 생략한 것")
+        window.document.window("<h1>document의 부모는 window다</h1>")
+
+        //자바스크립트는 세 가지 창을 지원한다. 
+        //안 예뻐서 잘 쓰진 않지만 회사 프로그램에서는 자주 씀 
+
+        //1.
+        alert("메세지 창 : 안 예뻐서 디버깅에만 많이 사용함")
+
+        //2.
+        var v_userInput = prompt("사용자 입력창", "초기값");
+        //확인 아니고 취소 버튼 누르면 null값이 들어오는 것에 주의
+        alert("입력한 값은 " + v_userInput + " 입니다");
+
+        //3. 
+        var v_userCheck = confirm("말 그대로 yes or no"); 
+        alert(v_userCheck); //확인 누르면 true, 취소 누르면 false
+        
+        
+
+    </script>
+    
+</body>
+</html>
+```
+
+#### 오늘의 과제
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #id_ssw{
+            position: relative; /* position의 디폴트는 static이라서 안 움직임*/
+            width: 200px;
+            height: 200px;
+            background-image: url(./img/son3.jpeg);
+            background-size: 200px 200px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="id_ssw" ></div>
+    <script>
+        //onload, onresize, innerWidth, innerHeight를 이용해서 이미지가 항상 가운데에 있도록 해보기
+        //브라우져 사이즈를 변경해도 가운데 있게 하기 
+
+        var v_imgW = 200; //이미지 넓이 설정한 값
+        var v_imgH = 200; //이미지 높이 설정한 값
+        
+        var v_wdt = window.innerWidth
+        var v_hgt = window.innerHeight
+
+        var v_img = document.getElementById("id_ssw");
+        window.onload = function(){
+            v_img.style.top = (v_wdt + v_imgW)/2
+            v_img.style.left = (v_hgt + v_imgH)/2
+        }
+        window.onresize = function(){
+            console.log("window넓이 : " + window.innerWidth);
+            console.log("window높이 : " + window.innerHeight);
+        }
+        
+    
+    </script>
+</body>
+</html>
+```
