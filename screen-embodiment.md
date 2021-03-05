@@ -3357,3 +3357,180 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 </body>
 </html>
 ```
+
+## 📚 12일차 
+
+#### frameset1
+```html
+<meta charset="UTF-8">
+<!-- 엄청 악용되어서 범용사이트에는 거의 사용되지 않는 태그 -->
+<frameset rows="50%,*">
+    <frame src="./newWin1.html">
+    <frameset cols="33%,33%,*">
+        <frame src="./newWin.html">
+        <frame src="./newWin.html">
+        <frame src="./newWin.html">
+    </frameset>
+</frameset>
+```
+
+#### newWin
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        border:1px solid gold;
+    }
+</style>
+</head>
+<body>
+    <div id="id_disp"></div>
+    메세징 <input id="id_txt1" type=text value=""><br>
+    <input id="id_btn" type=button value="전달">
+    <input type="button" value="창 닫기" onclick="f_wClose()">
+<script>
+
+    function f_wClose(){
+        //opener.v_newWin = null;
+        //window.close();
+        opener.f_wClose();
+    }
+
+    var v_btn = document.getElementById("id_btn");
+    var v_txt1 = document.getElementById("id_txt1");
+    function f_clk(){
+        // 열린 윈도우는 넘겨받은 값이 없어서 누가 열어주었는지 개발자는 알수 없어용
+        // 그래서 준비된 키워드 ? opener
+        opener.document.getElementById("id_txt2").value = v_txt1.value;
+        opener.document.getElementById("id_disp").innerHTML +=
+                              v_txt1.value + "<br>";
+    }
+    v_btn.onclick = f_clk;
+</script>    
+</body>
+</html>
+```
+
+#### newWin1
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        border:1px solid gold;
+    }
+</style>
+</head>
+<body>
+    메세징 <input id="id_txt1" type=text value=""><br>
+    <input id="id_btn" type=button value="전달">
+    <input type="button" value="새창" onclick="f_new()">
+<script>
+    function f_new(){
+        window.open("newWin2.html","aaa","width=200, height=200,left=100"); 
+    }
+
+    var v_btn = document.getElementById("id_btn");
+    var v_txt1 = document.getElementById("id_txt1");
+    function f_clk(){
+        //부모 키워드 
+        parent.frames[2].document.getElementById("id_txt1").value = 
+         v_txt1.value; 
+    }
+    v_btn.onclick = f_clk;
+</script>    
+</body>
+</html>
+```
+#### newWin2
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        border:1px solid gold;
+    }
+</style>
+</head>
+<body>
+    메세징 <input id="id_txt1" type=text value=""><br>
+    <input id="id_btn" type=button value="전달">
+<script>
+    var v_btn = document.getElementById("id_btn");
+    var v_txt1 = document.getElementById("id_txt1");
+    function f_clk(){
+        opener.parent.frames[3].document.getElementById("id_txt1").value = v_txt1.value;
+    }
+    v_btn.onclick = f_clk;
+</script>    
+</body>
+</html>
+```
+
+#### WindowOpen
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_disp {
+            border:1px solid gold;
+        }
+    </style>
+</head>
+<body>
+    <div id="id_disp"></div>
+    <input id="id_btn" type=button value="새 창 열기"><br>
+    메세지<input id="id_txt2" type=text value=""><br>
+    <input id="id_btn1" type=button value="전달">
+    <input type="button" value="창 닫기" onclick="f_wClose()">
+<script>
+    function f_wClose(){
+        v_newWin.close();//안 닫힌다. 스크립트로 연 창만 기본적으로 닫힌다.
+    }
+
+    var v_btn1 = document.getElementById("id_btn1");
+    var v_txt2 = document.getElementById("id_txt2");
+
+    v_btn1.onclick= function(){
+        if(!v_newWin){ //null이면?
+            alert("새 창을 열고 전달해주세요!");
+            return;
+        }
+        v_newWin.document.getElementById("id_txt1").value = v_txt2.value;
+        v_newWin.document.getElementById("id_disp").innerHTML +=
+                              v_txt2.value + "<br>";
+    }
+
+    var v_btn = document.getElementById("id_btn");
+    var v_newWin =null;
+    v_btn.onclick = function(){
+            //window.open은 세 가지의 매개변수를 가진다
+
+            //두 번째 자리에 있는 매개변수는 window의 name 파라미터로 지정해주면 
+            //이미 그 이름으로 열린 윈도우가 있으면 그 윈도우로 감(더 이상 새로운 창이 열리지 않는다는 뜻)
+
+            //세 번째 자리에 있는 매개변수는 위치, 크기를 설정할 수 있다. 
+            //많이 악용되었던 메소드로, 점점 제약사항이 많아지고 있다. 
+        v_newWin=window.open("newWin.html","ngm","width=200,height=200,left=100,top=100");
+    }
+</script>    
+</body>
+</html>
+```
