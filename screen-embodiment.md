@@ -3534,3 +3534,184 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 </body>
 </html>
 ```
+
+#### 디자이너 관점에서 본 Class
+- emmet 축약기법
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .fgYellow{
+            color: yellow;
+        }
+        .fgBlue{
+            color: blue;
+        }
+        .bgRed{
+            background-color: red;
+        }
+        .bgGold{
+            background-color: gold;
+        }
+        .bgMagenta{
+            background-color: magenta;
+        }
+    </style>
+</head>
+<body>
+    <!-- table>tr*8>td*4 emmet 축약기법-->
+    <table>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div class="fgBlue bgMagenta">사승원1</div>
+    <div class="fgGreen bgRed">사승원2</div>
+    <div class="bgMagenta">사승원3</div>
+    <div class="fgYellow">사승원4</div>
+</body>
+</html>
+```
+
+#### overflow : hidden을 이용해 도형 자르기
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_what{
+            overflow: hidden;/* 부모 벗어난 자식 잘라내버리기 */
+            position: relative;
+            left: 100px;
+            top : 100px;
+            width: 200px;
+            height: 200px;
+            /* border:1px solid black; */
+            transform: rotate(45deg);
+        }
+        .cl_common{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 100px;
+            background-color: red;
+        }
+        .cl_one{
+            left: 100px;
+        }
+        .cl_two{
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="id_what">
+        <div class="cl_one cl_common"></div>
+        <div class="cl_two cl_common"></div>
+
+    </div>
+</body>
+</html>
+```
+
+#### 오늘의 과제(수정필요)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #id_ssw{
+            position: relative; /* position의 디폴트는 static이라서 안 움직임*/
+            width: 200px;
+            height: 200px;
+            background-image: url(./img/son3.jpeg);
+            background-size: 200px 200px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="id_ssw" ></div>
+    <script>
+        //onload, onresize, innerWidth, innerHeight를 이용해서 이미지가 항상 가운데에 있도록 해보기
+        //브라우져 사이즈를 변경해도 가운데 있게 하기 
+
+        var v_imgW = 200; //이미지 넓이 설정한 값
+        var v_imgH = 200; //이미지 높이 설정한 값
+        
+        var v_wdt = window.innerWidth
+        var v_hgt = window.innerHeight
+
+        var v_img = document.getElementById("id_ssw");
+        window.onload = function(){
+            v_img.style.top = (v_wdt + v_imgW)/2
+            v_img.style.left = (v_hgt + v_imgH)/2
+        }
+        window.onresize = function(){
+            console.log("window넓이 : " + window.innerWidth);
+            console.log("window높이 : " + window.innerHeight);
+        }
+        
+    
+    </script>
+</body>
+</html>
+```
