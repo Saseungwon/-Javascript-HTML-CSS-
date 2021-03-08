@@ -3715,3 +3715,309 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 </body>
 </html>
 ```
+
+## 📚 13일차
+#### 지도 넣기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+	<!-- 구글지도 -->
+	<iframe 
+	src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3214.441871184756!2d127.
+	40566361568301!3d36.325839280049074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3
+	!1m2!1s0x356549345c9bfbff%3A0xad60c4c84fd8e918!2z7KSR64-E7J2867O0!5e0!3m2!1sko!2
+	skr!4v1615162655723!5m2!1sko!2skr" 
+	width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+	</iframe>
+
+
+    <!-- * 카카오맵 - 지도퍼가기 -->
+<!-- 1. 지도 노드 -->
+<div id="daumRoughmapContainer1615162219999" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+
+<!--
+	2. 설치 스크립트
+	* 지도 퍼가기 서비스를 2개 이상 넣을 경우, 설치 스크립트는 하나만 삽입합니다.
+-->
+<script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+
+<!-- 3. 실행 스크립트 -->
+<script charset="UTF-8">
+	new daum.roughmap.Lander({
+		"timestamp" : "1615162219999",
+		"key" : "24q3v",
+		"mapWidth" : "640",
+		"mapHeight" : "360"
+	}).render();
+</script>
+</body>
+</html>
+```
+
+#### 유튜브 영상 넣기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    	<!-- 유튜브 영상 넣기  -->
+		<!-- 
+			구글 정책으로 인해 동영상은 음소거 모드일 때만 자동실행이 가능
+			무분별한 광고영상으로 사용자가 시끄러움에 지칠 수 있고
+			원치 않는 상황에 빠질 수 있음에 그렇게 했다고 주장 
+		 -->
+	<iframe id="id_hms" width="1280" height="720" 
+    src="https://www.youtube.com/embed/h5be6g38nfg?autoplay=1" 
+	frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+	 gyroscope; picture-in-picture" allowfullscreen>
+	</iframe>
+	<input type="button" value="누르세요" onclick="f_next()">
+	<script>
+		//중복되는 값을 변수로 지정
+		var v_utube = document.getElementById("id_hms"); 
+		var v_urlS = "https://www.youtube.com/embed/";
+		var v_urlE = "?autoplay=1"; 
+		var v_list = ["h5be6g38nfg", "SJJDSUNVIS4", "n7e_Ek2g7FM"];
+		var v_index = 0; 
+
+		function f_next(){
+			v_index++;
+			if(v_index > (v_list.length -1)){ // 마지막 영상에서 다음 누르면 첫 영상으로 가게 
+				v_index = 0; 
+			}
+			v_utube.src = v_urlS + v_list[v_index] + v_urlE; 
+		}
+	</script>
+
+</body>
+</html>
+```
+
+#### iframe 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    텍스트상자<input id="id_txt" type="text" value="난 iframe에 있어요"><br>
+             <input type="button" value="버튼" onclick="f_check()">
+    <script>
+        var v_txt = document.getElementById("id_txt");
+        function f_check(){
+            //console.log(window.parent.document);
+            window.parent.document.getElementById("id_txt").value = v_txt.value; 
+        }
+    </script>
+</body>
+</html>
+```
+
+#### 배열 정리 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>//indexof, push, splice 꼭 기억
+    
+        //매개변수가 1개 밖에 오지 않고 그것이 숫자일 때만 주의 
+        //var v_arr = new Array(3,7,9,10); //[3,7,9,10] - 권장되지 않는 선언법 
+        var v_arr = [3,7,9,10];  // 이 표기법이 권장됨 
+        var v_arr = []; 
+        v_arr[v_arr.length] = 3;
+        v_arr[v_arr.length] = 7;
+        v_arr[v_arr.length] = 9;
+        v_arr[v_arr.length] = 10;
+        //v_arr[v_arr.length] = 337;
+        v.arr.push(337); // 위 주석라인과 정확히 같은 기능함 
+
+        //꼭 기억해야 할 메소드 splice, 중간 배열요소 없애기 
+        v_arr.splice(2,1); // index 2번부터 1개를 지워라 
+        
+        alert(v_arr.pop());// pop은 마지막 index값을 되돌려주고, 없애버림 
+        alert("갯수 : " + v_arr.length + " 값들 " + v_arr);
+
+        // 자주 쓰는 메서드 
+        alert(v_arr.indexOf(10)); // 찾으면 해당 값의 index, 못 찾으면 -1  
+
+        // alert(v_arr.length);
+        // alert(v_arr); 
+    </script>    
+</body>
+</html>
+```
+
+
+#### 배열 1
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="id_disp"></div>
+    <input type="button" value="체크" onclick="f_check()">
+    <script>
+        var v_arr = [10,33,22,11,66,99,27];
+        var v_mxnum = v_arr[0]; // 배열의 첫 번째 값이 최대값이라고 가정  
+        function f_check(){
+            for(var i = 1; i <v_arr.length; i++){
+                if(v_arr[i] > v_mxnum){
+                    v_mxnum = v_arr[i];
+                }
+            }
+            document.getElementById("id_disp").innerHTML = "최대값은 " + v_mxnum; 
+            //위 배열에서 최대값을 찾아서 id_disp에 출력되도록 해보세요 
+            //힌트 swap(바꾸기)를 사용 
+        }
+    </script>
+</body>
+</html>
+```
+
+
+#### 배열 2
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="id_disp"></div>
+    <input type="button" value="정렬" onclick="f_repeatRemove()">
+    <script>
+            var v_arr = [22,33,22,11,66,99,27,22,77,22,33,98,76];
+        function f_repeatRemove(){
+            //v_arr 에서 반복되는 값을 제거해서 id_disp에 출력해보세요 
+            //중복제거 로직은 아주 중요, 아주 흔하게 접하게 됨 
+            var v_rslt = []; //중복되지 않은 값만을 담을 배열 
+            for(var i=0; i< v_arr.length; i++){ //같은 게 없다고 가정 
+                var v_isRepeat = false; 
+                for(var j=0; j<v_rslt.length; j++){ // 각각의 중복여부 체크를 위한 
+                    if(v_rslt[j] == v_arr[i]){
+                        v_isRepeat = true;
+                        break; //찾았으면 검색할 필요 없음 
+                    }
+                }
+                //없다는 가정이 맞을 때만 v_rslt에 해당 값을 넣음 
+                if(!v_isRepeat){
+                    v_rslt.push(v_arr[i]); 
+                }
+            }
+            document.getElementById("id_disp").innerHTML = v_rslt;
+            /* 내 오답 
+            for(var i = 1; i <v_arr.length; i++){
+                if(v_arr.indexOf(i) != -1){
+                    v_arr.splice(2,1);
+                    var count = (temp.match(v_arr[i])).length;
+                    alert(count);
+                    
+                }
+            }
+            */
+        }
+    </script>
+</body>
+</html>
+```
+
+
+#### 배열 3 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="id_disp"></div>
+    <input type="button" value="정렬" onclick="f_repeatRemove()">
+    <script>
+        //이중 for문식으로 복잡해 보이면, 쪼개서 함수를 만들어본다. 
+        //재사용성도 높아지고, 가독성도 높아진다.항상 간단한 방법에 대해 생각 
+            var v_arr = [22,33,22,11,66,99,27,22,77,22,33,98,76];
+        function f_isRepeat(p_arr, p_val){
+            for(var i=0; i<p_arr.length; i++){
+                if(p_arr[i] == p_val){
+                    return true;    //같은 게 있다면 true 리턴 
+                }
+            }
+            return false;           //같은 것을 못 찾았다면 false; 
+        }
+
+        function f_repeatRemove(){
+            var v_rslt = []; //중복되지 않은 값만을 담을 배열 
+            for(var i=0; i< v_arr.length; i++){ //같은 게 없다고 가정 
+                    if(!f_isRepeat(v_rslt, v_arr[i])){
+                        v_rslt.push(v_arr[i]);
+                    }
+                }
+                document.getElementById("id_disp").innerHTML = v_rslt;
+        }
+    </script>
+</body>
+</html>
+```
+
+#### 오늘의 과제
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="id_txt" type="text" value="숫자를 입력하세요">
+    <script>
+        // 시간 : 1 2 3 4 5 6 7 8 9 10 11
+        // 거리 : 3 1 4 2 5 3 6 4 7 5 8
+    function f_distance(p_sec){
+        var v_dist = 0 ;
+        for(var i = 1; i <= p_sec; i++){
+            if(i%2 ==0){
+                v_dist = v_dist -2;
+            }else{
+                v_dist = v_dist +3; 
+            }
+        }
+        return v_dist;
+    }
+    //f_distance();
+
+    function f_sec(p_dist){
+        
+    }
+    </script>
+</body>
+</html>
+```
