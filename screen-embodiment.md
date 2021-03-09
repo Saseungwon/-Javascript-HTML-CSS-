@@ -4021,3 +4021,400 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 </body>
 </html>
 ```
+
+## 📚 14일차
+#### CSS
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+        외부 사이트 css 파일 가져다 쓸 때 주의점
+        https로 가져온건 스크립트로 읽을 수 있지만, http로 가져온건 못 읽음
+        보안 사건이 있었음.
+    
+    <link rel="stylesheet" href="https://pm.pstatic.net/dist/css/nmain.20210224.css">
+    -->
+    <script src="./js/myfirst.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Document</title>
+<style>
+/*내부 스타일 */
+.cl_ksm {
+    color:olive;
+}
+.cl_sya {
+    color:skyblue;
+}
+</style>
+<style>
+    /*내부 스타일 */
+    .cl_yhj {
+        color:olive;
+    }
+    .cl_yuh {
+        color:skyblue;
+    }
+</style>    
+</head>
+<body>
+    <!-- 태그에 직접 정의한 스타일을 inline 스타일이라고 부름
+        기본 우선순위 inline > 내부 > 외부
+    -->
+    <div class="cl_sya">오성현</div>
+    <div class="cl_ygy">박태환</div>
+    <input type=button value="바꾸깅" onclick="f_chg()">
+<script>
+    /* 일반적으로 웹 컴포넌트를 만드는 전문회사가 아니면 
+       내/외부 스타일 접근법을 잘 사용하지 않음 
+    */
+   //일반적인 사용법 
+   
+   // alert(document.styleSheets[1].cssRules[1].style.color);
+
+    //내부/외부 스타일시트 접근법
+    /*
+    alert(document.styleSheets[0].cssRules[0].selectorText);
+    alert(document.styleSheets[0].cssRules[0].cssText);
+    alert(document.styleSheets[0].cssRules[0].style.color);
+    alert(document.styleSheets[0].cssRules[0].style.backgroundColor);
+    */
+</script>
+</body>
+</html>
+```
+
+#### 마우스 이벤트 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 95vw;
+            height: 95vh;
+            border: 1px solid black; 
+        }
+        #id_small{
+            width: 200px;
+            height: 200px;
+            background-color: chartreuse;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        body 태그에는 이벤트를 거의 걸지 않음
+     -->
+     <div id="wrapper" onmousedown="f_msdown()">
+        <div id="id_small" onmouseover="f_msover()" onmouseout="f_msout()"></div>
+    </div>
+    <script>
+        //마우스 버튼이 벗어날 때 
+        function f_msout(){
+            //alert("마우스가 벗어났습니다.")
+            document.getElementById("id_small").style.backgroundImage = 
+            "url(./img/son2.jpeg)";
+            document.getElementById("id_small").style.backgroundSize = 
+            "200px 200px";
+
+        }
+        //마우스 버튼이 올라왔을 때 
+        function f_msover(){
+            document.getElementById("id_small").style.backgroundImage = 
+            "url(./img/son1.jpeg)";
+            document.getElementById("id_small").style.backgroundSize = 
+            "200px 200px";
+
+            //alert("마우스를 올리면 알림")
+        }
+        function f_msdown(){
+            //alert(event.button); // which 보단 직관적인 button을 더 많이 씀 
+            //alert(event.which); 
+        }
+    </script>
+</body>
+</html>
+```
+
+#### 정렬 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var v_arr = [5,3,4,6,9,7,4,1,2]; 
+
+        alert(v_arr.sort()); // 기본 오름차순으로 리턴
+
+        alert(v_arr.sort(function(a,b){
+            return a - b ;// 오른차순 
+            return b - a ;// 내림차순 
+        }));
+
+
+    </script>
+    
+</body>
+</html>
+```
+
+#### 버블정렬
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //버블정렬
+        var v_arr = [5,3,4,6,9,7,4,1,2]; 
+        for(var j = 0; j < v_arr.length; j++){
+            for(var i = j+1; i< v_arr.length; i++){
+                if(v_arr[j] < v_arr[i]){
+                    var v_temp = v_arr[j];
+                    v_arr[j] = v_arr[i];
+                    v_arr[i] = v_temp;
+                }
+        }
+        alert((j+1) + " 번째 " + v_arr); 
+        }
+        alert("최종결과 : " + v_arr); 
+ 
+    </script>
+    
+</body>
+</html>
+```
+
+#### 콜백함수 
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    //callback function
+    function f_pth(){
+        alert("콜백함수");
+    }
+
+    function f_check(p_func){
+        p_func
+    }
+
+    f_check(f_pth); 
+    // f_check를 불렀는데 f_check가 p_func을 불렀다.
+    // p_func가 실행됨
+
+    
+    //익명함수.. 하나만 쓸 때는 이렇게도 쓴다. 
+    f_check(function(){
+        alert("콜백함수");
+    }); 
+
+    
+</script>
+```
+
+#### 콜백함수로 정렬
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+        var v_arr = [5,3,4,6,9,7,4,1,2]; 
+        v_arr.mySort = function(p_func){  // 이해를 위해서 기존 배열에 메소드 추가 
+            for(var j = 0; j < this.length; j++){
+                for(var i = j+1; i< this.length; i++){
+                    if( p_func(this[j], this[i]) > 0 ) { // 콜백함수로 오름차순/내림차순 제어 
+                        var v_temp = this[j];
+                        this[j] = this[i];
+                        this[i] = v_temp;
+                    }
+            }
+        }
+        return this; 
+        }
+        alert(v_arr.mySort(function(a,b){
+            return a - b; //오름차 
+            return b - a; //내림차
+        }));
+</script>
+```
+
+#### 오늘의 문제(수정필요)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    
+    #id_center{
+        position: relative;
+        left:50px;
+        top: -100px; /* 화면 밖에 숨기기 */
+        width:100px;
+        height:100px;
+        font-size: 50px;
+        text-align: center;  /* 수평 가운데 정렬*/
+        line-height: 95px;  /* 글자 수직 가운데 정렬 */
+        border:1px solid red;
+    }
+
+        .cl_layer1{
+            position: absolute;
+            left: 25px;
+        }
+        .cl_layer2{
+            position: absolute;
+            left: 125px;
+        }
+        .cl_layer3{
+            position: absolute;
+            left: 225px;
+        }
+        .cl_layer4{
+            position: absolute;
+            left: 325px;
+        }
+        .cl_layer5{
+            position: absolute;
+            left: 425px;
+        }
+        .cl_layer6{
+            position: absolute;
+            left: 525px;
+        }
+        
+</style>
+</head>
+<body>
+    <div id="id_center">
+        <div id="id_first" class="cl_layer1"></div>
+        <div id="id_second" class="cl_layer2"></div>
+        <div id="id_third" class="cl_layer3"></div>
+        <div id="id_fourth" class="cl_layer4"></div>
+        <div id="id_fifth" class="cl_layer5"></div>
+        <div id="id_sixth" class="cl_layer6"></div>
+    </div>
+    <input type=button value="클릭" id="id_btn">
+    <script>
+        
+        var v_center = document.getElementById("id_center");
+        var v_btn = document.getElementById("id_btn");
+
+                var v_1 = document.getElementById("id_first");
+                var v_2 = document.getElementById("id_second");
+                var v_3 = document.getElementById("id_third");
+                var v_4 = document.getElementById("id_fourth");
+                var v_5 = document.getElementById("id_fifth");
+                var v_6 = document.getElementById("id_sixth");
+
+
+        function f_down(){
+            if(!v_center.style.top){
+                v_center.style.top = "-100px";
+            }
+            v_center.style.top = parseInt(v_center.style.top) + 10 + "px";
+            if(parseInt(v_center.style.top) >= 300){
+                return;
+            }
+            setTimeout(f_down,300);
+        }
+
+        var v_arr = new Array(7);
+        
+        //console.log(v_arr);
+        //v_arr = Math.ceil((Math.random()*45)+1)
+        v_btn.onclick = function(){
+            f_down();
+            var v_rslt = []; 
+            for(var i=0; i< v_arr.length; i++){ 
+                var v_isRepeat = false; 
+                for(var j=0; j<v_rslt.length; j++){ 
+                    if(v_rslt[j] == v_arr[i]){
+                        v_isRepeat = true;
+                        v_arr.push(Math.ceil(Math.random()*45));
+                        break; 
+                    }
+                }
+                
+                if(!v_isRepeat){
+                    v_rslt.push(v_arr[i]); 
+                }
+            }
+            for(var j = 0; j < v_rslt.length; j++){
+                for(var i = j+1; i< v_rslt.length; i++){
+                    if(v_rslt[j] < v_rslt[i]){
+                        var v_temp = v_rslt[j];
+                        v_rslt[j] = v_rslt[i];
+                        v_rslt[i] = v_temp;
+                    }
+                    
+                }  
+                
+                
+                
+                
+                // document.getElementById("id_first").innerHTML = v_rslt[1];
+                // document.getElementById("id_second").innerHTML = v_rslt[2];
+                // document.getElementById("id_third").innerHTML = v_rslt[3];
+                // document.getElementById("id_fourth").innerHTML = v_rslt[4];
+                // document.getElementById("id_fifth").innerHTML = v_rslt[5];
+                // document.getElementById("id_sixth").innerHTML = v_rslt[6];
+                
+                //console.log(v_rslt[1]);
+            }
+            // function v_setTime(){
+            // v_1.innerHTML = v_rslt[1];
+            // v_2.innerHTML = v_rslt[2];
+            // v_3.innerHTML = v_rslt[3];
+            // v_4.innerHTML = v_rslt[4];
+            // v_5.innerHTML = v_rslt[5];
+            // v_6.innerHTML = v_rslt[6];
+
+            // }
+
+
+            for(i = 1; i <= 6; i++){
+                    "v_"+i+".innerHTML= v_rslt["+i+"];"
+                    return;
+                    console.log(v_setTime);
+                }
+
+            // function v_setTime(){
+            //     for(i = 1; i <= 6; i++){
+            //         "v_"+i+".innerHTML= v_rslt["+i+"]";
+            //         return;
+            //         console.log(v_setTime);
+            //     }
+            // }
+            // setTimeout(v_setTime,300);
+            // }
+            //v_setTime();
+
+            }
+    </script>
+</body>
+</html>
+```
+
+####
+```html
+
+```
