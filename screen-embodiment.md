@@ -4413,8 +4413,373 @@ setTimeout(f_ranColor,300); //0.3초마다 재귀호출
 </body>
 </html>
 ```
-
-####
+## 📚 15일차
+#### 로또
 ```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    //중복체크 함수
+    function f_isRepeat(p_arr,p_val){
 
+        /*중복체크 함수(1)
+        function f_isRepeat(p_arr, p_val){
+            for(var i=0; i<p_arr.length; i++){
+                if(p_arr[i]==p_val){
+                    return true; // 배열 속에 p_val이 있으면 true 리턴 종료 
+                }
+            }
+        }
+        /*
+
+        중복체크 함수(2)
+        if(p_arr.indexOf(p_val) != -1){
+            return true;
+        }
+        return false;
+        */
+
+       //중복체크 함수(3)
+       return (p_arr.indexOf(p_val) != -1)? true:false;
+    }
+
+
+    //로또번호 생성 함수 
+    function f_lotto(){
+        var v_lottoNum = [];
+
+        for(;"무한루프";){
+            var v_ranNum = Math.ceil(Math.random()*45); //1~45
+            if(!f_isRepeat(v_lottoNum, v_ranNum)){
+                v_lottoNum.push(v_ranNum);
+            }
+            if(v_lottoNum.length == 6){
+                break;
+            }
+            }
+            return v_lottoNum.sort();
+        }
+        alert(f_lotto(function(a,b){
+            return a-b;
+        }));
+</script>
+```
+
+#### 마우스오버
+```html
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table id="id_tbl1" border="2" width=400>
+        <tr onmouseover="f_over(this)">
+            <td>넘버</td>
+            <td>이름</td>
+            <td>별명</td>
+        </tr>
+        <tr onmouseover="f_over(this)">
+            <td>1</td>
+            <td>주영흔</td>
+            <td>원자력</td>
+        </tr>
+        <tr onmouseover="f_over(this)">
+            <td>2</td>
+            <td>윤가영</td>
+            <td>언니</td>
+        </tr>
+        <tr onmouseover="f_over(this)">
+            <td>3</td>
+            <td>장두언</td>
+            <td>두마디</td>
+        </tr>
+        <tr onmouseover="f_over(this)">
+            <td>4</td>
+            <td>남기문</td>
+            <td>기문둔갑</td>
+        </tr>
+    </table>
+<script>
+    //getElementsByTagName메소드는 일반적으로 잘 사용되지 않지만
+    //xml문서를 다룰 때 사용됨 
+    var v_tbl1 = document.getElementById("id_tbl1");
+    var v_trs = v_tbl1.children[0].children; //table:tbody:tr
+    var v_tr1 = v_tbl1.children[0].children[0]; // 
+
+    
+
+    function f_init(){
+        for(var i=0; i<v_trs.length; i++){
+            v_trs[i].style.backgroundColor="white";
+            v_trs[i].style.color="black";
+        }
+    }
+    
+    
+    function f_over(p_this){
+        f_init();   //전체 초기화 
+        p_this.style.backgroundColor="black";
+        p_this.style.color="yellow";
+    }
+
+</script>
+</body>
+</html>
+```
+
+
+#### 마우스무브
+```html
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #container {
+        width:95vw;
+        height:95vh;
+        border:1px solid black;
+    }
+    #id_nemo {
+        position: absolute; /*기본값이 스태틱이라 다른 값을 줘야 움직임*/
+        width:50px;
+        height:50px;
+        background-color: hotpink;
+    }
+</style>
+</head>
+<body>
+<div id="container" onmousemove="f_mMv()">
+    <div id="id_nemo"></div>
+</div>    
+<script>
+    var v_nemo = document.getElementById("id_nemo");
+    
+    function f_mMv(){
+        //마우스 좌표값 읽기
+        console.log("X : " + event.clientX); // x좌표값
+        console.log("Y : " + event.clientY); // y좌표값
+        v_nemo.style.left = event.clientX + "px"; 
+        v_nemo.style.top = event.clientY + "px"; 
+    }
+</script>
+</body>
+</html>
+```
+
+#### 이벤트 주의1
+```html
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            border:3px solid gold;
+        }
+    </style>
+</head>
+<body>
+<div style="width:400px;height:400px;position: relative;left:100px" onmouseover="f_check2()">
+    김주헌 할머닝
+    <div style="width:200px;height:200px" onmouseover="f_check1()">
+        정찬웅 어머닝
+        <div style="width:100px;height:100px" onmouseover="f_check()">
+            황미선 딸
+        </div>
+    </div>
+</div>
+<script>
+    function f_check(){
+        // 부모에게 이벤트가 전달되는 것을 이벤트 버블링이라고 부름
+        // 아주 기분 나쁨
+        event.stopPropagation();  // 꼭 기억, 아주 중요
+        alert("나 황미선");
+    }
+    function f_check1(){
+        event.stopPropagation();  // 꼭 기억, 아주 중요
+        alert("나 정찬웅");
+    }
+    function f_check2(){
+        event.stopPropagation();  // 꼭 기억, 아주 중요
+        alert("나 김주헌");
+    }
+</script>    
+</body>
+</html>
+```
+
+#### 이벤트 주의2
+```html
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 아래 처럼 쓰지 맙시당
+        <a href="javascript:f_ck2()" onclick="f_ck()">다음</a>
+    -->
+    <a href="http://daum.net" onclick="f_ck()">다음</a>
+<script>
+    function f_ck2(){
+        alert("난 href");
+    }
+    function f_ck(){
+        event.preventDefault(); // 디폴트 이벤트 막기, 여기선 a태그의 링크기능을 막음
+       // event.stopPropagation(); // 이벤트 전파 막기, (이벤트 캡처링)
+        alert("눌렀니?");
+    }
+</script>    
+</body>
+</html>
+```
+
+#### this에 대해
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    //this? -> 나
+//window.alert(this);//? window?
+/*
+function f_ck(){
+    alert(this);//? 
+}    
+window.f_ck();
+*/
+/* javascript의 this는 개발자의 불만을 하늘높이 올려서 열받게 만듬
+var v_obj = {};  // 빈객체 생성
+v_obj.name="나 v_obj얌"
+v_obj.print = function(){ // 메소드 추가
+    alert(this.name); //?
+    return;
+}
+//v_obj.print();
+var v_trick = v_obj.print;
+window.v_obj.print();
+//alert("결과:" + v_trick);
+*/
+// this의 사용이 애매해서 개발자가 직접 this 값을 세팅해서 쓸수 있도록
+// 3개의 메소드가 출현, call, apply, bind  -> bind는 좀더 특별
+
+var v_obj = {};  // 빈객체 생성
+v_obj.name="윤가영언니";
+
+function f_call(p_arg1,p_arg2){
+    alert(this.name + p_arg1 + p_arg2);
+}
+//f_call(); // this -> window
+// call 하고 apply는 매개변수 넘기는 방식만 다르므로, 둘중 하나를 선택하면
+// 일관성 있게 사용하는 것이 좋음
+//f_call.call(v_obj,"  첫번째 매개변수 ", " 두번째 매개변수 ");
+//f_call.apply(v_obj,["  첫번째 ", " 두번째 "]);
+
+// f_call.bind(v_obj)("헤헤헤","히히히");
+// f_call.bind(v_obj,"헤헤헤","히히히")();
+var v_newFunc = f_call.bind(v_obj,"헤헤헤","히히히");
+v_newFunc();
+
+var System = {};
+System.out = {};
+/*
+System.out.print = function(p_msg){
+    document.write(p_msg);
+}
+*/
+System.out.print = document.write.bind(document);
+System.out.print("<h1>난 최고의 프로그래머 오성현이당</h1>");
+
+//var myPrint = document.write;
+
+
+ // bind는 내부적으로 새로운 함수를 만들어서 함수를 리턴(함수포인터)해 줌
+</script>
+
+```
+
+#### 오늘의 과제(태양계) - 수정필요
+```html
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_earth{
+            position: absolute;
+            border-radius: 25px;
+        }
+        #id_sun{
+            position: absolute;
+            border-radius: 50px;
+        }
+        #id_moon{
+            position: absolute;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <img id="id_sun" src="./img/sun.jpg" width="100" height="100">
+    <img id="id_earth" src="./img/earth.png" width="50" height="50">
+    <img id="id_moon" src="./img/moon.jpg" width="50" height="50">
+<script>
+    var v_sun = document.getElementById("id_sun"); 
+    var v_earth = document.getElementById("id_earth"); 
+    var v_moon = document.getElementById("id_moon"); 
+    var v_sunGak = 0;
+    //태양 제자리에서 돌리기
+
+    function f_sunRotate(){
+        v_sunGak = (v_sunGak + 10) % 360; 
+        v_sun.style.transform = "rotate("+ v_sunGak +"deg)";
+        setTimeout(f_sunRotate,10);
+    }
+    //지구 돌리기 
+    var v_Radius = 150;
+    var v_earGak = 0;  
+    var v_moonGak = 0;
+
+    function f_earthRotate(){
+        v_earGak = (v_earGak + 5) % 360;
+        v_earth.style.left = (v_centerX-25) + v_Radius *Math.cos(v_earGak*Math.PI/180) + "px";
+        v_earth.style.top = (v_centerY-25) + v_Radius *Math.sin(v_earGak*Math.PI/180) + "px";
+        setTimeout(f_earthRotate,25); 
+    }
+
+    function f_moonRotate(){
+        v_moonGak = (v_moonGak + 5) % 360;
+        v_moon.style.left = (v_centerX-200) + v_Radius *Math.cos(v_moonGak*Math.PI/180) + "px";
+        v_moon.style.top = (v_centerY-200) + v_Radius *Math.sin(v_moonGak*Math.PI/180) + "px";
+        setTimeout(f_moonRotate,25); 
+    }
+
+    //초기화 
+    var v_centerX;//화면 중심x
+    var v_centerY;//화면 중심y
+    window.onload = function(){
+        v_centerX = window.innerWidth /2;
+        v_centerY = window.innerHeight /2;
+        v_sun.style.left = (window.innerWidth - 100)/2 + "px";
+        v_sun.style.top = (window.innerHeight - 100)/2 + "px"; 
+        f_sunRotate();
+        f_earthRotate(); 
+        f_moonRotate();
+    }
+    //윈도우 사이즈 변경시 자동으로 기준점 변경 
+    window.onresize = function(){
+        v_centerX = window.innerWidth /2;
+        v_centerY = window.innerHeight /2;
+        v_sun.style.left = (window.innerWidth - 100)/2 + "px";
+        v_sun.style.top = (window.innerHeight - 100)/2 + "px"; 
+    }
+</script>
+</body>
+</html>
 ```
