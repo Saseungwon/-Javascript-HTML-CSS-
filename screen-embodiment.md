@@ -4783,3 +4783,444 @@ System.out.print("<h1>난 최고의 프로그래머 오성현이당</h1>");
 </body>
 </html>
 ```
+
+## 📚 16일차
+#### 이벤트 버블링 방지 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    #id_hal{
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+    }
+
+    #id_mom{
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+    }
+
+    #id_me{
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+    }
+    </style>
+
+</head>
+<body>
+    <div id="id_hal" onclick="f_hal()">할머니
+        <div id="id_mom" onclick="f_mom()">엄마
+            <div id="id_me" onclick="f_me()">
+                사승원
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function f_hal(){
+            alert("나 할머니");
+        }
+
+
+        function f_mom(){
+            alert("나 엄마");
+            //이벤트버블링 나오면 안 좋음 
+        }
+
+
+        function f_me(){
+            event.stopPropagation(); 
+            //event.stopPropagation 이벤트버블링 막아줌
+            alert("나 나");
+
+        }
+
+    </script>
+</body>
+</html>
+```
+
+#### 마우스로 도형 끌기 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #container {
+        width:95vw;
+        height:95vh;
+        border : 1px solid black;
+    }
+    #id_nemo {
+        position: absolute;
+        width:100px;
+        height:100px;
+        background-color:pink;
+    }
+</style>
+</head>
+<body>
+    <div id="container">
+        <div style="left: 10px;top:10px" id="id_nemo" onmousedown="f_mDown()" 
+                                                      onmouseup="f_mUp()" 
+                                                      onmousemove="f_mMove()"
+                                                      onmouseout="f_mOut()">
+        </div>
+    </div>    
+<script>
+    //마우스 왼쪽 버튼을 누른 상태로 움직이면 id_nemo도 같이 움직이도록
+    //마우스 좌표 event.clientX, event.clientY
+
+    //마우스 왼쪽버튼 누른 상태로 움직이면 id_nemo도 같이 움직이도록 하기 
+    var v_isLeftPressed = false;
+    var v_nemo = document.getElementById("id_nemo");
+    var v_msX;  //마우스 X
+    var v_msY;  //마우스 Y
+    var v_nemoX;//네모 X
+    var v_nemoY;//네모 Y
+
+    function f_mDown(){
+        console.log("마우스 버튼 누름");
+        if(event.button == 0){
+            v_msX = event.clientX
+            v_msY = event.clientY
+            v_nemoX = parseInt(v_nemo.style.left);
+            v_nemoY = parseInt(v_nemo.style.top);
+            v_isLeftPressed=true;
+        }
+    }
+
+
+    function f_mUp(){
+        console.log("마우스 버튼 놓았닝?");
+        v_isLeftPressed = false;
+    }
+
+
+    function f_mMove(){
+        if(v_isLeftPressed){
+            v_nemo.style.left = v_nemoX + (event.clientX - v_msX) + "px"; 
+            v_nemo.style.top = v_nemoY + (event.clientY - v_msY) + "px"; 
+
+        }
+    }
+
+    function f_mOut(){
+        v_isLeftPressed = false; 
+    }
+
+</script>
+</body>
+</html>
+```
+
+#### 마우스 오른쪽 버튼 막기
+```html
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #wrapper {
+        width:95vw;
+        height:95vh;
+        border:3px dashed black;
+        border-style:dotted;
+    }
+</style>
+</head>
+<body>
+<div id="wrapper" onmousedown="f_mDown()"></div>
+<script>
+    function aaa(){
+    }
+    //함수는 true다 왜 객체라서
+    if(aaa){
+        alert("사승원"); //?
+    }
+
+    document.getElementById("wrapper").oncontextmenu = function(){
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    /*
+    document.getElementById("wrapper").addEventListener("contextmenu",function(){
+        //return false; //?
+        event.preventDefault();
+        event.stopPropagation();
+    });
+    */
+
+
+    //context menu, 별도 이벤트
+    function f_mDown(){
+        if(event.button == 2){
+            alert("오른쪽 누르지 마세요");
+        }
+    }
+   
+   /* 이벤트 등록법 3가지
+     1. 태그에 직접 기술 
+     2. 요소의 on이벤트명 속성이용
+     3. addEventListener 메소드 이용  (권장방식)
+   */
+
+  /* 이벤트 등록법 2번은 같은 이벤트를 기술하면 덮어써버림, 나중것만 실행됨
+  window.onload = function(){
+      alert("자동 페이지로딩이 끝나면 실행됨!");
+  }
+
+  window.onload = function(){
+      alert("저도 실해되나요?");
+  }
+  */
+
+  /* 3번은 덮어쓰지 않고 내부의 이벤트 큐(Queue)라고 곳에 등록되서 순서대로 사용됨*/
+  window.addEventListener("load",function(){
+    alert("난 권장방식 3번이야");
+  });
+
+  window.addEventListener("load",function(){
+    alert("나도 권장방식 3번을 썼는데 어떻게 되지?");
+  });
+
+    
+
+
+</script> 
+</body>
+</html>
+```
+
+#### 파일 타입에 이미지 넣기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_disp{
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <!-- 거의 항상 이런 식으로 밖에 쓰이질 않으니 이걸 계속 활용하면 됨 -->
+    <div id="id_disp"></div>
+    <input id="id_file" type="file" value="" accept=".jpg,.jpeg,.png,.gif">
+    <!-- accept : 확장자를 제한할 수 있음 -->
+    <script>
+        var v_selfile = document.getElementById("id_file");
+        var v_disp = document.getElementById("id_disp");
+
+        v_selfile.onchange = function(){
+            console.log(v_selfile.files); // files는 파일을 가지고 있는 배열로 봐도 무방하다
+            var v_file = v_selfile.files[0]; 
+            var v_fileReader = new FileReader(); // FileReader : 파일을 읽어주는 사람이 필요 
+            v_fileReader.readAsDataURL(v_file); // readAsDataURL : 제일 많이 사용 
+            v_fileReader.onload = function(){   // onload : 파일리더가 다 읽었다고 알려주는 이벤트 
+                console.log(v_fileReader.result); // 읽은 내용을 result에 저장시킴 
+                v_disp.innerHTML=""; //사진 하나만 넣어야하니까 먼저 비우고 
+                var v_img = document.createElement("img");  
+                v_img.setAttribute("src",v_fileReader.result); // 이미지 내용 할당
+                v_img.setAttribute("width",200);
+                v_img.setAttribute("height",200);
+                v_disp.appendChild(v_img);
+            }
+        }
+    </script>
+</body>
+</html>
+```
+
+#### 사진 앨범 만들기(createElement(""))
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_disp{
+            width: 300px;
+            height: 300px;
+            border:1px solid black;
+            overflow: hidden;
+        }
+        #id_acja{
+            width: 1800px;
+            height: 1800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="id_disp">
+        <div id="id_acja"></div>
+    </div>
+    <input id="id_btn" type="button" value="사승원123">
+    <input type="button" value="누르세요" id="id_btn2">
+
+    <script>
+        var v_disp = document.getElementById("id_disp");
+        var v_acja = document.getElementById("id_acja");
+        var v_btn = document.getElementById("id_btn");
+        var v_btn2 = document.getElementById("id_btn2");
+        v_btn2.addEventListener("click",function(){
+            //이미 존재하는 객체를 붙여 넣으면 맨뒤에 가서 붙음
+            //appendChild를 잘 활용하면 사진 돌게 할 수 있음 
+            v_acja.appendChild(v_acja.children[0]);
+        });
+
+
+    var v_index = 1; 
+    
+    function f_click(){
+        // //DOM(Document Object Model) 객체 생성하기 
+        /*
+        테이블의 경우는 이렇게 넣어도 되긴 하지만 소스가 많이 길어져서
+        보통은 그냥 문자열 더하기로 넣는다. 
+        */
+
+        // var v_table = document.createElement("table");
+        // v_table.border="2";
+        // var v_tr = document.createElement("tr"); 
+        // var v_td = document.createElement("td");
+        // v_td.innerHTML="td의 값";
+
+        // v_tr.appendChild(v_td);
+        // v_table.appendChild(v_tr);
+        // v_disp.appendChild(v_table);
+
+
+        // var v_atag = document.createElement("a");
+        // v_atag.href="./img/son3.jepg";
+        // v_atag.innerHTML = "이너HTML"
+        // v_disp.appendChild(v_atag); 
+
+        var v_img = document.createElement("img"); //img 태그 객체 생성(메모리 상에)
+        v_img.setAttribute("src","./img/son"+v_index+".jpeg");
+        v_img.setAttribute("width","300");
+        v_img.setAttribute("height","300");
+        //alert(v_img.getAttribute("src")); 
+        //v_img.src="./img/son" + v_index + ".jpeg";
+        //v_img.width=300;
+        //v_img.height=300;
+        //v_disp.append //기능은 더 많으나 브라우져 호환성에 문제가 있으니까 사용 자제 
+        v_acja.appendChild(v_img); //눈에 보이게 
+        v_index++;
+    }
+    v_btn.addEventListener("click", f_click);
+</script>
+</body>
+</html>
+
+```
+
+#### 오늘의 문제(로또번호 내려오게 하기) - 수정필요
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_back{
+            width: 300px;
+            height: 300px;
+            background-color: chocolate;
+        }
+        .cl_data{
+            display: inline-block;
+            border: 1px solid black;
+            
+        }
+        
+
+    </style>
+    
+</head>
+<body>
+    <div id="id_back">
+        <div id="id_data0" class="cl_data">1</div>
+        <div id="id_data1" class="cl_data">2</div>
+        <div id="id_data2" class="cl_data">3</div>
+        <div id="id_data3" class="cl_data">4</div>
+        <div id="id_data4" class="cl_data">5</div>
+        <div id="id_data5" class="cl_data">6</div>
+        <div id="id_data6" class="cl_data">7</div>
+        <div id="id_data7" class="cl_data">8</div>
+        <div id="id_data8" class="cl_data">9</div>
+    </div>
+    
+    <script>
+        var v_datas = [80,100,56,120,180,30,40,120,160];
+        var v_height = document.createElement("height"); 
+
+        document.getElementById("id_data0").innerHTML =  v_datas[0];
+        v_height.setAttribute("height", v_datas[0]);
+         
+
+
+    </script>
+</body>
+</html>
+```
+
+## 📚 17일차
+####
+```html
+
+```
+
+####
+```html
+
+```
+
+####
+```html
+
+```
+
+####
+```html
+
+```
+
+####
+```html
+
+```
+
+####
+```html
+
+```
+
+####
+```html
+
+```
+
+####
+```html
+
+```
