@@ -5185,31 +5185,265 @@ System.out.print("<h1>난 최고의 프로그래머 오성현이당</h1>");
 ```
 
 ## 📚 17일차
-####
+#### 드래그앤드롭 
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        width:300px;
+        height:300px;
+        border:2px solid black;
+    }
+</style>
+</head>
+<body>
+    <!-- 드래그앤 드랍도 거의 요렇게 밖에 안 쓰이니, 이 파일을 잘 보관합니다 -->
+    <div id="id_disp" ondragover="f_mDragOver()" ondrop="f_mDrop()">
+        사진올려주세요
+    </div>
+<script>
+    var v_disp = document.getElementById("id_disp");
+    function f_mDragOver(){
+        event.preventDefault();
+    }
+    function f_mDrop(){
+        event.preventDefault();
+        //console.log(event.dataTransfer.files);
+        var v_file = event.dataTransfer.files[0];
+        var v_fileReader = new FileReader();
+        v_fileReader.readAsDataURL(v_file);
+        v_fileReader.onload = function(){
+            var v_img = document.createElement("img");
+            v_img.src = v_fileReader.result; 
+            v_img.width=100;
+            v_img.height=100;
+            v_disp.appendChild(v_img);
+        }
 
+    }
+
+    window.addEventListener("dragover",function(){
+        event.preventDefault();
+    });
+    window.addEventListener("drop",function(){
+        event.preventDefault();
+    });
+</script>
+</body>
+</html>
 ```
 
-####
-```html
-
+#### cssClass
+```html 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    .ngm {
+        height: 100px;
+        background-color: green;
+    }
+    .ksm {
+        height: 100px;
+        background-color: yellow;
+    }
+    .fgColor{
+        color: blue;
+    }
+</style>
+</head>
+<body
+    <div id="id_disp"></div>
+<script>
+    /* class는 자바스크립트 키워드 setAttribute 사용권장, 문자열 더하기 주의 */
+    //document.getElementById("id_disp").class = "ksm";
+    document.getElementById("id_disp").setAttribute("class","ksm fgcolor");
+    //document.getElementById("id_disp").className = "ksm";
+    //document.getElementById("id_disp").className = "fgColor";
+    // document.getElementById("id_disp").className = "ksm";
+    // document.getElementById("id_disp").className = 
+    //     document.getElementById("id_disp").className + "fgColor";
+</script>
+</body>
+</html>
 ```
 
-####
+#### 플리커
 ```html
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        var v_imgURLS;
+        function jsonFlickrFeed(p_data){
+            /*
+            v_imgURLS = [];
+            for(var i=0; i< p_data.items.length; i++){
+                console.log(p_data.items[0].media.m);
+                v_imgURLS.push(p_data.items[i].media.m);
+            }
+            */
+           // alert(v_imgURLS);
+           console.log("불리는지 단순 체크용 ");
+           for(var i=0; i< p_data.items.length; i++){
+                var v_img = document.createElement("img"); // 이미지 태그(객체)생성
+                v_img.src = p_data.items[i].media.m;
+                v_disp.appendChild(v_img);
+            }
+        }
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    이미지검색어<input id="id_txt" type=text value="">
+    <input type=button value="검색" id="id_imgIn">
+    <div id="id_disp"></div>
+    <script>
+        var v_disp = document.getElementById("id_disp");
+        var v_imgIn = document.getElementById("id_imgIn");
+        var v_txt = document.getElementById("id_txt");
+        var v_preURL = "https://www.flickr.com/services/feeds/photos_public.gne?tags=";
+        var v_postURL = "&format=json";
+        v_imgIn.addEventListener("click",function(){
+            var v_totalURL = v_preURL + v_txt.value + v_postURL;
+            var v_script = document.createElement("script");
+            v_script.src = v_totalURL;
+            document.head.appendChild(v_script);
+        });
+        /*
+        v_imgIn.addEventListener("click",function(){
+            for(var i=0; i< v_imgURLS.length; i++){
+                var v_img = document.createElement("img"); // 이미지 태그(객체)생성
+                v_img.src = v_imgURLS[i];
+                v_disp.appendChild(v_img);
+            }
+        });
+        */
+    </script>
+</body>
+</html>
 ```
 
-####
+#### 플리커2
 ```html
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 정리된 소스 -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        /*
+          JSONP -> JSON PADDING
+        */
+        function jsonFlickrFeed(p_data){
+           console.log("함수가 불리는지 단순 체크용 ");
+           console.log(p_data);
+           v_disp.innerHTML = ""; // 기존 것 지우기
+           for(var i=0; i< p_data.items.length; i++){
+                var v_img = document.createElement("img"); // 이미지 태그(객체)생성
+                v_img.src = p_data.items[i].media.m;
+                v_disp.appendChild(v_img);
+            }
+        }
+    </script>
+    <title>이미지검색</title>
+</head>
+<body>
+    이미지검색어<input id="id_txt" type=text value="">
+    <input type=button value="검색" id="id_imgIn">
+    <div id="id_disp"></div>
+    <script>
+        var v_disp = document.getElementById("id_disp");
+        var v_imgIn = document.getElementById("id_imgIn");
+        var v_txt = document.getElementById("id_txt");
+        var v_preURL = "https://www.flickr.com/services/feeds/photos_public.gne?tags=";
+        var v_postURL = "&format=json";
+        v_imgIn.addEventListener("click",function(){
+            if(document.getElementById("flickr")){
+                document.head.removeChild(document.getElementById("flickr"));
+            }
+            var v_totalURL = v_preURL + v_txt.value + v_postURL;
+            var v_script = document.createElement("script");
+            v_script.setAttribute("id","flickr");
+            v_script.src = v_totalURL;
+            document.head.appendChild(v_script);
+        });
+    </script>
+</body>
+</html>
 ```
 
-####
+#### 오늘의 문제 - 수정필요
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        width:300px;
+        height:300px;
+        border:2px solid black;
+    }
+</style>
+</head>
+<body>
+    <!-- 드래그앤 드랍도 거의 요렇게 밖에 안 쓰이니, 이 파일을 잘 보관합니다 -->
+    <div id="id_disp" ondragover="f_mDragOver()" ondrop="f_mDrop()">
+        사진올려주세요
+    </div>
+<script>
+    var v_disp = document.getElementById("id_disp");
+    function f_mDragOver(){
+        event.preventDefault();
+    }
+    function f_mDrop(){
+        event.preventDefault();
+        //console.log(event.dataTransfer.files);
+        var v_file = event.dataTransfer.files[0];
+        var v_fileReader = new FileReader();
+        v_fileReader.readAsDataURL(v_file);
+        v_fileReader.onload = function(){
+            var v_img = document.createElement("img");
+            v_img.src = v_fileReader.result; 
+            v_img.width=100;
+            v_img.height=100;
+            v_disp.appendChild(v_img);
+        }
 
+    }
+
+    window.addEventListener("dragover",function(){
+        event.preventDefault();
+    });
+    window.addEventListener("drop",function(){
+        event.preventDefault();
+    });
+
+    //오늘의 과제 : 파일 여러 개 끌어다 놓았을 때 끌어온 파일 모두 넣기 
+</script>
+</body>
+</html>
 ```
-
+## 📚 18일차
 ####
 ```html
 
