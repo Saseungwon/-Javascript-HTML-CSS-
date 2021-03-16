@@ -5444,17 +5444,657 @@ System.out.print("<h1>난 최고의 프로그래머 오성현이당</h1>");
 </html>
 ```
 ## 📚 18일차
-####
+#### 드래그앤드랍2
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        width:300px;
+        height:300px;
+        border:2px solid black;
+    }
+</style>
+</head>
+<body>
+    <!-- 드래그앤 드랍도 거의 요렇게 밖에 안 쓰이니, 이 파일을 잘 보관합니다 -->
+    <div id="id_disp" ondragover="f_mDragOver()" ondrop="f_mDrop()">
+        사진올려주세요
+    </div>
+<script>
+    var v_disp = document.getElementById("id_disp");
+    function f_mDragOver(){
+        event.preventDefault();
+    }
 
+    /*
+       반복문 안에 비동기방식 코드가 있을 때는 
+       코드를 별도 함수(함수도 객체이기 때문에)로 뺀당, 기억합시당 꼭
+    */
+
+    function f_readFile(p_file){
+        var v_fileReader = new FileReader();
+        v_fileReader.readAsDataURL(p_file);
+        v_fileReader.onload = function(){
+            var v_img = document.createElement("img");
+            v_img.src = v_fileReader.result; 
+            v_img.width=100;
+            v_img.height=100;
+            v_disp.appendChild(v_img);
+        }
+    }
+
+    function f_mDrop(){
+        event.preventDefault();
+        //console.log(event.dataTransfer.files);
+        // 파일 1개만 끌어다 놓았을 때
+        var v_files = event.dataTransfer.files; 
+        for(var i=0; i< v_files.length; i++){
+            f_readFile(v_files[i]);
+        //alert(v_fileReader.result);  // 힌트, 비동기
+        }
+
+        
+       /* 오늘의 과제 파일 여러개 끌어다 놓았을 때
+          끌어온 파일 모두 넣기 
+       */
+
+    }
+
+    window.addEventListener("dragover",function(){
+        event.preventDefault();
+    });
+    window.addEventListener("drop",function(){
+        event.preventDefault();
+    });
+</script>
+</body>
+</html>
 ```
 
-####
+#### tableindex
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 정리! 
+        tableindex는 tab 눌렀을 때 focus 가는 순서 지정
+        tabindex = -1 : focus 안 가도록 설정
+        tabindex = 0 : focus 받을 수 없는 element(요소)가 focus 받을 수 있도록 설정-->
+    아이디 <input tabindex="1" type="text" value="" autofocus><br>
+    암호 <input tabindex="3" type="password" value="" ><br>
+    별명 <input tabindex="-1s" type="text" value=""><br>
+    이메일 <input tabindex="2" type="text" value=""><br>
+    주소 <input tabindex="5" type="text" value=""><br>
 
+</body>
+</html>
 ```
 
-####
+#### location객체(href속성, replace 메소드 , reload)
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- download : 이미지 다운로드 해줌 -->
+    <a href="./img/son5.jpeg" download="son1.jpeg">손</a><br>
+    <a id="id_check" href="./img/pool1.jpeg" onclick="f_download(this)">풀 다운로드</a><br>
+    <input type="button" value="풀 다운로드" onclick="f_download()">
+    <!-- 링크이동은 a태그로 -->
+    <input type="button" value="이동" onclick="f_mv()">
+    <script>
+        function f_download(){
+            //event.preventDefault();// a태그의 링크 기능(기본기능) 막기
+            document.getElementById("id_check").download = "pool1.jpeg";
+            document.getElementById("id_check").click(); 
+                   }
 
+        function f_mv(){
+            //주소표시줄을 의미하는 location객체 
+            //location에서 기억해야할 세 가지
+            //href속성, replace 메소드 , reload(잘 안 씀)
+            //alert(window.location.href);
+
+            /*
+                href 속성 vs replace 메소드
+                href는 캐쉬를 사용
+                replace는 서버에 다시 요청
+            */
+
+            //location.href = "http://mail3.nextit.or.kr";
+            //location.replace("http://mail3.nextit.or.kr"); //변경된 내용을 가져와야할 때 사용
+            //location.reload(); // 현재 페이지 다시 로딩, 새로고침 버튼 누른 효과(별로 좋지 않음)
+        }
+    </script>
+</body>
+</html>
 ```
+
+#### 특별한 반복문(for-in)
+```html
+<!DOCTYPE html>
+    
+<meta charset="UTF-8">
+<script>
+    //특별한 반목문 for(var 변수명 in 객체)
+    var v_arr = ["영", "일", "이"];
+    v_arr.splice(1,1); //배열의 특정 값을 삭제(중요!!) 
+    alert(v_arr); // 지워졌는지 확인 
+
+    var v_obj = {}; 
+    v_obj.name = "사승원";
+    v_obj.age = 26;
+    //객체 속성 지우기
+    delete v_obj.name; // 많이 사용하지는 않는다. 
+
+    for(var v_atr in v_obj){
+        alert(v_atr); 
+    }
+    /*
+    for(var v_one in v_arr){
+        alert(v_one + "   " + v_arr[v_one]);// 0,1,2 -> 배열의 index값 알림 
+    }
+    */
+
+    /*
+   var v_obj = {
+       "attr1" : "속성1",
+       "attr2" : "속성2",
+       "attr3" : "속성3",
+       "attr4" : "속성4",
+       "attr5" : "속성5"
+   };
+   */
+  //위의 것과 똑같은 걸 쉽게 for문으로 만들기
+   var v_obj = {};
+   for(var i=1; i<=5; i++){
+       v_obj["attr"+i] = "속성" +i;
+   }
+
+
+
+   //속성 명 말고 속성 값 불러오고 싶을 때 
+   //alert(v_obj["attr1"]); //엄청 중요!!
+
+   for(var v_attr in v_obj){
+       //alert(v_attr + " " + v_obj.attr); 이건 안 됨 
+       alert(v_attr + " " + v_obj[v_attr]); //중요!!!!!!
+   }
+
+   for(var v_ssw  in window){
+        document.write(v_ssw + " " + document[v_ssw] + "<br>"); 
+   }
+</script>
+```
+
+#### 키보드이벤트1
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 주로 쓰는 키보드이벤트 keypress, keydown -->
+    <!-- <input type="text" value="" onkeydown="f_key()"> -->
+주민번호<input type="text" id="id_txt1" value="" onkeypress="f_key()">-
+       <input type="text" id="id_txt2" value="">
+<script>
+    /*
+    keypress : 어떤 글자를 눌렀는지 구분하기 위한 이벤트
+    keydown  : 어떤 버튼을 눌렀는지 구분하기 위한 이벤트 -> 더 많이 사용됨
+    */
+   var v_txt1 = document.getElementById("id_txt1");
+   var v_txt2 = document.getElementById("id_txt2"); 
+
+    function f_key(){
+        /*
+        if(event.keyCode == "13");//엔터의 키코드가 13
+            v_txt2.focus(); 
+            //엔터키를 치면 커서를 v_txt2로 올겨라(focus 메소드도 자주 사용되는 메소드임)
+        */
+        
+        if(v_txt1.value.length == 5){
+            v_txt2.focus();
+        }
+    }
+
+</script>
+</body>
+</html>
+```
+
+#### 키보드이벤트2
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_back{
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border: 2px solid black;
+        }
+        #id_bar{
+            position: absolute;
+            overflow: hidden;
+            width: 100px;
+            height: 25px;
+            bottom: 40px;
+            background-color: blueviolet;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="id_back" tabindex="0" onkeydown="f_kDown()">
+        <div id="id_bar"></div>
+    </div>
+    <script>
+        var v_bar = document.getElementById("id_bar");
+
+        if(!v_bar.style.left){
+            v_bar.style.left = "30px"; 
+        }
+
+        var v_mvWidth=10;
+        function f_kDown(){
+            if(event.keyCode == "37"){ //왼쪽 화살표 : 37 오른쪽 화살표 : 39
+                if(parseInt(v_bar.style.left)<=0){
+                    return;
+                }
+                v_bar.style.left = parseInt(v_bar.style.left) - v_mvWidth + "px"; 
+            }
+            if(event.keyCode == "39"){
+                var v_right  = parseInt(v_bar.style.left) + 100;
+                if(v_right >= 300){
+                    return; // 아무 일도 안 하기
+
+                }
+                v_bar.style.left = parseInt(v_bar.style.left) + v_mvWidth + "px"; 
+            }
+        }
+    </script>
+</body>
+</html>
+```
+
+#### 오늘의 문제(갤러그) - 수정필요
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_back{
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border: 2px solid black;
+        }
+
+        #id_ball{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: chartreuse;
+            top: 150px;
+            left: 100px;
+
+            border-radius: 50px; 
+            background-image: url("./img/dog3.jpeg");
+            background-size: 50px 50px;
+        }
+
+        #id_bar{
+            position: absolute;
+            overflow: hidden;
+            width: 100px;
+            height: 25px;
+            bottom: 40px;
+            background-color: blueviolet;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="id_back" tabindex="0" onkeydown="f_kDown()">
+        <div id="id_bar"></div>
+        <div id="id_ball"></div>
+    </div>
+    <input type="button" value="오른쪽으로 가기" onclick="f_cont()">
+    <input type="button" value="그만가" onclick="f_stop()">
+
+    <script>
+        var v_mvR = 10; 
+        var v_mvT = 10; 
+        var v_bar = document.getElementById("id_bar");
+        var v_timer;
+        var v_run = false;
+
+
+        function f_cont(){
+            if(!v_run){
+            f_move();
+            v_run = true;
+            }
+        }
+        // 바 움직이기
+        if(!v_bar.style.left){
+            v_bar.style.left = "30px"; 
+        }
+        
+        var v_mvWidth=10;
+
+        function f_kDown(){
+            if(event.keyCode == "37"){ //왼쪽 화살표 : 37 오른쪽 화살표 : 39
+                if(parseInt(v_bar.style.left)<=0){
+                    return;
+                }
+                v_bar.style.left = parseInt(v_bar.style.left) - v_mvWidth + "px"; 
+            }
+            if(event.keyCode == "39"){
+                //alert(v_bar.style);
+                var v_right  = parseInt(v_bar.style.left) + 100;
+                if(v_right >= 300){
+                    return; // 아무 일도 안 하기
+                    
+                }
+                v_bar.style.left = parseInt(v_bar.style.left) + v_mvWidth + "px"; 
+            }
+        }
+
+        
+        
+        var v_mvR = 10; /* 움직이는 폭 */ 
+        var v_mvT = 10; /* 움직이는 상하 */
+        var v_timer; 
+        var v_ball = document.getElementById("id_ball");
+
+        
+        //버튼 누르면 속도 빨라지는 거 안 되게 한 번만 실행할 수 있게 해주기
+        //직접 가는 걸 중간에 한 번 거쳐서 조건을 줘서 제어가능(proxy 패턴)
+        var v_run = false;
+        function f_cont(){
+            if(!v_run){
+                f_move();
+                v_run = true;
+
+            }
+        }
+        
+        //멈추기 
+        function f_stop(){
+            clearTimeout(v_timer);
+            v_run =false;
+        }
+        
+        //움직이기
+        function f_move(){
+            if(!v_ball.style.left){/* 원래 빈공백인데 !로 '만약 정의되지 않았다면?'*/
+            v_ball.style.left = "100px"; /* 초기값을 100px로 정의할 수 있음 단위값(px)를 꼭 줘야함*/
+            v_ball.style.top = "150px";
+            }
+            v_ball.style.transform = "skewX(0deg) skewY(0deg)"
+            v_ball.style.left = parseInt(v_ball.style.left) + v_mvR + "px";
+            v_ball.style.top = parseInt(v_ball.style.top) + v_mvT + "px";
+            
+            var v_left = parseInt(v_ball.style.left);
+            var v_right = parseInt(v_ball.style.left)+ 100;
+            var v_top = parseInt(v_ball.style.top) ;
+            var v_bottom = v_top + 100; 
+        
+            
+            if(v_right >= 350 || v_left <=0){// 좌우충돌
+                v_ball.style.transform = "skewY(45deg)"
+                v_mvR = -v_mvR;
+            }
+            
+            if(v_bottom >= 380 || v_top <=0){//방향 바꾸기 
+                v_ball.style.transform = "skewX(45deg)"
+                v_mvT = -v_mvT;
+            }
+            
+            v_timer = setTimeout(f_move,50);//0.05초마다 버튼 누르면 자동으로 오른쪽으로 움직임
+        }
+        
+        
+        </script>
+</body>
+</html>
+```
+## 📚 19일차
+#### 어제 문제 정답
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_back {
+        position: relative;
+        overflow: hidden;
+        width:300px;
+        height:400px;
+        border:2px solid black;
+    }
+    #id_bar {
+        position: absolute;
+        width:100px;
+        height:25px;
+        top: 340px;
+        background-color: hotpink;
+    }
+    #id_ball {
+        position: absolute;
+        width:50px;
+        height:50px;
+        background-color: gold;
+        border-radius: 25px;
+    }
+</style>
+</head>
+<body>
+    <input type=button value="씨짝" onclick="f_mv()">
+    <div id="id_back"  tabindex="0" onkeydown="f_kDown()">
+        <div id="id_ball"></div>
+        <div id="id_bar"></div>
+    </div> 
+<script>
+    var v_ball = document.getElementById("id_ball");
+    v_ball.style.left = Math.round(Math.random()*250) + "px";
+    v_ball.style.top = Math.round(Math.random()*20) + "px";
+    var v_mvW = 10;
+    var v_mvH = 10;
+    function f_mv(){
+        v_ball.style.left = parseInt(v_ball.style.left) + v_mvW + "px";
+        v_ball.style.top = parseInt(v_ball.style.top) + v_mvH + "px";
+        var v_left = parseInt(v_ball.style.left);
+        var v_top = parseInt(v_ball.style.top);
+        var v_right = v_left + 50;
+        var v_bottom = v_top + 50;
+        //막대 충돌
+        var v_btmmCheck = (v_bottom >= 340);
+        var v_leftCheck = (v_right >= parseInt(v_bar.style.left));
+        var v_rightCheck = (v_left <= parseInt(v_bar.style.left)+100); 
+        if(v_btmmCheck && v_leftCheck && v_rightCheck){
+            v_mvH = -v_mvH;
+        }
+
+
+
+        //벽충돌
+        if(v_left <= 0 || v_right >= 300){
+            v_mvW = - v_mvW;
+        }
+        if(v_top <=0 || v_bottom >= 400){
+            v_mvH = -v_mvH;
+        }
+        setTimeout(f_mv,200);
+    }
+
+
+    var v_bar = document.getElementById("id_bar");
+    if(!v_bar.style.left){
+        v_bar.style.left = "30px";
+    }
+    var v_mvWidth=10;
+    function f_kDown(){
+        if(event.keyCode == "37"){  // 왼쪽화살표 37, 오른쪽 39번
+            if(parseInt(v_bar.style.left)<=0){
+                return;
+            }
+            v_bar.style.left = parseInt(v_bar.style.left) - v_mvWidth + "px";
+        }
+        if(event.keyCode == "39"){
+            var v_right = parseInt(v_bar.style.left) + 100;
+            if(v_right >= 300){
+                return;            // 아무일도 안하깅
+            }
+            v_bar.style.left = parseInt(v_bar.style.left) + v_mvWidth + "px";
+        }
+    }
+
+
+</script>     
+</body>
+</html>
+```
+
+#### form
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        서버로 뭔가 전송하려면 꼭 form 태그로 둘러싸야 한다.
+        서버로 정보를 보내려는 입력태그에는 꼭 name속성이 있어야 한다. 
+        ? 뒤에 문자열 전체를 QueryString(쿼리스트링)이라고 한다
+
+        쿼리스트링이 보이는 전송방식을 get방식이라고 부름(default값)<form action="" method="get">
+        쿼리스트링이 안 보이는 전송 방식을 post 방식이라고 부름 (<form action="" method="POST">)
+        기본적으로 개발자가 get방식 상태에서 개발해야 디버깅이 편해서 생산성이 높아짐 
+        민감한 정보는 확인해서 post방식으로 바꿔야 함 
+
+        action의 default값은 자기 자신
+
+        form 태그의 onsubmit 이벤트는 전송 직전에 발생한다.(true : 전송됨/false : 전송안됨)
+        required : 이 입력란을 작성하세요 문구 알림(submit 버튼이 있을 때만 동작) 
+        onsubmit="return f_submit()"
+
+        page에 form 태그는 여러 번 들어가도 상관없음
+        하지만 form안에 form을 넣진 않음
+     -->
+    <form id="id_form" action="인코딩.html" method="get" >
+        아이디 <input type="text" id="id_id" name="nm_id" value="" required><br>
+        별명 <input type="text" name="nm_alias" value="" required><br>
+        <input type="submit" value="전달">
+        <input type="reset" value="맨처음값으로">
+    </form>
+    <hr>
+    <form id="id_form" action="어제문제정답.html" method="get" >
+        아이디2 <input type="text" id="id_id1" name="nm_id1" value="" required><br>
+        별명2 <input type="text" name="nm_alias2" value="" required><br>
+        <input type="submit" value="전달2">
+        <input type="reset" value="맨처음값으로2">
+    </form>
+
+
+    <script>
+        var v_form = document.getElementById("id_form");
+        /* 요즘은 거의 안 쓰는 방법 차라리 id로 접근하는 게 나음 
+        var v_form1 = document.forms[0];
+        var v_form2 = document.forms[1];
+        console.log(v_form2);
+        */
+
+        v_form.onsubmit =function(){
+            if(v_id.value.length <= 3){ // 세 글자 이하는 
+                event.preventDefault(); // 전송 막기
+            }
+            return true;
+        }
+
+
+        var v_id = document.getElementById("id_id");
+        function f_submit(){
+            /* 원래 자바스크립트가 나왔던 이유, validation check라고 함 
+            //if(!v_id.value) // 유효한 값을 안 쓰면 안 들어가게
+            if(v_id.value.length < 3){// 세 글자 이상 써야만 넘어가게
+                return false;
+            }
+            return true;
+            */
+        }
+        //alert(location.href); // action 페이지가 실행됨을 확인 
+    </script>
+</body>
+</html>
+```
+
+#### PHP test
+```php
+<?php
+    //이 안에는 php만 해석할 수 있다.
+    //문자열 더하기는 .으로 표시
+    echo "<h1>".$_GET["nm_name"]."최고의 프로그래머</h1>";
+    //echo phpinfo(); // php 설치정보를 보여주는 함수
+    //"</body></html>";
+?>
+```
+
+#### 인코딩
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    /*      인코딩                    디코딩
+    escape                   unescape               아주 옛날 거 
+    encodeURI                decodeURI              조금 옛날 거(아직 조금은 사용됨)
+    encodeURIComponent       decodeURIComponent     지금 사용하는 거 
+    */
+   var v_values = location.href;
+   var v_queryString = v_values.split("?")[1];
+   alert(docodeURIComponent(v_queryString));
+   alert(encodeURIComponent(docodeURIComponent(v_queryString)));
+   /*
+    v_values = decodeURIComponent(v_values);
+    v_values = decodeURIComponent(v_values); 
+    alert(v_values);
+    */
+
+   
+    </script>
+```
+
