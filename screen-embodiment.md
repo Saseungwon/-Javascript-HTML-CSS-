@@ -6098,3 +6098,707 @@ System.out.print("<h1>난 최고의 프로그래머 오성현이당</h1>");
     </script>
 ```
 
+## 📚 20일차
+
+#### 비디오
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+                video::cue {
+                font-size: 25px;
+                color:red;
+                background-color:yellow;
+                opacity: 0.5;  /* 0은 완전 투명, 1은 완전 안투명  */
+                line-height: 30px; /*텍스트를 담은 상자의 높이 */
+            }
+    
+    </style>
+</head>
+<body>
+    <video id="id_mv" width="400" src="./movie/movie1.mp4"
+        controls muted controlslist="nodownload">
+        <track src="sample-en.vtt" kind="subtitles" srclang="en" label="English"></track>
+        <track src="sample-ko.vtt" kind="subtitles" srclang="ko" label="한국어" default></track>
+    </video>
+    <hr>
+
+    <input type="button" value="플레이" onclick="f_play()">
+    <input type="button" value="잠깐 멈춰" onclick="f_pause()">
+    <input type="button" value="다음" onclick="f_next()">
+    <input type="button" value="빠르게" onclick="f_fast()">
+
+    <script>
+        var v_mv=document.getElementById("id_mv");
+        var v_index = 1;
+
+        function f_fast(){
+            v_mv.playbackRate = v_mv.playbackRate*2; //playbackRate: 속도
+        }
+
+        // 현재 플레이되는 동영상이 끝났다면 
+        v_mv.onended = function(){ // onended: 영상 끝나고 뭐할지
+            f_next(); // 다음 영상으로
+            f_play(); // 강제 플레이
+        }
+
+        function f_play(){
+            v_mv.muted = false; //위에 muted를 false로 만들어서 재생 누르면 소리 남
+            v_mv.play(); //play: 재생
+        }
+        function f_pause(){
+            v_mv.pause(); //pause: 멈춤
+        }
+
+        function f_next(){
+            v_index++; 
+            if(v_index >5) v_index = 1;
+            v_mv.src = "./movie/movie"+ v_index+ ".mp4";
+        }
+    </script>
+</body>
+</html>
+```
+
+#### sample-ko.vtt
+```vtt
+WEBVTT FILE
+ Note 여기 주석이예요!                
+00:00:00.000 --> 00:00:02.000 line:10%
+<b>안넝하세요~</b>
+ 00:00:02.000 --> 00:00:04.000  line:70% position:20%
+<i>스크립트가 제일 쉬워요!~</i>
+ 00:00:05.000 --> 00:00:06.000 position:30%
+<u>이렇게 쉬운 언어가 있어요</u>
+```
+
+#### sample-en.vtt
+```vtt
+WEBVTT FILE
+ Note 여기 주석이예요!              
+00:00:00.000 --> 00:00:02.000 line:10%
+<b>Hello Hello~</b>
+ 00:00:02.000 --> 00:00:04.000  line:70% position:50%
+<i>Script is really Easy!~</i>
+ 00:00:05.000 --> 00:00:06.000 position:30%  align:right
+<u>Lier Lier Lier Lier</u>
+```
+
+#### 시계 만들기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_clock{
+        width:200px;
+        height:100px;
+        background-color: black;
+        color:yellow;
+        font-size: 20px;
+        line-height: 100px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div id="id_clock">
+        <div id="id_inclock"></div>
+    </div>
+    <script>
+        //날짜 객체(Date)
+        //var v_date = new Date('서버시간세팅');//시스템의 현재 날짜 시간을 읽어옴 
+        /*
+        var v_date = new Date();
+        alert("년도 " + v_date.getFullYear());
+        alert("월 " + v_date.getMonth()); //주의 0부터 시작이라서 +1 해야됨
+        alert("일 " + v_date.getDate());
+        alert("요일 " + v_date.getDay()); // 일요일 0, 월요일1 ~ 토요일6
+        alert("시간 " + v_date.getHours());
+        alert("분 " + v_date.getMinutes());
+        alert("초 " + v_date.getSeconds());
+        alert(v_date.toLocaleString())//눈으로 보자
+        */
+
+        //디지털 시계 만들기
+
+        var v_clock = document.getElementById("id_clock");
+        function f_clock(){
+            var v_date = new Date(''); 
+            var v_hours = v_date.getHours();
+            if(v_hours < 10){
+                v_hours = "0" + v_hours;
+            }
+            var v_minutes = v_date.getMinutes();
+            if(v_minutes < 10){
+                v_minutes = "0" + v_minutes;
+            }
+            var v_seconds = v_date.getSeconds();
+            if(v_seconds < 10){
+                v_seconds = "0" + v_seconds;
+            }
+
+            var v_timeStr = v_hours + ":" + v_minutes + ":" + v_seconds; 
+
+            v_clock.innerHTML = v_timeStr;
+            setTimeout(f_clock,1000); //1초마다 재귀호출
+        }
+
+
+    </script>
+</body>
+</html>
+```
+
+#### 달력
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #id_cal{
+            width: 720px;
+            height: 630px;
+            border: 1px solid black;
+        }
+        .cl_day{
+            display: inline-block;
+            font-size: 30px;
+            text-align: center;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            border: 1px solid palevioletred;
+            vertical-align: top; /* div 사용시 자주 만나는 정렬 문제 */
+
+        }
+    </style>
+</head>
+<body>
+
+    <div id="id_cal"></div>
+    <script>
+        //날짜 다룰 때 가장 귀찮은 것.. 윤년, 달의 마지막 날이 며칠인가(실제는 2월)
+        //1일에서 하루를 빼면 전월 마지막날이 나옴 
+        //월의 마지막날 구하는 함수 
+        var v_cal = document.getElementById("id_cal"); 
+        //년도
+        var v_year = document.createElement("select");
+        for(var i=1; i<=6; i++){
+            var v_yearOpt = document.createElement("option");
+            v_yearOpt.value = "202"+i; 
+            v_yearOpt.innerHTML = "202" +i; 
+            v_year.appendChild(v_yearOpt); 
+        }
+        document.body.appendChild(v_year);
+
+        //월
+        var v_month = document.createElement("select");
+        for(var i=1; i<=12; i++){
+            var v_monthOpt = document.createElement("option");
+            if(((new Date()).getMonth()+1)==i){
+                v_monthOpt.selected = true; 
+            }
+            v_monthOpt.value = i; 
+            v_monthOpt.innerHTML = i; 
+            v_month.appendChild(v_monthOpt); 
+        }
+        document.body.appendChild(v_month);
+        document.body.appendChild(v_cal);
+
+        v_month.onchange = function(){
+            selected
+            alert("바꾸었습니다");
+        }
+        
+        // var v_date = new Date("2021-03-01");
+        // var v_last = v_date.setDate(v_date.getDate() - 1);
+        // alert(v_date.toLocaleString()); 
+
+        function f_getLastDate(p_year, p_month){
+            var v_date = new Date(p_year, p_month, 1);
+            v_date.setDate(v_date.getDate() -1); 
+            return v_date.getDate(); // 마지막 일 리턴  
+        }
+
+        //월의 1일이 무슨 요일인지 리턴하는 함수 
+        function f_getFirstDate(p_year,p_month){
+            var v_date = new Date(p_year, p_month-1, 1);
+            return v_date.getDay(); //getDay: 요일 
+        }
+
+        var v_startDay = f_getFirstDate(2021,5); //시작 요일 
+        var v_lastDay = f_getLastDate(2021,5); 
+        var v_dayS=1; // 시작일 
+        var v_dayColor = ["red", "black", "black", "green", "black", "black", "blue"]
+        for(var i=0; i<42; i++){
+            var v_day = document.createElement("div");
+            if(i>=v_startDay && v_dayS<=v_lastDay){
+                v_day.innerHTML = v_dayS;
+                v_dayS++;
+            }else{
+                v_day.style.backgroundColor="gray";
+            }
+            v_day.style.color=v_dayColor[i%7];
+            
+            v_day.setAttribute("class","cl_day");
+            v_cal.appendChild(v_day);
+            /*
+            if(i%7==0){
+                v_day.style.color="red"
+            }
+            if(i%7==6){
+                v_day.style.color="blue"
+            }
+            */
+        }
+    </script>
+</body>
+</html>
+```
+
+## 📚 20일차
+
+#### location -> receive
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="receive.html" method="GET">
+        아이디 <input type="text" name="nm_id" value=""><br>
+        별명 <input type="text" name="nm_alias" value=""><br>
+        보유스킬 <br>
+        오라클 <input type="checkbox" name="nm_skills" value="oracle">
+        HTML <input type="checkbox" name="nm_skills" value="html">
+        CSS <input type="checkbox" name="nm_skills" value="css">
+        JS <input type="checkbox" name="nm_skills" value="js">
+        JSP <input type="checkbox" name="nm_skills" value="jsp"> <br>
+        <input type="submit" value="전송">
+    </form>
+    
+</body>
+</html>
+```
+
+#### receive(location에서 보낸 값 받기)
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<script src="./js/jsp.js"></script> 
+<!-- 밑에 코드를 js파일로 빼고 불러서 실행  -->
+<script>
+
+
+// // 아이디와 별명의 값만 뽑아내려 함 
+//     //쿼리스트림에서 원하는 값 찾기 일반화 
+//     var request = {};   //빈 객체 생성
+
+//     // 1개만 리턴
+//     request.getParameter = function(p_schName){ //메소드 추가
+//         var v_urlStr = location.href;
+//         if(v_urlStr.indexOf("?") != -1){
+//             var v_queryString = v_urlStr.split("?")[1];
+//             var v_params = v_queryString.split("&"); 
+//             for(var i=0; i<v_params.length; i++){
+//                 var v_name = v_params[i].split("=")[0];
+//                 var v_value = v_params[i].split("=")[1];
+//                 if(v_name == p_schName){
+//                     return decodeURIComponent(v_value).replaceAll("+"," ");
+//                 }
+//             }
+//         }
+//         return null; // 이런 건 정하는 것임, 아예 없어가 못 찾았을 때
+//     }
+
+//     // 그룹으로 넘어간 값 배열로 리턴
+//     request.getParameterValues = function(p_schName){
+//         var v_urlStr = location.href;
+//         var v_rsltArr = [];
+//         if(v_urlStr.indexOf("?") != -1){
+//             var v_queryString = v_urlStr.split("?")[1];
+//             var v_params = v_queryString.split("&"); 
+//             for(var i=0; i<v_params.length; i++){
+//                 var v_name = v_params[i].split("=")[0];
+//                 var v_value = v_params[i].split("=")[1];
+//                 if(v_name == p_schName){
+//                     v_rsltArr.push(decodeURIComponent(v_value).replaceAll("+"," "));
+//                 }
+//             }
+//         }
+//         if(!v_rsltArr.length){
+//             return null;
+//         }
+//         return v_rsltArr; // 이런 건 정하는 것임, 아예 없어가 못 찾았을 때
+//     }
+
+    var v_skills= request.getParameterValues("nm_skills");
+
+    var out = {};
+    out.print = function(p_msg){
+        document.write(p_msg);
+    }
+    out.println = function(p_msg){
+        document.write(p_msg+"<br>");
+    }
+
+    var v_id = request.getParameter("nm_id");
+    var v_alias = request.getParameter("nm_alias");
+    out.print("<h1>" + v_id + " 님 별명은 " + v_alias + " 너무너무 반가워요<h1>");
+    out.print("<h1>당신의 보유능력은 " + v_skills + "이군용</h1>");
+
+
+
+
+    //아래와 같은 사용은 너무 불편, 일반화 시켜야 함 
+    /*
+    var v_urlStr = location.href;
+    var v_queryString = v_urlStr.split("?")[1];//? 오른쪽에 있는 값 가져오기 
+    //alert(v_queryString); //확인
+    var v_param1 = v_queryString.split("&")[0];//& 왼쪽에 있는 값 가져오기
+    var v_id = decodeURIComponent(v_param1.split("=")[1]);//= 오른쪽 값 가져오기
+    */
+
+</script>
+```
+
+#### jsp.js
+```js
+// 아이디와 별명의 값만 뽑아내려 함
+
+/*
+서버 프로그램 없이 마치 서버 프로그램이 움직이는 것처럼 현재 사기를 치고 있음
+그것이 가능한 이유는?
+요청 내용이 주소 표시줄에 남아있는 것을 이용했기 때문
+결국 get 방식으로만 가능하다. POST방식으로는 불가능
+*/
+
+//쿼리스트림에서 원하는 값 찾기 일반화
+var request = {}; //빈 객체 생성
+
+// 1개만 리턴
+request.getParameter = function(p_schName){ //메소드 추가
+var v_urlStr = location.href;
+if(v_urlStr.indexOf("?") != -1){
+var v_queryString = v_urlStr.split("?")[1];
+var v_params = v_queryString.split("&");
+for(var i=0; i<v_params.length; i++){
+var v_name = v_params[i].split("=")[0];
+var v_value = v_params[i].split("=")[1];
+if(v_name == p_schName){
+return decodeURIComponent(v_value).replaceAll("+"," ");
+}
+}
+}
+return null; // 이런 건 정하는 것임, 아예 없어가 못 찾았을 때
+}
+
+// 그룹으로 넘어간 값 배열로 리턴
+request.getParameterValues = function(p_schName){
+var v_urlStr = location.href;
+var v_rsltArr = [];
+if(v_urlStr.indexOf("?") != -1){
+var v_queryString = v_urlStr.split("?")[1];
+var v_params = v_queryString.split("&");
+for(var i=0; i<v_params.length; i++){
+var v_name = v_params[i].split("=")[0];
+var v_value = v_params[i].split("=")[1];
+if(v_name == p_schName){
+v_rsltArr.push(decodeURIComponent(v_value).replaceAll("+"," "));
+}
+}
+}
+if(!v_rsltArr.length){
+return null;
+}
+return v_rsltArr; // 이런 건 정하는 것임, 아예 없어가 못 찾았을 때
+```
+#### 로컬스토리지
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var v_str = " 1 + 2 * 6 - 3 + 6 / 2 * 21";
+        alert(eval(v_str));
+        eval("localStorage.aaa = 'kkkk'"); 
+        /*
+            eval 함수는 문자열에 대해서 javascript엔진을 구동시킴
+            해킹에 많이 이용되어서 사용이 자제되고 있음. 일부 브라우져들은 eval함수가 소스에
+            있으면 그 내용을 추적함
+        */
+
+// localStorage, 브라우져 내의 저장공간, 지우기 전에는 안 지워짐
+        // 버퍼로 사용할 수 있음, 쿠키 대용으로 사용하면 아주 좋음, 현재 크롬은 5m 정도의 용량 지원
+        // length
+        // setItem, getItem, removeItem, key, clear
+
+        // localStorage는 문자열 저장만 허락한다. 객체는 자동으로 타입을 표시하는 문자열이
+        // 저장되어서, 그 내용을 잃어버리게 된다. 곧 내용을 잃어버리게 되어버림
+
+    //write 기능
+        var v_str = '{"name":"ssw"}'; //문자열 주의!! : 밖을 ''로 안을 ""로
+        var v_obj = {"name":"ssw"};   //객체
+        var v_arr = ["1","2","3","4"];
+
+        //json <--> string 변환 유틸리티
+        v_str = JSON.parse(v_str); //문자열을 JSON으로, 문자열이 JSON 문법에 맞아야만 함 
+        alert(v_str.name); 
+
+        v_obj - JSON.stringify(v_obj);//JSON을 문자열로  
+
+        localStorage.setItem("hsg",JSON.stringify(v_obj)); 
+        localStorage.setItem("ssw",JSON.stringify(v_arr));
+    
+    //꺼내 보기
+        var v_check = JSON.parse(localStorage.getItem("ssw"));
+        console.log(v_check[0]);
+
+        var v_ssw = localStorage;
+        //이렇게 사용도 가능 
+        v_ssw.setItem("kkk", "hello"); //이걸 권장
+        v_ssw.kkk2="hello2";
+
+        localStorage.setItem("사승원","123");
+        localStorage.setItem("사승원1","123");
+        localStorage.setItem("사승원","456"); //주의! 같은 키 값이 들어가면 뒤에 있는 벨류 값으로 덮어써짐
+
+    //읽기 기능
+        //alert(localStorage.getItem("사승원1"));
+
+    //지우기 기능
+        //localStorage.removeItem("사승원1");
+        //alert(localStorage.length); // 2
+        //alert(localStorage.key(1)); // index번호로 넘겨주면 key값을 돌려줌 
+        localStorage.clear(); //전부 지우기
+    </script>
+
+</body>
+</html>
+```
+#### 테이블 만들기
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="id_disp"></div>
+    <script>
+        var v_commonTable = {
+           grade01:"대표",
+           grade02:"임원",
+           grade03:"PM",
+           grade04:"개발자"
+        };
+ 
+        var v_sawonList = [
+           {level:"grade01",name:"로제"},
+           {level:"grade04",name:"지민"},
+           {level:"grade04",name:"정국"},
+           {level:"grade03",name:"제이홉"},
+           {level:"grade02",name:"제니"},
+           {level:"grade04",name:"슈가"},
+           {level:"grade02",name:"지수"},
+        ];
+
+        // table 만들때는 document.createElement를 잘 사용하지 않음
+        // table만들때는 문자열 더하기가 훨씬 더 편하고 가독성도 좋음
+        var v_tblStr = "<table border=2>";
+        v_tblStr += "<tr><th>넘버</th><th>이름</th><th>직위</th></tr>"    
+        for(var i=0; i<v_sawonList.length; i++){
+            v_tblStr += "<tr>";
+            v_tblStr += "<td>"+ (i+1) +"</td>";
+            v_tblStr += "<td>"+ v_sawonList[i].name +"</td>";
+            v_tblStr += "<td>"+ v_commonTable[v_sawonList[i].level] +"</td>"; // 사용에 주의
+            v_tblStr += "</tr>";
+        }
+        v_tblStr += "</table>";
+        document.getElementById("id_disp").innerHTML = v_tblStr;  // 화면 출력
+
+    </script>
+</body>
+</html>
+```
+
+
+#### 오늘의 문제 - 수정필요
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <select id="id_sel1" size=4 onchange="f_first()">
+    </select>
+    <select id="id_sel2" size=4 style="width:100px" onchange="f_second()">
+    </select>
+    <select id="id_sel3" size=4 style="width: 100px;">
+    </select>
+    <script>
+        var v_grp1 = ["영업부","관리부"];
+ 
+        var v_grp12 = [
+            ["국내영업","해외영업","마구영업"],
+            ["인사관리","구매관리","자금관리"]
+        ];
+ 
+        var v_grp123 = [
+            [
+                ["임나연","유정연","박지효"],
+                ["김다현","손채영","박로제"],
+                ["태리사","김제니","김지수"]
+            ],
+            [
+                ["김남준","김석진"],
+                ["민윤기","정호석","전정국"],
+                ["박지민","김태형"]
+            ]
+        ];
+ 
+ 
+        var v_str="<option>선택하세요</option>";
+        for(var i=0; i < v_grp1.length; i++){
+            v_str += "<option value="+ i + " >"+ v_grp1[i] + "</option>";
+        }
+        document.getElementById("id_sel1").innerHTML = v_str;
+        //console.log(document.getElementById("id_sel1").innerHTML);
+ 
+        // var v_selectStr = v_str.value
+        // function f_select(){
+
+        // }
+
+        function f_first(){
+           //코드 추가
+           var v_selIndex = document.getElementById("id_sel1").value;
+           var v_str1="<option>선택하세요</option>";
+           for(var i=0; i < v_grp12.length+1; i++){
+                for(var j=0; j < v_grp12.length+1; j++)
+                v_str1 += "<option value="+ i + " >"+ v_grp12[i][j]+ "</option>";
+                // if(v_selIndex == 0){
+                //     v_grp12[][]
+                // }
+        }
+        document.getElementById("id_sel2").innerHTML = v_str1;
+        console.log(v_selIndex);
+        }
+ 
+
+        function f_second(){
+           //코드 추가
+           var v_selIndex2 = document.getElementById("id_sel12").value;
+           var v_str2="<option>선택하세요</option>";
+           for(var i=0; i < 2; i++){
+                for(var j=0; j < 3; j++){
+                    for(var k=0; k < 2; k++){
+                        v_str2 += "<option value="+ i + " >"+ v_grp123[i][j][k]+ "</option>";
+
+                    }
+                }
+ 
+        }
+        document.getElementById("id_sel3").innerHTML = v_str2;
+        }
+        
+    </script>    
+</body>
+</html>
+```
+
+
+#### 오늘의 문제 - 힌트
+```html
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <select id="id_sel1" size=4 onchange="f_first()">
+    </select>
+    <select id="id_sel2" size=4 style="width:80px" onchange="f_second()">
+    </select>
+    <select id="id_sel3" size=4 style="width:80px">
+    </select>
+    <script>
+        var v_grp1 = ["영업부", "관리부"];
+
+        var v_grp12 = [
+            ["국내영업", "해외영업", "마구영업"],
+            ["인사관리", "구매관리", "자금관리"]
+        ];
+
+        var v_grp123 = [
+            [
+                ["임나연", "유정연", "박지효"],
+                ["김다현", "손채영", "박로제"],
+                ["태리사", "김제니", "김지수"]
+            ],
+            [
+                ["김남준", "김석진"],
+                ["민윤기", "정호석", "전정국"],
+                ["박지민", "김태형"]
+            ]
+        ];
+
+        var v_str = "<option>선택하세요</option>";
+        for (var i = 0; i < v_grp1.length; i++) {
+            v_str += "<option value=" + i + " >" + v_grp1[i] + "</option>";
+        }
+        document.getElementById("id_sel1").innerHTML = v_str;
+
+        function f_first() {
+            //힌트
+            var v_selIndex = document.getElementById("id_sel1").value;
+            var v_selBuseo = v_grp12[v_selIndex];
+            
+            var v_str = "<option>선택하세요</option>";
+            for (var i = 0; i < v_selBuseo.length; i++) {
+                v_str += "<option value=" + i + " >" + v_selBuseo[i] + "</option>";
+            }
+            document.getElementById("id_sel2").innerHTML = v_str;
+        }
+
+        function f_second() {
+            //코드 추가
+        }
+    </script>
+</body>
+
+</html>
+```
+
