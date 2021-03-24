@@ -6368,7 +6368,7 @@ WEBVTT FILE
 </html>
 ```
 
-## 📚 20일차
+## 📚 21일차
 
 #### location -> receive
 ```html
@@ -6802,3 +6802,446 @@ return v_rsltArr; // 이런 건 정하는 것임, 아예 없어가 못 찾았을
 </html>
 ```
 
+
+## 📚 22일차
+
+#### 숫자누적(SUM)
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+
+    var v_sum = 0;  // 숫자 누적
+    for(;"일단사용자가0입력할때까지 무한루핑";){
+        var v_userIn = parseInt(prompt("숫자를 입력하세요,종료는 0입력","1"));
+        if(v_userIn == 0){
+            alert("지금까지의 합은 " + v_sum + " 입니다");
+            break;        // 종료
+        }
+        v_sum += v_userIn;
+    }
+</script>
+```
+
+#### 사칙연산
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var v_num1 = parseInt(prompt("첫 번째 숫자를 입력해주세요", "1")); //default값 1로 지정
+        var v_num2 = parseInt(prompt("두 번째 숫자를 입력해주세요", "1")); //default값 1로 지정
+        var v_op = prompt("연산자를 입력해주세요" + "+");                 //default값 + 로 지정
+
+        var v_result;
+        if(v_op=="+"){
+            v_result = v_num1 + v_num2;
+        }else if(v_op=="-"){    
+            v_result = v_num1 - v_num2;
+        }else if(v_op=="*"){
+            v_result = v_num1 * v_num2;
+        }else if(v_op=="/"){
+            v_result = v_num1 / v_num2;
+        }else{
+            alert("사칙 연산만 지원합니다")
+            v_result = "사칙 연산만 지원합니다!"
+        }
+
+    </script>
+    
+</body>
+</html>
+```
+
+#### for-in문
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    /*
+    var v_arr=["사승1", "사승2", "사승3"]; 
+    for(var v_ssw in v_arr){
+        alert(v_ssw + v_arr[v_ssw]);
+    }       값 : 0 1 2 3         
+    */  
+
+   var v_json = {}; 
+   v_json.att1 = "사승1";
+   v_json.att2 = "사승2";
+   v_json.att3 = "사승3";
+   v_json.method1= function(){
+       return;
+   }
+
+   //v_json.att1 은 v_json["att1"]과 같다
+   for(var v_attr in v_json){
+       alert(v_attr +  " " + v_json[v_attr]);
+   } 
+
+</script>
+```
+
+## 📚 23일차
+
+#### select문제
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #container {
+        width:320px;
+        border:1px solid black;
+    }
+    .cl_ktj {
+        display: inline-block;
+        width:100px;
+       /* border:1px solid hotpink;*/
+        vertical-align: top;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<h1>select 문제3</h1>
+<!--
+    힌트: appendChild를 이용해서 이미 화면에 존재하는 객체를 다른 곳에 붙여 넣으면 이동하게 됨
+-->
+<div id="container">
+    <div class="cl_ktj">
+        <select id="id_sel1" size=8 multiple style="width:50px">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+        </select>
+    </div>
+    <div class="cl_ktj">
+        <br>
+        <input id="id_lr" type=button value=">"><br>
+        <input id="id_lrall" type=button value=">>"><br>
+        <input type=button value="<"><br>
+        <input type=button value="<<"><br>
+    </div>
+    <div class="cl_ktj">
+        <select id="id_sel2" size=8 multiple style="width:50px">
+            <option value="2">2</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+        </select>
+    </div>
+</div> 
+<input id="id_txt" type=text value=""><input id="id_btn" type=button value="추가하기">
+<script>
+    var v_txt = document.getElementById("id_txt");
+    var v_btn = document.getElementById("id_btn");
+    var v_sel1 = document.getElementById("id_sel1");
+    var v_sel2 = document.getElementById("id_sel2");
+    var v_lr = document.getElementById("id_lr");
+    var v_lrall = document.getElementById("id_lrall");
+
+    var v_sel1Options = v_sel1.options;
+    v_lr.onclick=function(){
+        for(var i=0; i< v_sel1Options.length; i++){
+            if(v_sel1Options[i].selected){
+                v_sel2.appendChild(v_sel1Options[i]);
+                i--;  // 빈 공간을 뒤에 께 와서 채우기 때문에 i값 증가하지 못하게 해야 함
+            }
+        }
+    }
+
+    v_lrall.onclick=function(){
+        for(;v_sel1Options.length != 0;){
+            v_sel2.appendChild(v_sel1Options[0]);
+        }
+    }
+
+    v_btn.onclick = function(){
+        var v_option = document.createElement("option");
+        v_option.innerHTML = v_txt.value;
+        v_sel1.appendChild(v_option);  // select에 option 추가 
+    }
+
+</script>   
+</body>
+</html>
+```
+
+#### node 쓰지말자
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 속성이나 메소드이름에 Node가 들어간 건 다루기가 애매한 부분이 있으니 사용을 자제한다. -->
+    <div id="par">
+        <div id="chi"></div></div>
+    <script>
+        var v_par = document.getElementById("par");
+        //console.log(v_par.children[0]);
+
+        console.log(v_par.children[0]); 
+        /* console.log("=================="); 
+        console.log(v_par.childNodes[1]);
+        console.log("==================");
+        console.log(v_par.childNodes[2]); 
+         */ 
+    </script>
+</body>
+</html>
+```
+
+#### screen
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    /* 거의 쓸 일 없다. */
+    alert(navigator.userAgent); //사용자가 어떤 브라우저를 사용하는지 파악할 때 사용 
+                                //인터넷 진흥원 같은 곳에서 사용
+
+    history.go(2);  //앞으로 가기 버튼 2번 누른 효과
+    history.go(-1); // 뒤로 가기 버튼 1번 누른 효과
+    
+    alert(screen.colorDepths); // 컬러 해상도 24bit 칼라지원 모니터 사용하고 있음 
+    alert(screen.availHeight); 
+    alert(screen.availWidth);
+
+
+</script>
+```
+
+#### 주민번호 체크
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #id_disp {
+        width: 250px;
+        border:1px solid hotpink;
+    }
+</style>
+</head>
+<body>
+    <div id="id_disp"></div>
+    <h1>주민번호 체크</h1>
+    <input id="id_jumin1" type=text value="">-<input id="id_jumin2" type=text value=""><br>
+    <input id="id_check" type=button value="체크"><br>
+    <input id="id_gazza" type=button value="가짜주민번호생성"><br>
+<script>
+    var v_jumin1 = document.getElementById("id_jumin1");
+    var v_jumin2 = document.getElementById("id_jumin2");
+    var v_check = document.getElementById("id_check");
+    var v_gazza = document.getElementById("id_gazza");
+    var v_disp = document.getElementById("id_disp");
+
+    v_gazza.onclick=function(){
+        var v_year = Math.round(Math.random()*60)  + 30;
+        var v_month = Math.ceil(Math.random()*12);
+        if(v_month < 10){
+            v_month = "0" + v_month;
+        }
+        var v_date = Math.ceil(Math.random()*28);
+        if(v_date < 10){
+            v_date = "0" + v_date;
+        }
+        var v_apjari = ""+v_year + v_month + v_date;
+
+        var v_dijari = ""+Math.ceil(Math.random()*2);
+        for(var i=1; i<=5; i++){
+            v_dijari += Math.round(Math.random()*9);
+        }
+
+        var M = f_returnM(v_apjari, v_dijari);
+         // 출력
+         v_disp.innerHTML +=  v_apjari + "-" + v_dijari + M + "<br>";
+        
+    }
+    function f_returnM(p_ap, p_di){
+        // text박스에서 개별 숫자 뽑아내깅
+        var A = p_ap[0];
+        var B = p_ap[1];
+        var C = p_ap[2];
+        var D = p_ap[3];
+        var E = p_ap[4];
+        var F = p_ap[5];
+        var G = p_di[0];
+        var H = p_di[1];
+        var I = p_di[2];
+        var J = p_di[3];
+        var K = p_di[4];
+        var L = p_di[5];
+
+        //알고리즘 대로 총합 구하깅
+        var totalHap = (A*2) + (B*3) + (C*4) + (D*5) + (E*6) + (F*7);
+        totalHap = totalHap + (G*8) + (H*9) + (I*2) + (J*3) + (K*4) + (L*5);  
+
+        //11로 나눈 나머지를 구하래용
+        var checkNum = (11 - (totalHap % 11) ) % 10 ;    
+        return checkNum;
+    }
+
+    function f_check(){
+        // text박스에서 개별 숫자 뽑아내깅
+        var A = v_jumin1.value[0];
+        var B = v_jumin1.value[1];
+        var C = v_jumin1.value[2];
+        var D = v_jumin1.value[3];
+        var E = v_jumin1.value[4];
+        var F = v_jumin1.value[5];
+        var G = v_jumin2.value[0];
+        var H = v_jumin2.value[1];
+        var I = v_jumin2.value[2];
+        var J = v_jumin2.value[3];
+        var K = v_jumin2.value[4];
+        var L = v_jumin2.value[5];
+        var M = v_jumin2.value[6];
+
+        //알고리즘 대로 총합 구하깅
+        var totalHap = (A*2) + (B*3) + (C*4) + (D*5) + (E*6) + (F*7);
+        totalHap = totalHap + (G*8) + (H*9) + (I*2) + (J*3) + (K*4) + (L*5);  
+
+        //11로 나눈 나머지를 구하래용
+        var checkNum = (11 - (totalHap % 11) ) % 10 ;
+        
+        if(checkNum == M){
+            alert("너 한국사람이구나?");
+        }else {
+            alert("외국인?");
+        }
+
+    }
+    v_check.addEventListener("click",f_check); // 클릭하면 f_check 함수를 불렁
+
+
+    v_jumin1.onkeydown = function(){
+        /*
+        if(v_jumin1.value.length == 6 ){
+            v_jumin2.focus();      // 커서 이동            
+        }
+        */
+        if(event.key == "Enter"){
+            v_jumin2.focus();      // 커서 이동
+        }
+    }
+</script>
+</body>
+</html>
+```
+
+#### 배열과 JSON
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <select id="id_sel">
+        <option value="p">1승원</option>
+        <option value="o">2승원</option>
+        <option value="l">3승원</option>
+        <option value="s">4승원</option>
+    </select>
+    <script>
+        var v_sel = document.getElementById("id_sel");
+        console.log(v_sel);
+        console.dir(v_sel);// 객체 표기법으로 표현, 속성과 메소드 리스트를 확인할 때 유용
+/*         
+        for(var i=0; i<v_sel.length; i++){
+            console.log(v_sel[i]);
+            console.log(v_sel.options[i]);  // 가독성이 이것이 더 좋음
+            console.log("==============================");
+        } 
+*/
+    
+
+
+/*         //배열과 JSON은 당연히 헷갈릴 수 있음, JSON표현에 배열식 접근법이 있으므로
+        //key(속성)값의 데이터 타입은 문자열임 
+        var select = {};
+        select[0] = "사승1";
+        select[1] = "사승2";
+        select[2] = "사승3";
+        select[3] = "사승4";
+        select.options = [];
+        select.options.push(select["0"]);
+        select.options.push(select["1"]);
+        select.options.push(select["2"]);
+        select.options.push(select["3"]); 
+        select.length = select.options,length; 
+
+    for(var i=0; i<select.length; i++){
+        // 아래 두 개의 출력 결과는 동일하다.
+        console.log(select[i]); 
+        console.log(select.options[i]);
+    }
+        // 아래 두 개의 출력 결과는 동일하다.
+        console.log(select);
+        console.log(select.options[0]); 
+*/
+
+
+    </script>
+</body>
+</html>
+```
+
+#### 마우스이벤트
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #id_ngm{
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+    }
+    #id_ktj{
+        width: 100px;
+        height: 100px;
+        border: 2px dotted palevioletred;
+        position: relative;
+        left: 100px;
+        top: 100px;
+    }
+</style>
+<body> 
+    <!-- enter : 들어오면 동작 / leave : 떠나면 동작 -->
+    <div id="id_ngm" onmouseenter="f_enter()" onmouseleave="f_enter2()">  
+        <div id="id_ktj" onmouseenter="f_enter2()"></div>
+    </div>
+    <script>
+        function f_enter(){
+            alert("사승원");
+        }
+        function f_enter2(){
+            alert("사승이");
+        }
+    </script>
+</body>
+</html>
+```

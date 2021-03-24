@@ -257,23 +257,252 @@ location.href = "list.html";
 </html>
 ```
 
+#### 더미데이터
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    //한국 성씨(복성포함), 나무위키 참조
+var v_korFamilyNames = "김,이,박,최,정,강,조,윤,장,임,한,오,서,신,권,황,안,송,전,홍,류,고,문,량,손," +
+                       "배,조,백,허,유,남,심,로,정,하,곽,성,차,주,우,구,신,임,전,민,유,류,나,진,지," + 
+                       "엄,채,원,천,방,공,강,현,함,변,염,양,변,여,추,노,도,소,신,석,선,설,마,길,주," + 
+                       "연,방,위,표,명,기,반,라,왕,금,옥,육,인,맹,제,모,장,탁,국,여,진,어,은,편," + 
+                       "남궁,독고,황보,제갈,사공,선우,서문,어금,망절,무본,황목,등정,장곡,강전";
+
+//이름에 자주 쓰이는 글자들 인터넷 참조
+var v_korNames = "성,영,상,재,종,정,동,용,승,경," +
+                 "호,수,석,철,훈,현,진,영,환,식," +
+                 "미,은,선,혜,지,덕,방,원,우,다," +
+                 "희,숙,자,순,주,솔,별,국,민,일," +
+                 "바,휴,왕,웅,범,대,익,중,낙,택," +
+                 "권,황,율,률,술,걸,탁,백,룡,건," +
+                 "애,난,소,분,아,매,말,녀,름,자," +
+                 "란,임,라,충,슬,준,옥,찬,림,례," +
+                 "필,규,한,예";
+
+    v_korFamilyNames = v_korFamilyNames.split(",");
+    v_korNames = v_korNames.split(",");
+
+    function fmlyName(){
+        return v_korFamilyNames[ Math.floor(Math.random()*v_korFamilyNames.length)];
+    }
+    function names(p_i){
+        if(p_i % 30 == 0){
+            return v_korNames[Math.floor(Math.random()*v_korNames.length)];         
+        }
+        return v_korNames[Math.floor(Math.random()*v_korNames.length)] + 
+               v_korNames[Math.floor(Math.random()*v_korNames.length)];
+    }
+    function f_ranName(p_i){
+        return fmlyName() + names(p_i);
+    }
+
+    //localStorage에 더미 데이터 생성
+     var v_tblName = "uglyGesi";
+     var v_datas = []; // 전체 json을 담을 빈 배열 생성
+     var v_dataLength = 108; // 108번뇌
+     var v_skillData = ["fe","be","db"];
+     for(var i=1; i<=v_dataLength; i++){
+         var v_gul = {};       // 글 1개를 나타내는 객체
+         v_gul.ggg = i;
+         v_gul.title = "챔피언 타이틀 " + i;
+         v_gul.writer = f_ranName(i);  // 랜덤한 이름 만들어서 넣습니다, 30번에 한번 이름이 외자인 사람이 나옵니다
+         v_gul.skills  = [];  // ? 여기에 랜덤하게 1~3개의 값을 넣으시옹, v_skillData중에
+         for(var j=1; j<= Math.ceil(Math.random()*3); j++){
+             v_gul.skills.push(v_skillData[j-1]);
+         }
+         v_gul.content = "내용 " + i;
+         v_gul.date = (new Date()).toDateString();
+         v_datas.push(v_gul);   // 글 객체를 배열에 담아 줌
+     }
+     localStorage.setItem(v_tblName, JSON.stringify(v_datas));
+
+</script>
+```
+
+#### del_ck
+```html
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script src="../js/jsp.js"></script>
+<script>
+
+    var v_delGGG = request.getParameterValues("nm_del");
+    var v_tblName = "uglyGesi"; 
+    var v_datas = JSON.parse(localStorage.getItem(v_tblName));
+    for(var i=0; i<v_delGGG.length; i++){
+        for(var j=0; j<v_datas.length; j++){
+            if(v_datas[j].ggg == v_delGGG[i]){
+            v_datas.splice(i,1);
+            break; // 빼먹지 말기
+            }
+        }
+    }
+    localStorage.setItem(v_tblName, JSON.stringify(v_datas));
+    location.href="list.html"; // 페이지 돌리기
+    //alert(request.getParameterValues("nm_del"));
+</script>
+```
+
 #### delete
 ```html
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <script src="../js/jsp.js"></script>
 <script>
-    var v_gulID = request.getParameter("g_id");
-    var v_tblName="uglyGesi"
+    var v_gulID = request.getParameter("nm_ggg");
+    var v_tblName="uglyGesi";
 
     var v_gulDatas = JSON.parse(localStorage.getItem(v_tblName));
-    for(var i=0; j<v_gulDatas.length; i++){
+    for(var i=0; i<v_gulDatas.length; i++){
         if(v_gulDatas[i].ggg == v_gulID){
-            v_gulDatas.splice(i,1); //해당 글 삭제
-            break
+            v_gulDatas.splice(i,1);   // 해당 글 삭제
+            break;
         }
     }
-    localStorage.setItem(v_tblName,JSON.stringify(v_gulDatas));
-    location.href="list.html";
+    //저장
+    localStorage.setItem(v_tblName, JSON.stringify(v_gulDatas));
+   // location.href="list.html";
+   opener.location.replace("list.html");
+   window.close();  // 창닫기
+   //location - replace, href 두 가지만 기억.
+        //href는 캐쉬 생길 수 있어서 replace로
 </script>
+```
+
+
+#### check
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        /* pseudo class(수도클래스), hover --> mouse over*/
+        a:hover{ /* a 태그에 지원되는 링크스타일 */
+            color: hotpink;
+            font-size: 25px;
+            cursor: move; /* 마우스 커서 바꾸기 */
+        }
+        #id_sib{
+            width: 80%;
+            min-width: 500px;   /* 최소 사이즈 */
+            max-width: 800px;   /* 최대 사이즈 */
+            height: 100px;
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="id_sib"></div>
+    <!-- 많이 사용되진 않음. 텍스트박스에 마우스 올리면 마우스 포인터에 말풍선 뜸 -->
+    <input type="text" value="" title="볼품없는 말풍선"><br>
+    <!-- label : 체크박스를 정확히 체크하지 않아도 라벨에만 닿아도 체크박스 체크가 됨
+                사용자의 체크 범위를 넓혀줌, 데스크탑에서는 많이 쓰이진 않지만
+                모바일에서 많이 사용됨
+     -->
+    <label for="id_ck">체크박스</label> 
+    <input id="id_ck" type="checkbox" value="">
+    <a href="http://daum.net" target="_self">다음</a> <br>
+    <form action="list.html">
+    <!-- button 태그 사용시 주의  button 태그는 default type=submit 임-->
+        <button name="nm_btn" type="button">난 버튼1</button><br>
+        <button name="nm_btn" type="button">난 버튼2</button><br>
+        <button name="nm_btn" type="button">난 버튼3</button><br>
+        <button name="nm_btn" type="button">난 버튼4</button><br>
+        <button name="nm_btn" type="button">난 버튼5</button><br>
+        <button name="nm_btn" type="button">난 버튼6</button><br>
+        <button name="nm_btn" type="button">난 버튼7</button><br>
+
+        <!-- 잘 쓰진 않지만 버튼에 이미지 넣을 수 있다. -->
+        <input type="image" src="../img/son2.jpeg" width=100 height=100>
+    </form> 
+    <button>전송</button>
+    <!-- submit 버튼은 form 밖에 있으면 실행되지 않는다. -->  
+<script>
+    var v_btns = document.getElementsByName("nm_btn");
+    for(var i=0; i< v_btns.length; i++){
+        v_btns[i].onclick=function(e){ // 자동으로 e = event
+            alert(e.target.innerHTML + "밥 먹었어?");
+            console.log(e.target);      // 이벤트를 발생시킨 객체를 가리킴
+ //           console.log(event);       // target을 잘 쓰면 굳이 this가 필요없는 경우가 많음
+        }
+    }
+</script> 
+</body>
+</html>
+```
+
+#### position:fixed
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팁</title>
+<style>
+    #id_bar {
+        position:fixed;
+        /* fixed : 메뉴 네이게이션에 사용. 스크롤 내려도 사용자 화면에 고정되어있음 */
+        left:0px;
+        top:50px;
+        width:100%;
+        height:30px;
+        background-color: hotpink;
+    }
+</style>
+</head>
+<body>
+    <div id="id_bar">난 안 움직여</div> 
+    
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+    <h1>난 최고의 프로그래머당</h1>
+
+</body>
+</html>
 ```
