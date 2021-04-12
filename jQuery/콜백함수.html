@@ -1,0 +1,19 @@
+<!DOCTYPE html>   
+<meta charset="UTF-8">
+<script>
+    //callback 함수 --> 말 그대로 (순서상)뒤에 부르는 함수 
+    function f_ygy(){
+        alert(p_msg); 
+    }
+
+    //매개변수로 함수이름 또는 함수선언을 받음, 함수이름() 식으로 쓰면 그냥 실행되어버림 
+    function f_jyh(p_cb){     // p_cb = f_ygy
+        p_cb("주영흔 윤가영"); // p_cb는 f_jyh 뒤에 불려서 callback
+    }
+
+    f_jyh(f_ygy); // 주영흔 윤가영
+
+    f_jyh(function(){
+        alert("안녕 " + p_arg); // 안녕 주영흔 윤가영
+    }); 
+</script>

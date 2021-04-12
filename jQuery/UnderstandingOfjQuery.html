@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+    <meta charset="UTF-8">
+    <script src="./myQuery.js"></script>
+    <body>
+        <img id="id_yhj" src="../img/son1.jpeg" width="50" height="50"> <br>
+        <img id="id_hjy" src="../img/son2.jpeg" width="55" height="66"> <br>
+        <div>한석규</div>
+        <div class="sib">주영흔</div>
+        <div>심이안</div>
+        <div class="sib">이윤행</div>
+        <div>윤가영</div>
+
+    <script>
+        $("img").attr({  //JSON 객체 올 수 있음
+            width:300,
+            height:300
+        }); 
+
+        $("img").eq(1).attr("id","sib").end().attr("src", function(p_inx,p_attrVal){
+            if(p_inx == 1){
+                return "../img/son5.jpeg"; 
+            }
+            return p_attrVal; 
+        })
+
+        $("img").attr("width", function(p_inx,p_attrVal){
+            if(p_attrVal == 55){ //55일 때만 200으로 바꾸는 기능
+                return 200 ;  
+            }
+            return p_attrVal ; // 그냥 원래 가진 값 리턴 
+        });
+
+        $("img").attr("height", function(p_inx,p_attrVal){
+            return 200; 
+        }); 
+        
+        
+        //alert("#id_yhj".attr("width")); // 읽기
+        //$("img").eq(1).attr("width", "200").attr("height","200");; //모든 이미지 한 번에 값 바꾸려면 id 값이 아닌 img태그로 적어줌
+        //$("id_yhj").attr("height", "200");
+
+        //console.log($("div").eq(1).html("<h1>mydom을 리턴해야 html 사용가능</h1>"));
+        //$("div").eq(1).html("<h1>mydom을 리턴해야 html 사용가능</h1>").end().eq(0).html("<h1>계속이어쓸 수 있음</h1>"); ;
+
+
+        //$("div").html("ㅎㅎㅎ").html("<h1>html 또 쓸 수 있음</h1>");; // 둘다 써지는 것이 아니라 나중에 나온 게 덮어 씀 
+
+/*         
+        $("div.sib").html(function(p_inx, p_inStr){ // div 태그이면서 클래스가  sib인 첫 번째 것에만 적용됨    
+            if(p_inx== 1 ){
+                return p_inStr + "  바보";
+            }
+                return p_inStr; 
+        }); 
+
+ */
+
+ /*            
+        console.log($("div.sib").html(function(p_inx, p_inStr){ // div 태그이면서 클래스가  sib인 첫 번째 것에만 적용됨    
+            alert(p_inx + "   " + p_inStr); 
+        })); 
+*/
+            
+    </script>
+    </body>
