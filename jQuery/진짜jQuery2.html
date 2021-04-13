@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        .jyh {
+            color:gold;
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="id_del">영흔이 어림없음</div>
+    <div id="id_disp"></div>
+    <input type="button" id="id_y1" value="누르세요1">
+    <input type="button" id="id_y2" value="누르세요2">
+    <input type="button" id="id_gg" value="보일까말까">
+<script>
+
+    var v_arr = ["송인범", "한석규", "김태정", "장두언"]
+    
+    var v_obj = {
+        "aaa" : "에이에이",
+        "bbb" : "비비비"
+    }
+
+    $.each(v_obj,function(p_inx,p_val){
+        alert(p_inx + "  " + p_val); 
+    })
+
+    $.each(v_arr,function(p_inx,p_val){
+        alert(p_inx + "  " + p_val); 
+    })
+
+    $("").each(); // 동적 메서드 -> 객체가 먼저 생성되어야 사용할 수 있다. 
+    $.each()      // 정적 메서드 -> 객체 생성없이 바로 사용할 수 있다. 
+
+
+    $("input").each(function(p_inx,p_ele){  //each : 선택한 거 하나씩 돌려줌. 가장 많이 사용됨
+        if(this.id == "id_y1") $(this).val("GGG"); // id_y1의 버튼 value=GGG로 바뀜
+        /*         
+        console.log(this); // 모든 값
+        console.log(p_ele);// 모든 값 this 랑 p_ele랑 같은 값 나온다.  */
+    });
+
+
+
+    /* .hide().show().toggleClass
+    $("#id_gg").on("click",function(){
+        $("#id_del").hide().show().toggleClass("jyh");
+    });
+    */
+
+
+    //jQuery에서 이벤트1
+    /* 
+    $("#id_ygy").click(function(){
+        alert("버튼 눌림");
+    });
+    */
+   
+
+    $("input:button").eq(1).on("click",function(){
+        $("<img>").attr("width", 200)
+                        .attr("height",200)
+                        .attr("src","../img/son1.jpeg")
+                        .appendTo($("#id_disp"));
+        //document.createElement("img")랑 같음; 
+
+        $("#id_disp").append($("<h1>러블리윤가영</h1>"))
+                    .css("color","yellow")
+                    .css("backgroundColor","black")
+                    .css("font-size","4em"); 
+    }).on("mouseover", function(){
+        $("#id_del").remove();
+    }); 
+
+
+    /* 
+    $("input:button").on("click", function(){ // myQuery에서 만든 함수로 해당 버튼의 값을 가져옴
+        //console.log(this);
+        //중요!!!! 일반 dom객체를 $로 둘러싸주기만 하면 jQuery객체로 바뀜, 최고의 기술 
+        $(this).css({
+            color:"yellow",
+            backgroundColor:"black"
+        }); 
+        //alert("버튼 눌림. 위랑 똑같은 기능");
+    })
+    */
+
+    //window.onload랑 같다. 시퀀스 때문에 해줘야 div에 적용됨
+    $(function(){
+        $("#id_disp").css("width","200px").css("height","400px")
+                     .css("border", "2px solid pink"); 
+    }); 
+
+    //위와 같은 기능
+    /* 
+    $(document).ready(function(){
+        $("div").html("될까?");
+    }) 
+    */
+
+</script>
+<div>김주헌 바나나 사승원</div>
+</body>
+</html>

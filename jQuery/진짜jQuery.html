@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" value="송인범">
+    <div>대장님 갔네요</div>
+    윤<input type="checkbox" name="nm_aaa" value="윤" disabled readonly> <!--  name="nm_-aaa" -->
+    가<input type="checkbox" name="nm_aaa" value="가" checked> <!-- name="anm_aaaa"이라고 써도 input[name]*=nm_ 먹음  -->
+    영<input type="checkbox" name="nm_aaa" value="영"> <br>
+
+    <select>
+        <option value="남">러블리즈</option>
+        <option value="기" selected>케이</option>
+        <option value="문">아무나 </option>
+
+        
+    </select>
+
+<script>
+
+    /*  attr vs prop 차이점 잘 기억해두기
+    alert($("input[name=nm_aa]").prop("readonly")); //true, false로 가져와야되면 prop로
+    alert($("input[name=nm_aa]").prop("disabled")); //true, false로 가져와야되면 prop로
+    alert($("input[name=nm_aa]").attr("checked"));
+    alert($("input[name=nm_aa]").prop("checked")); //true, false로 가져와야되면 prop로
+    */
+    
+    /* 
+    console.log($("input:botton"));
+    console.log($("input[name *=nm_")); //하이픈 있는 거 포함가능
+    console.log($("input[name ~=nm_")); //딱 맞아야 가져옴
+    */
+
+    /* 
+    console.log($("select > option:nth-child(1)").html()); //nth-child는 1번부터 시작 , eq랑 같은 기능인데 eq는 0부터0
+    console.log($("select > option:eq(0)").html());
+    */ 
+
+    //alert($("input[type=checkbox]:checked").val("kkk")); //윤(여러 개면 무조건 첫 번째 것만)
+
+    /*     
+    $("input").val("한석규");          //value 속성을 다루는 메서드 .val
+    $("div").html("<h1>염호준</h1>");  //innerHTML을 다루는 메서드 .html
+    $("div").css("backgroundColor", "red").css("color","white"); 
+    */
+</script>
+</body>
+</html>

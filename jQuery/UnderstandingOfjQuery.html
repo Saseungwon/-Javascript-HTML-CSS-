@@ -1,6 +1,12 @@
 <!DOCTYPE html>
     <meta charset="UTF-8">
     <script src="./myQuery.js"></script>
+    <style>
+        div{
+            color: blueviolet;
+        }
+
+    </style>
     <body>
         <img id="id_yhj" src="../img/son1.jpeg" width="50" height="50"> <br>
         <img id="id_hjy" src="../img/son2.jpeg" width="55" height="66"> <br>
@@ -9,8 +15,63 @@
         <div>심이안</div>
         <div class="sib">이윤행</div>
         <div>윤가영</div>
+        윤<input type="text" size="3" value="윤">
+        가<input type="text" size="3" value="가">
+        영<input type="text" size="3" value="영">
+        만<input type="text" size="3" value="만">
+        만<input type="text" size="3" value="만">
+        세<input type="text" size="3" value="세">
 
     <script>
+        $.ajax({
+            type:"get",
+            url:"진짜jQuery2.html",
+            success:function(p_rslt){
+                alert(p_rslt); 
+            }
+        });
+
+        $.ajax({
+            type:"get",
+            url:"콜백함수.html",
+            success:function(p_rslt){
+                alert(p_rslt); 
+            }
+        });
+
+
+        $("input").val(function(p_inx,p_val){
+            if(p_inx % 2 == 1){
+                return "러블리 윤가영 만만세"
+            }
+            return p_val; //원래 값 그대로 리턴  
+        })
+        $("input").eq(3).val("송인범"); 
+        $("div").css("background-color", "hotpink")
+                .eq(4)
+                .css("background-color", "black")
+                .css("font-size", "3em")
+                .end() // end 쓰면 다시 div로 돌아간다. 
+                .css({
+                    "height":"200px",
+                    "color":"blue",
+                    "font-style":"bold",
+                    "text-align":"center", //수평 중앙 정렬
+                    "border":"3px solid white"
+                }); 
+
+        alert($("div").css("color")); // 여러 개면 첫 번째 값 가져옴, 인라인 스타일만 읽어와서 맨위 스타일은 못 읽음
+
+        //실시간으로 스타일 값 가져오기
+       console.log(window.getComputedStyle(document.getElementById("id_han"))["font-size"]);
+
+
+        $("div").css("background-color", "hotpink");
+        $("div").eq(4).css("font-size", "3em"); // 해당 div만 바꾸고 싶을 때 eq() 
+
+
+
+
         $("img").attr({  //JSON 객체 올 수 있음
             width:300,
             height:300
