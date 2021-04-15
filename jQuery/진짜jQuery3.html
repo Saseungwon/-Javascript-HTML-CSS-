@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+<style>
+</style>
+</head>
+<body>
+<div>박태환</div>
+<div>주영흔</div>
+<div class="daejang">심이안</div>
+<div>이윤행</div>
+<img src="../img/son1.jpeg" width=50 height=50><br>
+<div id="id_btn">나를 눌러줭 호떡이 되고팡</div>
+<input id="id_file" type=file value="" style="display:none;">
+<br><br>
+<!-- 똑똑한 디자이너가 하는 법-->
+<div>
+    <label for="id_file1">파일찾깅</label>
+    <input id="id_file1" type=file value="" style="display:none;">
+</div>
+<script>
+    $("#id_btn").on("click",function(){
+        $("#id_file").trigger("click");
+        //document.getElementById("id_file").click();
+    });
+
+    var v_img = document.querySelector("img");
+//   $(function(){   
+ //   });
+
+ /*
+    $(document).on("DOMContentLoaded",function(){
+        alert("잘 되나용?");
+    });
+*/
+    /*
+    window.addEventListener("DOMContentLoaded",function(){
+        console.log("송인범:", v_img.offsetWidth," ", v_img.offsetHeight);
+    });
+
+    window.addEventListener("load",function(){
+        console.log("주영흔:",v_img.offsetWidth," ", v_img.offsetHeight);
+    });
+    */
+    /*
+    $("div").remove(".daejang").css("color","blue");
+    console.log($("div"));
+    */
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+<!--사용자 정의 속성 data-원하는속성명 -->
+<div id="id_dv" data-sib="송인범" data-hsg="한석규" data-sib-age="25" >러블리 윤가영</div>
+<input type=button value="눌러방" onclick="f_ck()">
+<div class="mommy3">
+    <div class="mommy2">
+        <div class="me mommy">졸리는 남기문</div>
+    </div>
+    <div>
+        난 자손2 ㅋㅋㅋ
+    </div>
+</div>
+  <input type=text value="ㅋㅋㅋ"><br>
+  <input type=text value="ㅎㅎㅎ"><br>
+  <input type=text value="ㅍㅍㅍ"><br>
+  <input type=button value="눌렁">
+  <input type=button value="눌렁2">
+  <input type=button value="눌렁5">
+  <div id="id_ian" style="height:300px;border:1px solid hotpink;min-height: 20px;">대장님 사랑니는 살았니 죽었니?</div>
+  <input type=button value="이안안경원" id="id_btn">
+<script>
+        $("#id_btn").on("click",function(){
+            //$("#id_ian").slideUp(1000)
+            //            .slideDown(2000);
+            $("#id_ian").slideToggle(2000);
+            /*
+            $("#id_ian").fadeOut(1000,function(){
+                console.log("페이드 아웃 다 끝났어용");
+            }).fadeIn(1000,function(){
+                console.log("저 컴백했어용 사랑니!!");
+            })
+            */
+        });
+
+    //$(".me").empty();
+    //document.querySelector(".me").innerHTML = "";
+
+    //alert($(".me").parent().html());
+    //console.log($(".mommy3").children());
+    //console.log($("input:text").is(":button"));
+
+    //$("input:text").add("input:button").css("backgroundColor","red");
+
+   // $("div").first();   //$("div").eq(0)
+   // $("div").last();    //$("div").eq($("div").length -1)
+    //closest 가장 가까운 걸 찾아냄 부모 방향으로
+    // 많이 착각하는 것이 자기자신으로 찾기 시작한다는 것
+    //alert($(".me").closest(".mommy").html());
+
+    //console.log($("#id_dv").data());  /* 설정된 값 읽어옴 */
+    //$("#id_dv").data("hsg","헌석규"); /* 태그에 직접 변경 내용을 반영하지는 않음*/
+    //alert($("#id_dv").data("hsg"));  /* 별도 관리되기 때문에 사용에 문제 없음*/
+
+    /*
+    var v_dv = document.querySelector("#id_dv")
+    function f_ck(){
+        //console.log(v_dv.dataset["sib"]="송인범 만만세");
+        console.log(v_dv.dataset); //낯설지만 별거 없네용
+    }
+    */
+</script>    
+</body>
+</html>

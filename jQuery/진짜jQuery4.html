@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+<style>
+</style>
+</head>
+<body>
+<div>박태환
+    <div class="daejang">태환이 아들1</div>
+    <div >태환이 아들2 영흔이 닮아서 미웡
+        <div class="daejang">영흔이 더 닮아서 미워 죽겠성</div>
+    </div>
+    <div class="daejang">태환이 아들3</div>
+</div>
+<div>주영흔</div>
+<div class="daejang">심이안</div>
+<div>이윤행</div>
+<script>
+  /* find : 자손포함 후손에서 검색 */
+    $("div").find(".daejang").css("fontSize","2em");
+
+  /* filter : 현재 선택된 요소내에서 골라서 선택
+  $("div").filter(function(p_inx,p_elem){
+      if(p_inx == 1 || p_inx == 2){
+          return true;
+      }
+      return false;
+  }).css("fontSize","4em");
+  */
+
+
+</script>
+</body>
+</html>
