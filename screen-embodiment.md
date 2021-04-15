@@ -7245,3 +7245,108 @@ return v_rsltArr; // 이런 건 정하는 것임, 아예 없어가 못 찾았을
 </body>
 </html>
 ```
+
+#### 차트 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<!--
+    CDN : Contents Delivrey Network
+-->
+</head>
+<body>
+    <input type=button value="차트에속으면 돈 잃는당" onclick="f_chg()">
+    <div style="width:400px;height:400px;">
+        <canvas id="myChart"></canvas>
+    </div>
+<script>
+    /*  2시간 30분
+      4/1일 나올사람 : 
+        10시 ~  19시  (식비 지참) 
+        남기문, 김소민, 장두언, 황미선, 김주헌, 사승원, 박태환, 오성현, 이윤행 (확정자)
+    */
+    function f_chg(){
+        //alert(myChart.data.datasets[0].data[1]); //?19
+        //myChart.data.datasets[0].data[1] = 99;
+        //myChart.type = "line";  이거 안됨
+        for(var i=1; i<=6; i++){
+            myChart.data.datasets[0].data[i]=Math.round(Math.random()*50)+20;
+            myChart.data.datasets[1].data[i]=Math.round(Math.random()*50)+20;
+        }
+
+        myChart.data.datasets[0].type="line";  // 이거 됨
+  //      myChart.data.datasets[0].data = [11, 22, 33, 44, 55, 66];
+        myChart.update();  // 잊지말장 다시 그려야 해용
+        setTimeout(f_chg,300);
+    }
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+var v_dataset = {
+            type:"line",
+            label: '# Gimun Dungap',
+            data: [99, 88, 77, 66, 55, 44],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }
+myChart.data.datasets.push(v_dataset);
+myChart.update();
+</script>
+</body>
+</html>
+```
