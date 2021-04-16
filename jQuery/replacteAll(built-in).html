@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+    <meta charset="UTF-8">
+    <script>
+        //console.log(String.prototype); 
+        //객체가 가진 메소드 덮어쓰기
+
+        //replaceAll 에서 지원 안 하는 브라우져에서 replaceAll을 쓰려면 replace를 replaceAll로 바꿔줘야함 
+        //built-in 메소드를 덮어쓰는 것은 아주 잘 써야 하고, 정보를 잘 공유해야 함 
+        String.prototype.replaceAll = function (p_char, p_rep) { //polyfill
+            var v_sibStr = this.valueOf(); 
+            while(v_sibStr.indexOf(p_char) !=-1){
+                v_sibStr = v_sibStr.replace(p_char,p_rep);
+            }
+            return v_sibStr; 
+        }
+        var v_str = "송인범 멋져 인범 짱 인범 짱" ;
+    
+        v_str = v_str.replaceAll("인범", "범인"); 
+        alert(v_str); 
+
+
+
+    </script>
+
