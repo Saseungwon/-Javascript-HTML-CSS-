@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+<style>
+    #footer {
+        width:100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 2em;
+        background-color: brown;
+        color: chartreuse;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div id="wrapper">
+    <form name="nm_ygy">
+        검색엉<input type=text name="ygyWord" value="" required>
+        <input type=submit value="영쌍껌색">
+    </form>
+    <select id="id_sel"></select>
+    <div id="id_yhj">
+    </div>
+    <div id="footer">
+        &copy; YGY 엔터테인먼트 since 2021
+    </div>
+</div> 
+<script>
+    //  (크롤링 또는 스크레이핑)
+    var v_ifrmStr = '<iframe id="id_ygy" width="482" height="272" muted src=""'; 
+    v_ifrmStr +=  ' title="YGY video player" frameborder="0"'; 
+    v_ifrmStr +=  ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"'; 
+    v_ifrmStr +=  ' allowfullscreen></iframe>';
+
+    var v_uEStr = "https://www.youtube.com/embed/";
+    var v_first = true;
+    function f_ygyCode(p_code){
+        $.ajax({
+            method:"get",
+            url:"getTitle.php",
+            data:"ygyCode="+p_code,
+            dataType:"text",
+            success:function(p_rslt){
+               $("<option>").html(p_rslt)
+                            .val(p_code)
+                            .appendTo($("#id_sel"));
+            
+                if(v_first){
+                    $("<h1>").html(p_rslt).appendTo($("#id_yhj"));
+                    $(v_ifrmStr).attr("src",v_uEStr+ p_code + "?autoplay=1")
+                                .appendTo($("#id_yhj"));
+                   v_first = false;
+                }
+            }
+        })
+    }
+
+    $("form[name=nm_ygy]").on("submit",function(){
+        v_first = true;
+        $("#id_sel").empty(); // 일단 지우고 시작
+        event.preventDefault(); // ajax 쓸거라서 form action 아예 막아버리깅
+        $.ajax({
+            type:"get",
+            url:"getSearch.php",
+            data:$("form[name=nm_ygy]").serialize(),
+            dataType:"text",
+            success:function(p_rslt){
+
+                var v_stIndex = 0;  // 찾기 시작위치
+                var v_seachIndex;   // 찾은 위치
+                var v_codeArr =[];  // 영상코드 담을 빈 깡통
+
+                //문서안에 있던 watch?v= 중복없이 찾아오깅
+                while( (v_seachIndex=p_rslt.indexOf("watch?v=",v_stIndex)) != -1 ){
+                    var v_code = p_rslt.substr(v_seachIndex+8,11); // 코드값
+                    if(v_codeArr.indexOf(v_code) == -1){
+                        v_codeArr.push(v_code); // 없으면 담깅
+                    }
+                    v_stIndex = v_seachIndex + 19; 
+                }
+                // 영상코드값 제목 가져오는 함수에 넘기깅
+                for(var i=0; i< v_codeArr.length; i++){
+                    f_ygyCode(v_codeArr[i]);
+                }
+
+                $("#id_sel").on("change",function(){
+                    //console.log($(this).val());
+                    $("#id_yhj").empty();
+                    $(v_ifrmStr).attr("src",v_uEStr+ $(this).val() + "?autoplay=1")
+                                .appendTo($("#id_yhj"));
+                            
+                });
+            }
+        })
+    });
+</script>   
+</body>
+</html>

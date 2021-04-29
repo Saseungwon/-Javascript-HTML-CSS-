@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+<style>
+    #footer {
+        width:100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 2em;
+        background-color: brown;
+        color: chartreuse;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div id="wrapper">
+    <form name="nm_ygy">
+        검색엉<input type=text name="ygyWord" value="" required>
+        <input type=submit value="영쌍껌색">
+    </form>
+    
+    <div id="footer">
+        &copy; YGY 엔터테인먼트 since 2021
+    </div>
+</div> 
+<script>
+    // 긁어오기 (크롤링 또는 스크레이핑)
+    var v_ifrmStr = '<iframe id="id_ygy" width="482" height="272" muted src=""'; 
+    v_ifrmStr +=  ' title="YGY video player" frameborder="0"'; 
+    v_ifrmStr +=  ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"'; 
+    v_ifrmStr +=  ' allowfullscreen></iframe>';
+
+    var v_uEStr = "https://www.youtube.com/embed/";
+    function f_ygyCode(p_code){
+        $.ajax({
+            method:"get",
+            url:"getTitle.php",
+            data:"ygyCode="+p_code,
+            dataType:"text",
+            success:function(p_rslt){
+                
+                $("<h3>").html(p_rslt).insertBefore($("form[name=nm_ygy]"));
+                $(v_ifrmStr).attr("src",v_uEStr+p_code+"?autoplay=1")
+                            .insertBefore($("form[name=nm_ygy]"));
+                $(window).scrollTop($(document).height());            
+
+                /*
+                $("<h3>").html(p_rslt).appendTo($("#wrapper"));
+                $(v_ifrmStr).attr("src",v_uEStr+p_code+"?autoplay=1")
+                            .appendTo($("#wrapper"));
+                */    
+                /*
+                $("#id_title").html(p_rslt);
+                $("#id_ygy").attr("src",v_uEStr+p_code+"?autoplay=1");
+                //console.log(p_code,"--->",p_rslt);
+                */
+            }
+        })
+    }
+
+    $("form[name=nm_ygy]").on("submit",function(){
+        event.preventDefault(); // ajax 쓸거라서 form action 아예 막아버리깅
+        $.ajax({
+            type:"get",
+            url:"getSearch.php",
+            data:$("form[name=nm_ygy]").serialize(),
+            dataType:"text",
+            success:function(p_rslt){
+                var v_stIndex = p_rslt.indexOf("watch?v=");
+                var v_code = p_rslt.substr(v_stIndex+8,11); //코드값은 11자리 고정
+                f_ygyCode(v_code);
+            }
+        })
+    });
+</script>   
+</body>
+</html>
