@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="myGrid" style="height: 200px; width:500px;" class="ag-theme-alpine"></div>
+<script>
+    //컬럼 정의
+    var columnDefs = [
+        { field: "이름", sortable:true, filter:true,  checkboxSelection: true}, //sortable 정렬 기능, filter 여러 검색필터 기능
+        { field: "나이", sortable:true},
+        { field: "별명", sortable:true}
+    ];
+
+    //데이터 기술
+    var rowData = [
+        { "이름": "윤가영", "나이": "20", "별명": "러블리" },
+        { "이름": "심이안", "나이": "21", "별명": "대장님" },
+        { "이름": "염호준", "나이": "30", "별명": "최증" },
+        { "이름": "한석규", "나이": "50", "별명": "핵이없음" },
+        { "이름": "윤가영", "나이": "20", "별명": "러블리" },
+        { "이름": "심이안", "나이": "21", "별명": "대장님" },
+        { "이름": "염호준", "나이": "30", "별명": "최증" },
+        { "이름": "한석규", "나이": "50", "별명": "핵이없음" },
+        { "이름": "윤가영", "나이": "20", "별명": "러블리" },
+        { "이름": "심이안", "나이": "21", "별명": "대장님" },
+        { "이름": "염호준", "나이": "30", "별명": "최증" },
+        { "이름": "한석규", "나이": "50", "별명": "핵이없음" },
+        { "이름": "윤가영", "나이": "20", "별명": "러블리" },
+        { "이름": "심이안", "나이": "21", "별명": "대장님" },
+        { "이름": "염호준", "나이": "30", "별명": "최증" },
+        { "이름": "한석규", "나이": "50", "별명": "핵이없음" },
+        { "이름": "윤가영", "나이": "20", "별명": "러블리" },
+        { "이름": "심이안", "나이": "21", "별명": "대장님" },
+        { "이름": "염호준", "나이": "30", "별명": "최증" },
+        { "이름": "한석규", "나이": "50", "별명": "핵이없음" },
+        { "이름": "윤가영", "나이": "20", "별명": "러블리" },
+        { "이름": "심이안", "나이": "21", "별명": "대장님" },
+        { "이름": "염호준", "나이": "30", "별명": "최증" },
+        { "이름": "한석규", "나이": "50", "별명": "핵이없음" }
+    ];
+
+    //그리드 생성할 때 기본 필요한 옵션 
+    var gridOptions = {
+        columnDefs: columnDefs, // (시스템지정값 : 사용자지정값)
+        rowData: rowData,
+
+        //페이지 page 1 of 50... 
+        pagination:true,
+        paginationAutoPageSize:true,
+        //paginationPageSize:16
+    };
+
+
+    //그리드 생성을 위해서 그릴 장소와 옵션이 필요 
+    document.addEventListener('DOMContentLoaded', function(){
+        const gridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(gridDiv, gridOptions);
+    });
+
+</script>
+</body>
+</html>

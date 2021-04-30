@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-enterprise/dist/styles/ag-theme-alpine.css">
+    <script src="./data.json"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="myGrid" style="height: 400px; width:800px;" class="ag-theme-alpine"></div>
+    <input type=button value="csv수출" onclick="f_exp()">
+    <script>
+        var girdOpt; // 전역변수로 빼기
+        function f_exp(){
+            var v_params = {
+                suppressQuotes: "true",   // none, true
+                columnSeparator: "\t",   // none, tab, | 
+                customHeader: "  송인범 만만세  ",  // 헤더명 추가 출력
+                customFooter: "  또 송인범 만만세  "    // 데이타 아래에 footer추가
+            }
+            girdOpt.api.exportDataAsCsv(v_params);
+        }   
+
+
+        //그리드 생성을 위해서 그릴장소와 옵션이 필요
+        var gridDiv = document.querySelector('#myGrid');
+
+        document.addEventListener('DOMContentLoaded', function(){
+        //ajax로 데이터를 가져와서 그리드를 그리기
+        var v_ajax = new XMLHttpRequest();
+        v_ajax.open("post","data.json", true);
+        v_ajax.onreadystatechange = function(){
+            if(v_ajax.readyState == 4 && v_ajax.status == 200){
+                var v_arrData = JSON.parse(v_ajax.responseText); 
+                
+                //컬럼 정의 속성 만들기
+                var colDef = []; /* {field: "별명"} */
+                for(var v_colName in v_arrData[0]){
+                    var v_col = {};
+                    v_col.field = v_colName; 
+                    colDef.push(v_col); 
+                }
+                console.log(colDef); //만든 거 확인
+
+                //rowData 가져온 것과 형식이 일치해서 그냥 넣어주기만 하면 됨 
+                var rowData = v_arrData;
+
+                //그리드 옵션 설정 
+                    girdOpt = {
+                    columnDefs: colDef, //그리드에서 제공 (시스템지정값 : 사용자지정값)
+                    rowData: rowData,
+                    pagination:true, //페이징 설정
+                    paginationAutoPageSize:true
+                }
+                // 필요한 것들 준비됐으니 그리드 생성하기 
+                new agGrid.Grid(gridDiv, girdOpt);
+            }
+
+        }
+        v_ajax.send(); 
+
+
+    });
+</script>
+</body>
+</html>
