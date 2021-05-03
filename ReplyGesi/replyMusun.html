@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/magu.js"></script>
+    <script src="./ckeditor4/ckeditor.js"></script>
+    <title>무순 답변형 게시판 </title>
+<style>
+    tr, td {
+        height: 30px;
+    }
+    th {
+        height:35px;
+        font-size:1.3em;
+        background-color: orange;
+        color:black;
+        text-align: center;
+    }
+    .sticker {
+        display: inline-block;
+        width:30px;
+        height:30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: orange;
+        color:blue;
+        font-weight: bold;
+        font-size: 2em;
+        cursor: pointer;
+    }
+    #id_disp {
+        margin:3px auto;
+    }
+    #id_title {
+        width:1000px;
+        margin:0 auto;
+        margin-bottom: 5px;
+        text-align: center;
+        background-color: black;
+        color:orange;
+        font-size: 2.5em;
+        border:30px groove gray;
+    }
+    /* tr 위에 마우스 올렸을 때 */
+    #id_disp tr:hover {
+        background-color: gray;
+        color:orange;
+        font-weight: bolder;
+    }
+    #id_new {
+        position: relative;
+        display: inline-block;
+        left:80%;
+        width:100px;
+        height:40px;
+        font-size: 1.1em;
+        background-color: orange;
+        color:black;
+    }
+    .footer {
+        background-color: black;
+        color:orange;
+        width:100%;
+        height:50px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 1.5em;
+        font-weight: bolder;
+    }
+    .footer2 {
+        background-color:orange;
+        color:black;
+        width:100%;
+        height:50px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 1.2em;
+    }
+    .ygy {
+        font-size: 17px;
+        background-color: orange;
+        color:black;
+    }
+</style>    
+</head>
+<body>
+    <div id="id_disp">
+        <div id="id_title">JS로만 맹글어 보는 272 답변형 게시판 </div>
+        <input type=button id="id_new" value="새글 써보깡" onclick="f_newReg()">
+        <hr>
+        <table id="id_tbl" border=1  style="text-align:left;min-width:800px;width:100%" class="aaa bbb">
+            <tr><th>순번</th><th>제목</th><th>지은이</th></tr>
+        </table>
+    </div>
+    <div class="footer">
+    &copy; YGY Entertainment since 2021    
+    </div>
+    <div class="footer2">
+        설계없이 의식의 땜빵 흐름으로 작성하다보니 소스가 공부하기 좋게 엉망이 되었어요~(^-^)  
+    </div>
+<script>
+/* ==================  테스트용 더미 데이터 생성  파트  ======================== */
+    /* ============  더미 메인 글 생성 함수 ============== */    
+    var total = [];
+    var dummyCnt = 10;
+    function mkMainDummy(){
+        for(var i=0; i< dummyCnt; i++){
+            var gesi = {}
+            gesi.gid = (i+1);
+            gesi.title = "제목" + (i+1);
+            gesi.writer = getRanFullName();
+            gesi.content = "러블리 로제 "+(i+1);
+            total.push(gesi);
+        }
+    }
+    /* ============  더미 댓글 생성 함수 일단 8 Depth 까징 ============== */
+    var v_level=0;
+    var v_limitDepth = 8;
+    function mkReplyTree(p_root,level){
+        if(level > v_limitDepth ) return; 
+        var v_ranCnt = Math.floor(Math.random()*4);
+        if(v_ranCnt == 0){
+            return;
+        }
+        p_root.reply =[];
+        for(var j=0; j<v_ranCnt; j++){
+            var gesi ={}
+            gesi.gid = p_root.gid + "-" + (j+1); 
+            gesi.title = p_root.title + "┕＞ 댓글 " + (j+1);
+            gesi.writer = getRanFullName();
+            gesi.content ="추가내용 " + p_root.content;
+            p_root.reply.push(gesi);
+            level++;
+            mkReplyTree(p_root.reply[j],level);    
+        }
+    }
+    /* ============  더미 메인 리플라이 실제 생성 함수 ============== */
+    function mkRlyDummy(){
+        mkMainDummy();
+        for(var i=0; i<total.length; i++){
+            mkReplyTree(total[i],v_level);
+        }
+        console.log(total);  // 생성된 더미 데이타 눈으로 확인
+    }
+
+/* ==================  만약 로컬스토리지에 없다면 저장  ======================== */ 
+    if(!localStorage.getItem("replyTB")){           // 사실 읽어온 배열 갯수가 0인 경우도 체크 필요 일단 무시 
+        mkRlyDummy(); //        더미 글 생성 
+        localStorage.setItem("replyTB",JSON.stringify(total));
+    }else {
+        total = JSON.parse(localStorage.getItem("replyTB"));
+    }
+    total = total.sort(function(a,b){
+        return b.gid - a.gid;   // 메인 글에만 적용된 상태
+    });   
+// 글 읽기/수정/삭제 처리 루틴 시작, 검색 효율에 대한 고민(읽어온 데이타 재구성) 필요
+var v_schItem;        // 선택된 글
+var v_schParItem;     // 선택된 글의 부모
+function f_gulSeach(p_arrData,p_gid,p_isPar){
+    for(var i=0; i<p_arrData.length; i++){
+        if(p_arrData[i].gid == p_gid){
+            if(!p_isPar){
+                v_schItem=p_arrData[i];
+            }else {
+                v_schParItem=p_arrData[i];
+            }   
+            return;
+        }
+        if(p_arrData[i].reply){
+            f_gulSeach(p_arrData[i].reply,p_gid,p_isPar);  // 재귀호출임에 주의, 체인닝 사용은 초보자에게 조금 무리일 듯
+        }
+    }
+}
+
+var v_modalWin;
+function f_mkModalWin(){
+    console.log("--->",v_modalWin);
+    if(!v_modalWin){
+        v_modalWin = document.createElement("div");
+        v_modalWin.style.position="fixed";
+        v_modalWin.style.width="100%";
+        v_modalWin.style.height="100%";
+        v_modalWin.style.left ="0px";
+        v_modalWin.style.top="0px";
+       // v_modalWin.style.zIndex=10;
+        v_modalWin.style.backgroundColor="rgba(128,128,128,0.5)";
+        v_modalWin.style.display="none";
+    }
+    return v_modalWin;
+}
+
+function f_gulOpen(p_gid){
+    event.preventDefault();  // a 태그 링크 기능 막깅
+    f_gulSeach(total,p_gid); // 재귀호출임에 주의 현 상태에서 return값을 받으려하면 노노 
+
+    v_modalWin = f_mkModalWin();
+    var v_titleBar = document.createElement("div");
+    v_titleBar.height="30px"
+    v_titleBar.style.textAlign="right";
+    v_titleBar.style.border="2px solid black";
+    v_titleBar.style.fontSize="1.2em";
+    v_titleBar.style.color="blue";
+    v_titleBar.innerHTML="모달창";
+    for(var nbsp=0; nbsp < 60; nbsp++){
+        v_titleBar.innerHTML += "&nbsp;";
+    }
+    var xmenu = document.createElement("div");
+    xmenu.setAttribute("id","id_close");
+    xmenu.style.display="inline-block";
+    xmenu.style.border="1px solid black";
+    xmenu.style.width="20px";
+    xmenu.style.height="20px";
+    xmenu.style.textAlign="center";
+    xmenu.style.fontWeight="bolder";
+    xmenu.style.cursor="pointer";
+    xmenu.innerHTML="X";    
+    v_titleBar.appendChild(xmenu);
+
+    var v_dlgWin = document.createElement("div");
+    v_dlgWin.style.position="relative";
+    v_dlgWin.style.margin="5px auto";
+    v_dlgWin.style.width="700px";
+    v_dlgWin.style.top="25%";
+    
+    v_dlgWin.style.backgroundColor="pink";
+    v_dlgWin.style.color="black";
+
+    var v_tblStr = "<table border=2 width=100%>";
+    v_tblStr += "<tr><td>순번</td><td>" + v_schItem.gid + "</td></tr>";    
+    v_tblStr += "<tr><td>제목</td><td>" + v_schItem.title + "</td></tr>";    
+    v_tblStr += "<tr><td>글쓰니</td><td>" + v_schItem.writer + "</td></tr>";    
+    v_tblStr += "<tr><td colspan=2><textarea id=editor>" + v_schItem.content + "</textarea></td></tr>";
+    v_tblStr += "<tr><td colspan=2>&nbsp;<input type=button id=id_rreg value=답변등록 style='width:33%;height:100%' >";
+    v_tblStr += "<input type=button id=id_modify value=수정 style='width:33%;height:100%'><input type=button id=id_del value=삭제 style='width:33%;height:100%'></td></tr>";
+    v_tblStr += "</table>";
+
+    v_dlgWin.appendChild(v_titleBar);
+    v_dlgWin.innerHTML= v_dlgWin.innerHTML + v_tblStr;
+    v_modalWin.appendChild(v_dlgWin);
+
+    var ckScript = document.createElement("script");
+    ckScript.src = "./js/ckin.js";
+    v_modalWin.appendChild(ckScript);
+
+
+    document.body.appendChild(v_modalWin);
+    v_modalWin.style.display="block";
+
+    
+    document.getElementById("id_close").onclick=function(){
+        v_modalWin.innerHTML="";
+        v_modalWin.style.display="none";
+    }
+
+    document.getElementById("id_modify").onclick=function(){
+        console.log(v_schItem);
+        v_schItem.content = CKEDITOR.instances.editor.getData();
+        localStorage.setItem("replyTB",JSON.stringify(total));
+        location.replace(location.href);  // 그냥 억지로 간단히
+    }
+
+    document.getElementById("id_del").onclick=function(){
+        console.log(v_schItem);
+
+        // 메인 글 삭제 처리
+        if((v_schItem.gid+"").indexOf("-") == -1){
+            if(v_schItem.reply){
+                alert("답변이 있는 글이네용~ㅠㅠ");
+                return;
+            }
+
+            for(var i=0; i<total.length; i++){
+                if(total[i].gid == v_schItem.gid){
+                    total.splice(i,1);
+                }
+            }
+
+            localStorage.setItem("replyTB",JSON.stringify(total));
+            location.replace(location.href);  // 그냥 억지로 간단히
+            return;
+        }
+
+        // 답변 글 삭제 처리, 부모글이  필요
+        var v_gids = v_schItem.gid.split("-");
+        var v_parGid=v_gids[0];
+        for(var i=1; i<v_gids.length-1; i++){
+            v_parGid += "-" + v_gids[i];
+        }
+        console.log(v_parGid);
+        f_gulSeach(total,v_parGid,true);
+        console.log(v_schParItem);
+        
+        if(v_schItem.reply){
+            alert("답변이 있어서 못 지워용");
+            return;
+        }
+
+        for(var i=0; i<v_schParItem.reply.length; i++){
+            if(v_schParItem.reply[i].gid = v_schItem.gid){
+                v_schParItem.reply.splice(i,1);
+                break;
+            }
+        }
+        //일부러 밖으로 가독성
+        if(!v_schParItem.reply.length){
+            delete v_schParItem.reply;
+        }
+        localStorage.setItem("replyTB",JSON.stringify(total));
+        location.replace(location.href);  // 그냥 억지로 간단히
+    }
+
+    document.getElementById("id_rreg").onclick=function(){
+
+        var v_dapGul = {};
+        if(!v_schItem.reply){
+            v_schItem.reply =[];
+            v_dapGul.gid = v_schItem.gid + "-1";
+            v_dapGul.title = v_schItem.title + "┕＞ 댓글 1" ;
+            v_dapGul.writer = getRanFullName();
+            v_dapGul.content = CKEDITOR.instances.editor.getData();
+            v_schItem.reply.push(v_dapGul);
+        } else {
+            var v_lastRlyGid= v_schItem.reply[v_schItem.reply.length-1].gid;
+            var v_lastNum = v_lastRlyGid.split("-");
+            v_lastNum = v_lastNum[v_lastNum.length-1]-0; // 숫자롱
+            console.log(v_schItem.gid + "-" + (v_lastNum+1));
+
+            v_dapGul.gid = v_schItem.gid + "-" + (v_lastNum+1);
+            v_dapGul.title = v_schItem.title + "┕＞ 댓글 " + v_lastNum ;
+            v_dapGul.writer = getRanFullName();
+            v_dapGul.content = CKEDITOR.instances.editor.getData();
+            v_schItem.reply.push(v_dapGul);
+        }
+
+        localStorage.setItem("replyTB",JSON.stringify(total));
+        location.replace(location.href);  // 그냥 억지로 간단히
+
+    } 
+}
+// 글 읽기/수정/삭제 처리 루틴 끝
+
+
+/* ==================  화면 출력 테스트  ======================== 
+   ==================  Flow가 보이도록 함수 분리 필요  ========================
+*/
+    var v_root = document.getElementById("id_tbl");
+    function Tree(p_parent,p_child,p_clsName){
+        for(var i=0; i< p_child.length; i++){
+            var v_tr = document.createElement("tr");
+
+            // 클래스명을 이용해서 메인글의 자식글들 관리
+            if(p_clsName != ""){
+                var v_cln = p_clsName.split(" "); // classList 쓸깡?
+                for(var y=0; y<v_cln.length; y++){
+                    v_tr.classList.add(v_cln[y]);
+                }
+            }else {
+                v_tr.style.fontWeight="bolder";
+                v_tr.style.fontSize="1.1em";
+                v_tr.style.color="blue";
+                v_tr.style.backgroundColor="skyblue";
+            }
+            v_tr.classList.add("gul" + (p_child[i].gid + "").replaceAll("-",""));
+            
+            // 첫번째 컬럼 처리
+            var v_tdNum=document.createElement("td");
+            v_tdNum.innerHTML = p_child[i].gid + "&nbsp;&nbsp;&nbsp;&nbsp;";
+            v_tdNum.style.textAlign="left";
+
+            var v_simbol = document.createElement("div");
+            if(p_child[i].reply){
+                v_simbol.innerHTML="+";
+                v_simbol.title="확장";
+            }else {
+                v_simbol.innerHTML="@";
+                v_simbol.title="?";
+            }
+            v_simbol.className = "sticker";
+            
+            v_tdNum.appendChild(v_simbol);
+            v_tr.appendChild(v_tdNum);
+
+
+            // 두번째 컬럼 처리
+            var v_tdTitle=document.createElement("td");
+            var v_cnt = (p_child[i].gid + "").split("-").length;
+            var v_space="";
+            for(var z=0; z<v_cnt; z++){
+                v_space += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+            v_tdTitle.innerHTML = "<a href=#  onclick=f_gulOpen('" + p_child[i].gid + "')>" + v_space + p_child[i].title + "</a>";
+            v_tr.appendChild(v_tdTitle);
+
+            // 세번째 컬럼 처리
+            var v_tdWriter=document.createElement("td");
+            v_tdWriter.innerHTML = p_child[i].writer;
+            v_tdWriter.style.textAlign="center";
+            v_tr.appendChild(v_tdWriter);
+
+
+            //댓글이면 일단 보이지 않게 처리
+            if(v_cnt > 1 ) {v_tr.style.display="none"};
+            p_parent.appendChild(v_tr);
+      
+
+            // 첫번째 컬럼 클릭, 확장(Expand), 축소(Collapse) 처리
+            v_tdNum.onclick = function(){
+                var v_tr = this.parentElement;
+                var v_trClsName = v_tr.className;
+                var v_level = v_tr.classList.length;
+                var v_trs = document.getElementsByClassName(v_trClsName);
+                
+                /* 별거 아닌 별거인 스티커 처리 시작 */
+                var v_sticker=v_tr.getElementsByClassName("sticker")[0].innerHTML.trim();
+                if(v_sticker == "+"){
+                    for(var nn=0; nn < v_trs.length; nn++){
+                        if(v_trs[nn].classList.length > v_level && v_trs[nn].classList.length < (v_level+2)){
+                            v_trs[nn].style.display = "table-row";
+                        }
+                    }
+                    v_tr.getElementsByClassName("sticker")[0].innerHTML="-";
+                    v_tr.getElementsByClassName("sticker")[0].title="축소";
+                    return;
+                }
+
+                if(v_sticker == "-"){
+                    for(var nn=0; nn < v_trs.length; nn++){
+                        v_trs[nn].style.display = "none";
+                    }
+                    v_tr.style.display = "table-row";
+                    v_tr.getElementsByClassName("sticker")[0].innerHTML="+";
+                    return;   
+                }
+
+                if(v_sticker == "@"){
+                    alert("댓글이 없는 글입니다. 쏘오링!");
+                    return;
+                }
+
+                alert("이상하네요, 문제가 있는 것 같습니다. 새로고침후에도 발생하면 연락주세용");
+                /* 별거 아닌 별거인 스티커 처리 끝 */
+            }
+            
+            //재귀 호출
+            if(p_child[i].reply){
+                    Tree(p_parent,p_child[i].reply,v_tr.className);
+            }
+        }
+    } 
+   Tree(v_root,total,"");
+
+   //새글 쓰깅
+
+   function f_newGulOpen(p_id){
+        v_modalWin = f_mkModalWin();
+        var v_titleBar = document.createElement("div");
+        v_titleBar.height="30px"
+        v_titleBar.style.textAlign="right";
+        v_titleBar.style.border="2px solid black";
+        v_titleBar.style.fontSize="1.2em";
+        v_titleBar.style.color="blue";
+        v_titleBar.innerHTML="모달창";
+        for(var nbsp=0; nbsp < 60; nbsp++){
+            v_titleBar.innerHTML += "&nbsp;";
+        }
+        var xmenu = document.createElement("div");
+        xmenu.setAttribute("id","id_close");
+        xmenu.style.display="inline-block";
+        xmenu.style.border="1px solid black";
+        xmenu.style.width="20px";
+        xmenu.style.height="20px";
+        xmenu.style.textAlign="center";
+        xmenu.style.fontWeight="bolder";
+        xmenu.style.cursor="pointer";
+        xmenu.innerHTML="X";    
+        v_titleBar.appendChild(xmenu);
+
+        var v_dlgWin = document.createElement("div");
+        v_dlgWin.style.position="relative";
+        v_dlgWin.style.margin="5px auto";
+        v_dlgWin.style.width="700px";
+        v_dlgWin.style.top="25%";
+    
+        v_dlgWin.style.backgroundColor="pink";
+        v_dlgWin.style.color="black";
+
+        var v_tblStr = "<table border=2 width=100%>";
+        v_tblStr += "<tr><td>순번</td><td>" + p_id + "</td></tr>";    
+        v_tblStr += "<tr><td>제목</td><td><input id=in_title type=text value='' class=ygy></td></tr>";    
+        v_tblStr += "<tr><td>글쓰니</td><td><input id=in_writer type=text value='' class=ygy></td></tr>";    
+        v_tblStr += "<tr><td colspan=2><textarea id=editor></textarea></td></tr>";
+        v_tblStr += "<tr><td colspan=2>&nbsp;<input type=button id=id_reg value=새글등록 style='width:98%;height:100%' ></td></tr>";
+        v_tblStr += "</table>";
+
+        v_dlgWin.appendChild(v_titleBar);
+        v_dlgWin.innerHTML= v_dlgWin.innerHTML + v_tblStr;
+        v_modalWin.appendChild(v_dlgWin);
+
+        var ckScript = document.createElement("script");
+        ckScript.src = "./js/ckin.js";
+        v_modalWin.appendChild(ckScript);
+
+        document.body.appendChild(v_modalWin);
+        v_modalWin.style.display="block";
+
+        document.getElementById("in_title").focus();
+
+        document.getElementById("id_reg").onclick=function(){
+            var newGul = {};
+            newGul.gid = p_id;
+            newGul.title = document.getElementById("in_title").value;
+            newGul.writer = getRanFullName();
+            newGul.content = CKEDITOR.instances.editor.getData();
+            total.push(newGul);
+            localStorage.setItem("replyTB",JSON.stringify(total));
+            location.replace(location.href);  // 그냥 억지로 간단히
+        }
+
+    
+        document.getElementById("id_close").onclick=function(){
+            v_modalWin.innerHTML="";
+            v_modalWin.style.display="none";
+        }   
+
+    }
+
+   function f_newReg(){
+       var v_newNum = parseInt(total[0].gid) + 1;
+       console.log(v_newNum);
+       f_newGulOpen(v_newNum);
+   }
+
+   /* 일단 눈에 거슬리니 마우스 오른쪽 컨텍스트 메뉴 막깅 */
+   window.addEventListener("contextmenu",function(){
+       event.preventDefault(); 
+   })
+</script>
+</body>
+</html>
